@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Diário de Classe — Sala do Futuro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&amp;family=Open+Sans:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+*,::before,::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f9f9f9;
+  --surface:#fff;
+  --fg:#183b56;
+  --fg-secondary:#55585d;
+  --fg-tertiary:#606878;
+  --accent:#1565d8;
+  --accent-light:#e8f0fb;
+  --accent-dark:#1c3664;
+  --heading-color:#304869;
+  --heading:#304869;
+  --page-title:#162f67;
+  --red:#d22d2d;
+  --search-placeholder:#6e7377;
+  --icon-color:#8397a6;
+  --border-color:#c1c9d8;
+  --green:#118f28;
+  --radius-sm:6px;
+  --radius-md:8px;
+  --radius-lg:12px;
+  --radius-xl:20px;
+  --radius-full:50px;
+  --sidebar-w:220px;
+  --topnav-h:60px;
+  --font-display:'Open Sans',sans-serif;
+  --font-body:'Open Sans',sans-serif;
+  --font-mono:'Inter',sans-serif;
+  --c-freq:#fe55b3;
+  --c-reg:#f7b100;
+  --c-aval:#00b9d3;
+  --c-fech:#f34327;
+  --c-rel:#1565d8;
+  --c-proj:#ef8c01
+}
+html{font-size:16px;scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--fg);
+  line-height:1.5;
+  min-height:100vh;
+  display:flex
+}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+img{max-width:100%;display:block}
+
+/* Sidebar */
+.sidebar{
+  position:fixed;
+  top:0;left:0;
+  width:var(--sidebar-w);
+  height:100vh;
+  background:var(--surface);
+  border-right:1px solid var(--accent-light);
+  display:flex;
+  flex-direction:column;
+  z-index:100;
+  overflow-y:auto
+}
+.sidebar-logo{
+  padding:15px 25px;
+  height:52px;
+  display:flex;
+  align-items:center
+}
+.sidebar-logo img{height:32px;width:auto}
+.sidebar-search{
+  margin:8px 15px;
+  padding:0 12px;
+  height:35px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  border:1px solid var(--accent-light);
+  border-radius:var(--radius-md);
+  background:var(--surface);
+  color:var(--search-placeholder);
+  font-size:13px
+}
+.sidebar-search svg{flex-shrink:0}
+.sidebar-nav{
+  flex:1;
+  padding:4px 15px;
+  display:flex;
+  flex-direction:column;
+  gap:2px
+}
+.nav-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border-radius:var(--radius-md);
+  font-size:14px;
+  font-weight:500;
+  color:var(--fg);
+  cursor:default;
+  min-height:44px;
+  transition:background .15s
+}
+.nav-item:hover{background:var(--accent-light)}
+.nav-item.active{
+  background:var(--accent-light);
+  color:var(--fg);
+  font-weight:600
+}
+.nav-item-icon{
+  width:20px;height:20px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0
+}
+.nav-item-icon svg{width:20px;height:20px}
+.nav-item-arrow{margin-left:auto}
+.nav-item-arrow svg{width:20px;height:20px;fill:var(--icon-color)}
+.nav-item-subtitle{font-size:11px;font-weight:400;color:var(--fg-secondary);line-height:1.3}
+.nav-item.nav-tall{flex-wrap:wrap;gap:0;padding:8px 12px}
+.nav-item.nav-tall .nav-item-icon{margin-right:10px}
+.nav-item.nav-tall .nav-item-label{width:calc(100% - 30px);font-size:13px}
+.nav-item.nav-tall .nav-item-subtitle{width:100%;padding-left:0;margin-top:-2px}
+.nav-group{display:flex;flex-direction:column}
+.nav-parent{cursor:pointer}
+.nav-toggle{transition:transform .2s}
+.nav-toggle svg{width:16px;height:16px;fill:none;stroke:var(--icon-color);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav-group.open .nav-toggle{transform:rotate(180deg)}
+.nav-submenu{display:none;flex-direction:column;gap:2px;margin:2px 0 4px 26px;border-left:1px solid var(--accent-light);padding-left:10px}
+.nav-group.open .nav-submenu{display:flex}
+.nav-sub{min-height:34px;padding:7px 10px;font-size:13px;font-weight:500;color:var(--fg-secondary);border-radius:var(--radius-md);cursor:pointer}
+.nav-sub:hover{background:var(--accent-light);color:var(--fg)}
+a.nav-sub{text-decoration:none}
+a.nav-sub:hover{text-decoration:none}
+.nav-sub.active{background:var(--accent-light);color:var(--fg);font-weight:600}
+a.nav-item{text-decoration:none}
+a.nav-item:hover{text-decoration:none}
+
+/* Top Nav */
+.topnav{
+  position:fixed;
+  top:0;
+  left:var(--sidebar-w);
+  right:0;
+  height:var(--topnav-h);
+  background:var(--surface);
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  padding:0 20px;
+  z-index:99;
+  gap:12px
+}
+.topnav-btn{
+  width:40px;height:40px;
+  border-radius:var(--radius-full);
+  border:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:default;
+  flex-shrink:0
+}
+.topnav-btn-red{background:var(--red)}
+.topnav-btn-grey{background:var(--bg)}
+.topnav-switch{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border:2px solid transparent;
+  border-radius:var(--radius-full);
+  padding:4px 16px 4px 8px;
+  height:40px;
+  cursor:default
+}
+.topnav-switch:hover{border-color:var(--accent-light)}
+.topnav-switch-icon{
+  width:28px;height:28px;
+  display:flex;align-items:center;justify-content:center
+}
+.topnav-switch-icon svg{width:15px;height:15px}
+.topnav-switch-text{
+  display:flex;
+  flex-direction:column;
+  font-size:12px;line-height:1.2
+}
+.topnav-switch-text span:first-child{font-weight:600}
+.topnav-switch-text span:last-child{font-size:11px}
+.topnav-user{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:0 16px;
+  height:60px;
+  border-left:1px solid var(--accent-light);
+  cursor:pointer
+}
+.topnav-user-avatar{
+  width:36px;height:36px;
+  border-radius:var(--radius-full);
+  background:#304869;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;
+  font-size:14px;font-weight:700
+}
+.topnav-user-info{
+  display:flex;
+  flex-direction:column;
+  font-size:13px
+}
+.topnav-user-info span:first-child{font-weight:600}
+.pu-role{font-size:11px;color:var(--fg-secondary)}
+.topnav-user-info span:last-child{font-size:11px;color:var(--fg-secondary)}
+.topnav-user-chip{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:none;
+  border:none;
+  padding:0;
+  font:inherit;
+  color:inherit;
+  text-align:left;
+  cursor:pointer
+}
+.pu-caret{
+  width:14px;height:14px;flex-shrink:0;
+  color:var(--icon-color);
+  transition:transform .15s
+}
+.topnav-user.open .pu-caret{transform:rotate(180deg)}
+.topnav-user-chip:focus-visible,.profile-option:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.profile-menu{
+  position:absolute;
+  top:calc(100% + 6px);
+  right:0;
+  width:320px;
+  max-width:calc(100vw - 24px);
+  background:var(--surface);
+  border:1px solid var(--border-color);
+  border-radius:var(--radius-lg);
+  box-shadow:0 10px 28px rgba(16,42,67,.16);
+  padding:6px;
+  z-index:200
+}
+.profile-menu[hidden]{display:none}
+.profile-menu-head{
+  font-size:11px;
+  font-weight:700;
+  color:var(--fg-secondary);
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  padding:8px 12px
+}
+.profile-option{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  padding:10px 12px;
+  border:none;
+  background:transparent;
+  border-radius:var(--radius-md);
+  cursor:pointer;
+  text-align:left;
+  font:inherit
+}
+.profile-option:hover{background:var(--accent-light)}
+.profile-option.active{background:var(--accent-light)}
+.po-icon{
+  width:34px;height:34px;flex-shrink:0;
+  border-radius:8px;
+  background:var(--accent-light);
+  display:flex;align-items:center;justify-content:center
+}
+.po-icon svg{width:18px;height:18px}
+.po-text{flex:1;display:flex;flex-direction:column;gap:1px}
+.po-text b{font-size:14px;color:var(--fg);font-weight:600}
+.po-text small{font-size:12px;color:var(--fg-secondary);line-height:1.3}
+.po-check{
+  width:18px;height:18px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--accent);
+  opacity:0
+}
+.profile-option.active .po-check{opacity:1}
+
+/* Main */
+.content-wrap{
+  margin-left:var(--sidebar-w);
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  min-height:100vh
+}
+.main{
+  margin-top:var(--topnav-h);
+  flex:1;
+  padding:20px 30px 0
+}
+
+/* Page head */
+.page-head{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:26px
+}
+.page-head svg{flex-shrink:0}
+.page-head h1{
+  font-family:var(--font-display);
+  font-size:22px;
+  font-weight:700;
+  color:var(--page-title)
+}
+
+/* Sections */
+.section{margin-bottom:28px}
+.section-title{
+  font-family:var(--font-display);
+  font-size:20px;
+  font-weight:600;
+  color:var(--heading);
+  margin-bottom:4px
+}
+.section-sub{
+  font-size:14px;
+  color:var(--heading);
+  margin-bottom:16px
+}
+.cards-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(248px,1fr));
+  gap:20px
+}
+.proj-card{max-width:253px}
+
+/* Menu cards */
+.menu-card{
+  background:var(--surface);
+  border-radius:var(--radius-lg);
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  min-height:180px;
+  box-shadow:0 2px 5px 0 rgba(0,0,0,.05)
+}
+.card-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding-bottom:10px;
+  border-bottom:2px solid var(--card-accent);
+  margin-bottom:12px
+}
+.card-head .card-icon{
+  width:20px;height:20px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0
+}
+.card-head .card-icon svg{width:20px;height:20px;stroke:var(--card-accent)}
+.card-title{
+  font-family:var(--font-display);
+  font-size:15px;
+  font-weight:600;
+  color:var(--heading)
+}
+.card-body{
+  display:flex;
+  flex-direction:column;
+  gap:8px
+}
+.card-btn{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  width:100%;
+  min-height:34px;
+  padding:6px 12px;
+  border:1px solid var(--border-color);
+  border-radius:var(--radius-md);
+  background:transparent;
+  color:var(--heading);
+  font-size:13px;
+  font-weight:600;
+  text-align:left;
+  cursor:pointer;
+  transition:background .15s,border-color .15s
+}
+.card-btn:hover{background:var(--accent-light);border-color:var(--accent)}
+a.card-btn,a.card-btn:hover{text-decoration:none}
+.card-btn.muted{background:#f2f2f2;border-color:#f2f2f2}
+.card-btn svg{flex-shrink:0}
+.card-btn .btn-label{flex:1;line-height:1.3}
+.card-btn .btn-arrow{
+  width:12px;height:12px;
+  display:flex;align-items:center;justify-content:center;
+  opacity:.55;
+  margin-left:auto
+}
+.card-btn .btn-arrow svg{width:12px;height:12px}
+.card-btn-lg{min-height:54px}
+.accent-freq{--card-accent:var(--c-freq)}
+.accent-reg{--card-accent:var(--c-reg)}
+.accent-aval{--card-accent:var(--c-aval)}
+.accent-fech{--card-accent:var(--c-fech)}
+.accent-rel{--card-accent:var(--c-rel)}
+.accent-proj{--card-accent:var(--c-proj)}
+
+/* Disabled states */
+.menu-card.off{opacity:.55}
+.card-btn.disabled{background:#f2f2f2;border-color:#f2f2f2;color:#98a0ad;cursor:not-allowed;pointer-events:none}
+.card-btn.disabled:hover{background:#f2f2f2;border-color:#f2f2f2}
+.nav-item.disabled,.nav-sub.disabled{opacity:.45;pointer-events:none}
+.nav-sub.disabled{cursor:default}
+.nav-item.disabled:hover,.nav-sub.disabled:hover{background:transparent;color:var(--fg-secondary)}
+
+/* Footer */
+.footer{
+  background:var(--surface);
+  padding:20px 30px;
+  display:grid;
+  grid-template-columns:234px 1fr 1fr 1fr;
+  gap:24px;
+  align-items:start
+}
+.footer-logo img{height:40px;width:auto}
+.footer-col{}
+.footer-col-title{
+  font-size:14px;
+  font-weight:700;
+  color:var(--fg);
+  margin-bottom:12px
+}
+.footer-col a{
+  display:block;
+  font-size:13px;
+  color:var(--fg);
+  margin-bottom:8px
+}
+.footer-col a:hover{color:var(--accent);text-decoration:underline}
+
+/* Responsive */
+@media(max-width:1200px){
+  .footer{grid-template-columns:1fr 1fr}
+}
+@media(max-width:920px){
+  .sidebar{width:60px}
+  .sidebar-logo{padding:15px 10px}
+  .sidebar-search{display:none}
+  .nav-item{padding:10px;justify-content:center}
+  .nav-item-label,.nav-item-arrow,.nav-item-subtitle,.nav-submenu{display:none}
+  .nav-item-icon{margin:0}
+  .nav-item.nav-tall .nav-item-icon{margin:0}
+  .topnav{left:60px}
+  .content-wrap{margin-left:60px}
+  .main{padding:16px}
+  .footer{grid-template-columns:1fr;gap:16px;padding:16px}
+  .topnav-user-info{display:none}
+  .pu-caret{display:none}
+}
+@media(max-width:600px){
+  .topnav-btn-grey,.topnav-switch-text{display:none}
+  .topnav-switch{padding:4px 8px}
+  .topnav-user{padding:0 8px}
+  .cards-grid{grid-template-columns:1fr}
+  .proj-card{max-width:none}
+}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar" data-od-id="sidebar">
+  <div class="sidebar-logo" data-od-id="sidebar-logo">
+    <svg viewBox="0 0 28 28" width="32" height="32" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="7" fill="#1565d8"></rect><path d="M14 7.2l9 4.3-9 4.3-9-4.3 9-4.3z" fill="#ffffff"></path><path d="M9.6 13.2v3.9c0 1.2 2 2.1 4.4 2.1s4.4-.9 4.4-2.1v-3.9l-4.4 2.1-4.4-2.1z" fill="#ffffff" opacity=".9"></path></svg>
+  </div>
+
+  <div class="sidebar-search" data-od-id="sidebar-search">
+    <svg viewBox="0 0 20 20" width="16" height="16" fill="none">
+      <circle cx="8.5" cy="8.5" r="6" stroke="#8397a6" stroke-width="1.5"></circle>
+      <path d="M13 13l4 4" stroke="#8397a6" stroke-width="1.5" stroke-linecap="round"></path>
+    </svg>
+    <span>Buscar</span>
+  </div>
+
+  <nav class="sidebar-nav" data-od-id="sidebar-nav">
+    <a class="nav-item" href="sala-do-futuro-home.html" data-od-id="nav-inicio">
+      <span class="nav-item-icon">
+        <svg viewBox="0 0 20 20" fill="#183b56"><path d="M10 2L2 9h2v9h5v-6h2v6h5V9h2L10 2z"></path></svg>
+      </span>
+      <span class="nav-item-label">Início</span>
+    </a>
+    <div class="nav-item disabled" data-od-id="nav-turmas">
+      <span class="nav-item-icon">
+        <svg viewBox="0 0 20 20" fill="#55585d"><path d="M7 3a3 3 0 100 6 3 3 0 000-6zM3 13c0-1.1.9-2 2-2h4a2 2 0 012 2v3H3v-3zm12-2a2 2 0 100-4 2 2 0 000 4zm-1 1h2a2 2 0 012 2v2h-4v-2c0-.7-.3-1.4-.8-1.8.6-.2 1.3-.2 1.9 0l-.1-.2z"></path></svg>
+      </span>
+      <span class="nav-item-label">Turmas</span>
+    </div>
+    <div class="nav-item disabled" data-od-id="nav-calendario">
+      <span class="nav-item-icon">
+        <svg viewBox="0 0 20 20" fill="#55585d"><path d="M6 2a1 1 0 012 0v1h4V2a1 1 0 112 0v1h1a2 2 0 012 2v11a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h1V2zm8 5H4v8h12V7h-2z"></path></svg>
+      </span>
+      <span class="nav-item-label">Calendário</span>
+    </div>
+
+    <div class="nav-group open" data-od-id="nav-diario">
+      <div class="nav-item nav-parent active" data-od-id="nav-diario-parent">
+        <span class="nav-item-icon">
+          <svg viewBox="0 0 20 20" fill="none"><path d="M4 3h10a1.5 1.5 0 011.5 1.5V16a1.5 1.5 0 01-1.5 1.5H5A1.5 1.5 0 013.5 16V4.5A1.5 1.5 0 015 3z" stroke="#55585d" stroke-width="1.5" stroke-linejoin="round"></path><path d="M7 6.5h6M7 9.5h6M7 12.5h4" stroke="#55585d" stroke-width="1.5" stroke-linecap="round"></path></svg>
+        </span>
+        <span class="nav-item-label">Diário de Classe</span>
+        <span class="nav-item-arrow nav-toggle" data-od-id="nav-diario-toggle">
+          <svg viewBox="0 0 20 20"><path d="M5 7.5l5 5 5-5"></path></svg>
+        </span>
+      </div>
+      <div class="nav-submenu" data-od-id="nav-diario-submenu">
+        <a class="nav-item nav-sub disabled" href="minhas-turmas-e-horarios.html" data-od-id="nav-diario-minhas-turmas" aria-disabled="true">Minhas Turmas e Horários</a>
+        <a class="nav-item nav-sub disabled" href="diario-de-classe-home.html" data-od-id="nav-diario-frequencia" aria-disabled="true">Frequência</a>
+        <a class="nav-item nav-sub" href="diario-de-classe-home.html" data-od-id="nav-diario-registro-aulas">Registro de Aulas</a>
+        <a class="nav-item nav-sub disabled" href="diario-de-classe-home.html" data-od-id="nav-diario-avaliacao" aria-disabled="true">Avaliação</a>
+        <a class="nav-item nav-sub disabled" href="diario-de-classe-home.html" data-od-id="nav-diario-fechamento" aria-disabled="true">Fechamento</a>
+        <a class="nav-item nav-sub" href="relatorio-frequencia-registro-aulas.html" data-od-id="nav-diario-relatorios">Relatórios</a>
+        <a class="nav-item nav-sub disabled" href="diario-de-classe-home.html" data-od-id="nav-diario-registro-projetos" aria-disabled="true">Registro de Projetos</a>
+      </div>
+    </div>
+
+    <div class="nav-item nav-tall disabled" data-od-id="nav-ajuda">
+      <span class="nav-item-icon">
+        <svg viewBox="0 0 20 20" fill="#55585d"><circle cx="10" cy="10" r="8" fill="none" stroke="#55585d" stroke-width="1.5"></circle><path d="M8 8a2 2 0 114 0c0 1.5-2 2-2 3v1" stroke="#55585d" stroke-width="1.5" fill="none"></path><circle cx="10" cy="15" r=".8" fill="#55585d"></circle></svg>
+      </span>
+      <span class="nav-item-label">Ajuda</span>
+      <span class="nav-item-subtitle">Suporte e tutoriais</span>
+    </div>
+    <div class="nav-item disabled" data-od-id="nav-sair" style="margin-top:auto">
+      <span class="nav-item-icon">
+       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+<path d="M17.6952 10.7188L13.6932 14.7188C13.318 15.125 12.6615 15.125 12.2863 14.7188C11.8798 14.3438 11.8798 13.6875 12.2863 13.3125L14.5686 11H8.00293C7.44016 11 7.00244 10.5625 7.00244 10C7.00244 9.46875 7.44016 9 8.00293 9H14.5686L12.2863 6.71875C11.8798 6.34375 11.8798 5.6875 12.2863 5.3125C12.6615 4.90625 13.318 4.90625 13.6932 5.3125L17.6952 9.3125C18.1016 9.6875 18.1016 10.3438 17.6952 10.7188ZM7.00244 5H5.00147C4.43869 5 4.00098 5.46875 4.00098 6V14C4.00098 14.5625 4.43869 15 5.00147 15H7.00244C7.53395 15 8.00293 15.4688 8.00293 16C8.00293 16.5625 7.53395 17 7.00244 17H5.00147C3.34441 17 2 15.6562 2 14V6C2 4.34375 3.34441 3 5.00147 3H7.00244C7.53395 3 8.00293 3.46875 8.00293 4C8.00293 4.5625 7.53395 5 7.00244 5Z" fill="#8397A6"></path>
+</svg>
+      </span>
+      <span class="nav-item-label">Sair</span>
+    </div>
+  </nav>
+</aside>
+
+<!-- Top Nav -->
+<header class="topnav" data-od-id="topnav">
+  <div style="flex:1"></div>
+  <div class="topnav-switch" data-od-id="topnav-switch" style="box-shadow:0 1px 4px rgba(0,0,0,.15)">
+    <div class="topnav-switch-icon">
+      <svg viewBox="0 0 28 28" fill="none">
+        <rect x="2" y="5" width="24" height="18" rx="2" stroke="#304869" stroke-width="1.5" fill="none"></rect>
+        <rect x="6" y="8" width="16" height="4" fill="#304869"></rect>
+        <rect x="6" y="14" width="16" height="2" fill="#304869" opacity="0.5"></rect>
+        <rect x="6" y="18" width="10" height="2" fill="#304869" opacity="0.3"></rect>
+      </svg>
+    </div>
+    <div class="topnav-switch-text">
+      <span>Ir Para Visão</span>
+      <span>Pedagógica</span>
+    </div>
+  </div>
+  <div class="topnav-btn topnav-btn-red" data-od-id="topnav-notif">
+    <svg viewBox="0 0 20 20" fill="#fff" width="18" height="18"><path d="M10 2a6 6 0 00-6 6v3l-2 2v1h16v-1l-2-2V8a6 6 0 00-6-6zm2 14a2 2 0 11-4 0h4z"></path></svg>
+  </div>
+  <div class="topnav-user" data-od-id="topnav-user" id="profile-switcher">
+    <button class="topnav-user-chip" type="button" data-od-id="profile-chip" aria-haspopup="listbox" aria-expanded="false" aria-label="Alterar perfil de visualização">
+      <div class="topnav-user-avatar">AA</div>
+      <div class="topnav-user-info">
+        <span class="pu-name">Aline Amorim</span>
+        <span class="pu-role">Professor(a) · NORTE 1</span>
+        <span class="pu-school">E.E. Isis Castro de Melo Cesar</span>
+      </div>
+      <span class="pu-caret">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7.5l5 5 5-5"></path></svg>
+      </span>
+    </button>
+    <div class="profile-menu" data-od-id="profile-menu" role="listbox" aria-label="Perfil de visualização do relatório" hidden>
+      <div class="profile-menu-head">Ver relatório como</div>
+      <button class="profile-option active" type="button" data-profile="professor" role="option" aria-selected="true">
+        <span class="po-icon">
+          <svg viewBox="0 0 20 20" fill="none" stroke="#1565d8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="7" r="3"></circle><path d="M4.5 16.5c.7-2.4 2.7-3.8 5.5-3.8s4.8 1.4 5.5 3.8"></path></svg>
+        </span>
+        <span class="po-text"><b>Professor</b><small>Visão por turma e disciplina</small></span>
+        <span class="po-check">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg>
+        </span>
+      </button>
+      <button class="profile-option" type="button" data-profile="diretor" role="option" aria-selected="false">
+        <span class="po-icon">
+          <svg viewBox="0 0 20 20" fill="none" stroke="#1565d8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2.5l6 2.5v5c0 3.5-2.5 6.2-6 7.5-3.5-1.3-6-4-6-7.5V5l6-2.5z"></path><path d="M7.5 10l1.8 1.8 3.2-3.6"></path></svg>
+        </span>
+        <span class="po-text"><b>Gestão da Escola</b><small>Diretor(a) · visão consolidada</small></span>
+        <span class="po-check">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg>
+        </span>
+      </button>
+    </div>
+  </div>
+  <div class="topnav-btn topnav-btn-grey" data-od-id="topnav-menu">
+    <svg viewBox="0 0 20 20" fill="#55585d" width="18" height="18"><rect x="3" y="4" width="14" height="2" rx="1"></rect><rect x="3" y="9" width="14" height="2" rx="1"></rect><rect x="3" y="14" width="14" height="2" rx="1"></rect></svg>
+  </div>
+</header>
+
+<!-- Main Content -->
+<div class="content-wrap">
+<main class="main" data-od-id="main">
+
+  <!-- Page head -->
+  <div class="page-head" data-od-id="page-head">
+    <svg viewBox="0 0 59 59" width="32" height="32" fill="none">
+      <path d="M19.6665 17.208H39.3332M19.6665 25.8122H31.9582M47.9373 46.708H19.6665" stroke="#E53239" stroke-width="3.6875" stroke-linecap="round"></path>
+      <path d="M9.83319 19.6663C9.83319 12.7142 9.83319 9.23561 11.9941 7.0772C14.1525 4.91632 17.631 4.91632 24.5832 4.91632H34.4165C41.3687 4.91632 44.8472 4.91632 47.0056 7.0772C49.1665 9.23561 49.1665 12.7142 49.1665 19.6663V39.333C49.1665 46.2852 49.1665 49.7637 47.0056 51.9221C44.8472 54.083 41.3687 54.083 34.4165 54.083H24.5832C17.631 54.083 14.1525 54.083 11.9941 51.9221C9.83319 49.7637 9.83319 46.2852 9.83319 39.333V19.6663Z" stroke="#162F67" stroke-width="3.6875"></path>
+      <path d="M48.9158 39.333H19.4158C17.1295 39.333 15.9864 39.333 15.0473 39.5838C13.7968 39.9191 12.6566 40.5777 11.7413 41.4934C10.826 42.4091 10.1679 43.5497 9.83319 44.8003" stroke="#162F67" stroke-width="3.6875"></path>
+    </svg>
+    <h1>Diário de Classe</h1>
+  </div>
+
+  <!-- Aulas Regulares -->
+  <section class="section" data-od-id="section-aulas-regulares">
+    <h2 class="section-title">Aulas Regulares</h2>
+    <div class="cards-grid" data-od-id="cards-aulas-regulares">
+
+      <div class="menu-card accent-freq off" data-od-id="card-frequencia">
+        <div class="card-head">
+          <span class="card-icon">
+            <svg viewBox="0 0 20 20" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="15" height="13" rx="2"></rect><path d="M2.5 8h15M6.5 2.5v3M13.5 2.5v3"></path><path d="M13.5 11.5l-2.3 2.3-1.2-1.2"></path></svg>
+          </span>
+          <span class="card-title">Frequência</span>
+        </div>
+        <div class="card-body">
+          <a class="card-btn disabled" href="diario-de-classe-home.html" data-od-id="btn-chamada" aria-disabled="true">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="#304869" stroke-width="1.4" stroke-linecap="round"><path d="M4 5h8M4 8h8M4 11h5"></path></svg>
+            <span class="btn-label">Lançamento</span>
+            <span class="btn-arrow"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 2.5l3.5 3.5-3.5 3.5"></path></svg></span>
+          </a>
+          <button class="card-btn muted disabled" type="button" disabled data-od-id="btn-lancar-frequencia">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="#304869" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="12" height="11" rx="2"></rect><path d="M2 6h12M5 2v2M11 2v2"></path><path d="M11.5 9.5l1 1-2.2 2.2-.9-1.1"></path></svg>
+            <span class="btn-label">Consulta</span>
+            <span class="btn-arrow"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 2.5l3.5 3.5-3.5 3.5"></path></svg></span>
+          </button>
+          <button class="card-btn disabled" type="button" disabled data-od-id="btn-freq-periodo">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="#304869" stroke-width="1.4" stroke-linecap="round"><circle cx="8" cy="8" r="6"></circle><path d="M8 4.5V8l2.5 1.5"></path></svg>
+            <span class="btn-label">Exclusão</span>
+            <span class="btn-arrow"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 2.5l3.5 3.5-3.5 3.5"></path></svg></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="menu-card accent-reg off" data-od-id="card-registro-aulas">
+        <div class="card-head">
+          <span class="card-icon">
+            <svg viewBox="0 0 20 20" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 3.5l3 3L7 16H4v-3L13.5 3.5z"></path><path d="M11 6l3 3"></path></svg>
+          </span>
+          <span class="card-title">Registro de Aulas</span>
+        </div>
+        <div class="card-body" style="gap: 0px;">
+          <button class="card-btn disabled" type="button" disabled data-od-id="btn-registrar-aula" style="border-top-width: 1px; margin-bottom: 8px; padding-bottom: 6px;">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="#304869" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10.8 3l2.2 2.2L6 12.2H3.8V10L10.8 3z"></path><path d="M9 5l2 2"></path></svg>
+            <span class="btn-label">Registrar Aula</span>
+            <span class="btn-arrow"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 2.5l3.5 3.5-3.5 3.5"></path></svg></span>
+          </button>
+          <button class="card-btn disabled" type="button" disabled data-od-id="btn-planejamento">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="#304869" stroke-width="1.4" stroke-linecap="round"><rect x="2" y="3" width="12" height="11" rx="2"></rect><path d="M2 6h12M8 6v8"></path><path d="M5.5 9.5h5"></path></svg>
+            <span class="btn-label">Exclusão</span>
+            <span class="btn-arrow"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 2.5l3.5 3.5-3.5 3.5"></path></svg></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="menu-card accent-aval off" data-od-id="card-avaliacao">
+        <div class="card-head">
+          <span class="card-icon">
+            <svg viewBox="0 0 20 20" fill="none" stroke-width="1.6" stroke-linejoin="round"><path d="M10 2.8l2.1 4.4 4.8.7-3.5 3.4.8 4.8L10 14.1 5.8 16l.8-4.8L3 7.9l4.8-.7L10 2.8z"></path></svg>
+          </span>
+          <span class="card-title">Avaliação</span>
+        </div>
+        <div class="card-body">
+          <button class="card-btn disabled" type="button" disabled data-od-id="btn-lancar-notas">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="#304869" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10.8 3l2.2 2.2L6 12.2H3.8V10L10.8 3z"></path><path d="M9 5l2 2"></path></svg>
+            <span class="btn-label">Lançar Notas</span>
+            <span class="btn-arrow"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 2.5l3.5 3.5-3.5 3.5"></path></svg></span>
+          </button>
+          <button class="card-btn disabled" type="button" disabled data-od-id="btn-notas-bimestre">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="#304869" stroke-width="1.4" stroke-linecap="round"><path d="M3 13V7M8 13V4M13 13v-3"></path><path d="M2 13.5h12"></path></svg>
+            <span class="btn-label">Consulta</span>
+            <span class="btn-arrow"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 2.5l3.5 3.5-3.5 3.5"></path></svg></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="menu-card accent-fech off" data-od-id="card-fechamento">
+        <div class="card-head">
+          <span class="card-icon">
+            <svg viewBox="0 0 20 20" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="14" height="13" rx="2"></rect><path d="M7.5 3.5h5v2h-5z"></path><path d="M7 10.5l2 2 4-4"></path></svg>
+          </span>
+          <span class="card-title">Fechamento</span>
+        </div>
+        <div class="card-body">
+          <button class="card-btn disabled" type="button" disabled data-od-id="btn-fechamento-bimestre">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="#304869" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="10" height="7" rx="1.5"></rect><path d="M5.5 7V5a2.5 2.5 0 015 0v2"></path></svg>
+            <span class="btn-label">Fechamento do Bimestre</span>
+            <span class="btn-arrow"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 2.5l3.5 3.5-3.5 3.5"></path></svg></span>
+          </button>
+          <button class="card-btn disabled" type="button" disabled data-od-id="btn-conselho">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="#304869" stroke-width="1.4" stroke-linecap="round"><circle cx="6" cy="6" r="2.5"></circle><circle cx="11.5" cy="7" r="2"></circle><path d="M2 13.5c.5-2.2 2-3 4-3s3.5.8 4 3M10.5 13.5c.3-1.8 1.3-2.7 2.8-2.7 1.3 0 2.2.6 2.7 2.7"></path></svg>
+            <span class="btn-label">Consulta</span>
+            <span class="btn-arrow"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 2.5l3.5 3.5-3.5 3.5"></path></svg></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="menu-card accent-rel" data-od-id="card-relatorios">
+        <div class="card-head">
+          <span class="card-icon">
+            <svg viewBox="0 0 20 20" fill="none" stroke-width="1.6" stroke-linecap="round"><path d="M4 16V9M10 16V5M16 16v-4"></path><path d="M3 16.5h14"></path></svg>
+          </span>
+          <span class="card-title">Relatórios e Consultas</span>
+        </div>
+        <div class="card-body">
+          <a class="card-btn card-btn-lg" href="relatorio-frequencia-registro-aulas.html" data-od-id="btn-rel-frequencia">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="#304869" stroke-width="1.4" stroke-linecap="round"><path d="M3 13V9M8 13V6M13 13V3"></path><path d="M2 13.5h12"></path><path d="M3 9l1.6-1.4L6 8.6 8.4 6l1.5 1 2.6-2.6"></path></svg>
+            <span class="btn-label">Relatório de Frequência e Registro de Aulas</span>
+            <span class="btn-arrow"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 2.5l3.5 3.5-3.5 3.5"></path></svg></span>
+          </a>
+          
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Aulas de Projetos e Modalidades -->
+  <section class="section" data-od-id="section-projetos">
+    <h2 class="section-title">Aulas de Projetos e Modalidades</h2>
+    <p class="section-sub">Para registro de aulas especiais e especiais de projetos e modalidades.</p>
+    <div class="cards-grid">
+      <div class="menu-card accent-proj proj-card off" data-od-id="card-registro-projetos">
+        <div class="card-head">
+          <span class="card-icon">
+            <svg viewBox="0 0 20 20" fill="none" stroke-width="1.6" stroke-linejoin="round"><path d="M2.5 6a1.5 1.5 0 011.5-1.5h3.6l1.5 2h6.4a1.5 1.5 0 011.5 1.5v7a1.5 1.5 0 01-1.5 1.5H4A1.5 1.5 0 012.5 15V6z"></path></svg>
+          </span>
+          <span class="card-title">Registro de Projetos</span>
+        </div>
+        <div class="card-body">
+          <button class="card-btn disabled" type="button" disabled data-od-id="btn-registrar-projeto">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="#304869" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v10M3 8h10"></path></svg>
+            <span class="btn-label">Registrar Projeto</span>
+            <span class="btn-arrow"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 2.5l3.5 3.5-3.5 3.5"></path></svg></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer" data-od-id="footer">
+  <div class="footer-logo" data-od-id="footer-logo">
+    <svg viewBox="0 0 28 28" width="40" height="40" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="7" fill="#1565d8"></rect><path d="M14 7.2l9 4.3-9 4.3-9-4.3 9-4.3z" fill="#ffffff"></path><path d="M9.6 13.2v3.9c0 1.2 2 2.1 4.4 2.1s4.4-.9 4.4-2.1v-3.9l-4.4 2.1-4.4-2.1z" fill="#ffffff" opacity=".9"></path></svg>
+  </div>
+  <div class="footer-col" data-od-id="footer-col1">
+    <div class="footer-col-title">Institucional</div>
+    <a href="#">Ouvidoria</a>
+    <a href="#">Transparência educação</a>
+  </div>
+  <div class="footer-col" data-od-id="footer-col2">
+    <div class="footer-col-title">Legal</div>
+    <a href="#">Política de privacidade</a>
+  </div>
+  <div class="footer-col" data-od-id="footer-col3">
+    <div class="footer-col-title">Atendimento</div>
+    <a href="#">Central de atendimento</a>
+    <a href="#">https://atendimento.educacao.sp.gov.br/</a>
+    <a href="#">0800-7700012</a>
+  </div>
+</footer>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.nav-parent').forEach(function(item){
+    item.addEventListener('click',function(){
+      var group=item.closest('.nav-group');
+      if(group){group.classList.toggle('open');}
+    });
+  });
+
+  var switcher=document.getElementById('profile-switcher');
+  if(switcher){
+    var chip=switcher.querySelector('.topnav-user-chip');
+    var menu=switcher.querySelector('.profile-menu');
+    var options=switcher.querySelectorAll('.profile-option');
+    var nameEl=switcher.querySelector('.pu-name');
+    var roleEl=switcher.querySelector('.pu-role');
+    var schoolEl=switcher.querySelector('.pu-school');
+
+    var PROFILES={
+      professor:{name:'Aline Amorim',role:'Professor(a) · NORTE 1',school:'E.E. Isis Castro de Melo Cesar'},
+      diretor:{name:'Aline Amorim',role:'Diretor(a) de Escola · NORTE 1',school:'E.E. Isis Castro de Melo Cesar'}
+    };
+
+    function applyProfile(p){
+      if(!PROFILES[p]){return;}
+      nameEl.textContent=PROFILES[p].name;
+      roleEl.textContent=PROFILES[p].role;
+      schoolEl.textContent=PROFILES[p].school;
+      options.forEach(function(o){
+        var on=o.getAttribute('data-profile')===p;
+        o.classList.toggle('active',on);
+        o.setAttribute('aria-selected',on?'true':'false');
+      });
+      try{localStorage.setItem('od-report-profile',p);}catch(e){}
+    }
+    function openMenu(){menu.hidden=false;switcher.classList.add('open');chip.setAttribute('aria-expanded','true');}
+    function closeMenu(){menu.hidden=true;switcher.classList.remove('open');chip.setAttribute('aria-expanded','false');}
+
+    chip.addEventListener('click',function(e){
+      e.stopPropagation();
+      if(menu.hidden){openMenu();}else{closeMenu();}
+    });
+    options.forEach(function(o){
+      o.addEventListener('click',function(){
+        applyProfile(o.getAttribute('data-profile'));
+        closeMenu();
+      });
+    });
+    document.addEventListener('click',function(e){
+      if(!switcher.contains(e.target)){closeMenu();}
+    });
+    document.addEventListener('keydown',function(e){
+      if(e.key==='Escape'){closeMenu();}
+    });
+
+    var saved=null;
+    try{saved=localStorage.getItem('od-report-profile');}catch(e){}
+    applyProfile(saved&&PROFILES[saved]?saved:'professor');
+  }
+});
+</script>
+
+</body></html>

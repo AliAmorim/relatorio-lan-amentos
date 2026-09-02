@@ -1,0 +1,1313 @@
+<!doctype html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Relatório de Frequência e Registro de Aulas — Turma</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&amp;family=Open+Sans:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+*,::before,::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f9f9f9;
+  --surface:#fff;
+  --fg:#183b56;
+  --fg-secondary:#55585d;
+  --fg-tertiary:#606878;
+  --accent:#1565d8;
+  --accent-light:#e8f0fb;
+  --accent-dark:#1c3664;
+  --heading:#304869;
+  --page-title:#162f67;
+  --red:#d22d2d;
+  --search-placeholder:#6e7377;
+  --icon-color:#8397a6;
+  --border-color:#c1c9d8;
+  --radius-md:8px;
+  --radius-lg:12px;
+  --radius-full:50px;
+  --sidebar-w:220px;
+  --topnav-h:60px;
+  --font-display:'Open Sans',sans-serif;
+  --font-body:'Open Sans',sans-serif;
+  --font-mono:'Inter',sans-serif;
+  --report-line:#20c7a3;
+  --chip-bg:#1565d814;
+  --input-border:#ced4da;
+  --field-label:#3f4756;
+  --select-text:#212529
+}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg);line-height:1.5;min-height:100vh;display:flex}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+img{max-width:100%;display:block}
+
+/* Sidebar */
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--accent-light);display:flex;flex-direction:column;z-index:100;overflow-y:auto}
+.sidebar-logo{padding:15px 25px;height:52px;display:flex;align-items:center}
+.sidebar-logo img{height:32px;width:auto}
+.sidebar-search{margin:8px 15px;padding:0 12px;height:35px;display:flex;align-items:center;gap:8px;border:1px solid var(--accent-light);border-radius:var(--radius-md);background:var(--surface);color:var(--search-placeholder);font-size:13px}
+.sidebar-search svg{flex-shrink:0}
+.sidebar-nav{flex:1;padding:4px 15px;display:flex;flex-direction:column;gap:2px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--radius-md);font-size:14px;font-weight:500;color:var(--fg);cursor:default;min-height:44px;transition:background .15s}
+.nav-item:hover{background:var(--accent-light)}
+.nav-item.active{background:var(--accent-light);color:var(--fg);font-weight:600}
+.nav-item-icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nav-item-icon svg{width:20px;height:20px}
+.nav-item-arrow{margin-left:auto}
+.nav-item-arrow svg{width:20px;height:20px;fill:var(--icon-color)}
+.nav-item-subtitle{font-size:11px;font-weight:400;color:var(--fg-secondary);line-height:1.3}
+.nav-item.nav-tall{flex-wrap:wrap;gap:0;padding:8px 12px}
+.nav-item.nav-tall .nav-item-icon{margin-right:10px}
+.nav-item.nav-tall .nav-item-label{width:calc(100% - 30px);font-size:13px}
+.nav-item.nav-tall .nav-item-subtitle{width:100%;padding-left:0;margin-top:-2px}
+.nav-group{display:flex;flex-direction:column}
+.nav-parent{cursor:pointer}
+.nav-toggle{transition:transform .2s}
+.nav-toggle svg{width:16px;height:16px;fill:none;stroke:var(--icon-color);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav-group.open .nav-toggle{transform:rotate(180deg)}
+.nav-submenu{display:none;flex-direction:column;gap:2px;margin:2px 0 4px 26px;border-left:1px solid var(--accent-light);padding-left:10px}
+.nav-group.open .nav-submenu{display:flex}
+.nav-sub{min-height:34px;padding:7px 10px;font-size:13px;font-weight:500;color:var(--fg-secondary);border-radius:var(--radius-md);cursor:pointer}
+.nav-sub:hover{background:var(--accent-light);color:var(--fg)}
+a.nav-sub{text-decoration:none}
+a.nav-sub:hover{text-decoration:none}
+.nav-sub.active{background:var(--accent-light);color:var(--fg);font-weight:600}
+a.nav-item{text-decoration:none}
+a.nav-item:hover{text-decoration:none}
+.nav-item.disabled,.nav-sub.disabled{opacity:.45;pointer-events:none}
+.nav-sub.disabled{cursor:default}
+.nav-item.disabled:hover,.nav-sub.disabled:hover{background:transparent;color:var(--fg-secondary)}
+
+/* Top Nav */
+.topnav{position:fixed;top:0;left:var(--sidebar-w);right:0;height:var(--topnav-h);background:var(--surface);display:flex;align-items:center;justify-content:flex-end;padding:0 20px;z-index:99;gap:12px}
+.topnav-btn{width:40px;height:40px;border-radius:var(--radius-full);border:none;display:flex;align-items:center;justify-content:center;cursor:default;flex-shrink:0}
+.topnav-btn-red{background:var(--red)}
+.topnav-btn-grey{background:var(--bg)}
+.topnav-switch{display:flex;align-items:center;gap:10px;border:2px solid transparent;border-radius:var(--radius-full);padding:4px 16px 4px 8px;height:40px;cursor:default}
+.topnav-switch:hover{border-color:var(--accent-light)}
+.topnav-switch-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center}
+.topnav-switch-icon svg{width:15px;height:15px}
+.topnav-switch-text{display:flex;flex-direction:column;font-size:12px;line-height:1.2}
+.topnav-switch-text span:first-child{font-weight:600}
+.topnav-switch-text span:last-child{font-size:11px}
+.topnav-user{position:relative;display:flex;align-items:center;gap:10px;padding:0 16px;height:60px;border-left:1px solid var(--accent-light);cursor:pointer}
+.topnav-user-avatar{width:36px;height:36px;border-radius:var(--radius-full);background:#304869;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700}
+.topnav-user-info{display:flex;flex-direction:column;font-size:13px}
+.topnav-user-info span:first-child{font-weight:600}
+.pu-role{font-size:11px;color:var(--fg-secondary)}
+.topnav-user-info span:last-child{font-size:11px;color:var(--fg-secondary)}
+.topnav-user-chip{display:flex;align-items:center;gap:10px;background:none;border:none;padding:0;font:inherit;color:inherit;text-align:left;cursor:pointer}
+.pu-caret{width:14px;height:14px;flex-shrink:0;color:var(--icon-color);transition:transform .15s}
+.topnav-user.open .pu-caret{transform:rotate(180deg)}
+.topnav-user-chip:focus-visible,.profile-option:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.profile-menu{position:absolute;top:calc(100% + 6px);right:0;width:320px;max-width:calc(100vw - 24px);background:var(--surface);border:1px solid var(--border-color);border-radius:var(--radius-lg);box-shadow:0 10px 28px rgba(16,42,67,.16);padding:6px;z-index:200}
+.profile-menu[hidden]{display:none}
+.profile-menu-head{font-size:11px;font-weight:700;color:var(--fg-secondary);text-transform:uppercase;letter-spacing:.5px;padding:8px 12px}
+.profile-option{display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;border:none;background:transparent;border-radius:var(--radius-md);cursor:pointer;text-align:left;font:inherit}
+.profile-option:hover{background:var(--accent-light)}
+.profile-option.active{background:var(--accent-light)}
+.po-icon{width:34px;height:34px;flex-shrink:0;border-radius:8px;background:var(--accent-light);display:flex;align-items:center;justify-content:center}
+.po-icon svg{width:18px;height:18px}
+.po-text{flex:1;display:flex;flex-direction:column;gap:1px}
+.po-text b{font-size:14px;color:var(--fg);font-weight:600}
+.po-text small{font-size:12px;color:var(--fg-secondary);line-height:1.3}
+.po-check{width:18px;height:18px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--accent);opacity:0}
+.profile-option.active .po-check{opacity:1}
+
+/* Main */
+.content-wrap{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.main{margin-top:var(--topnav-h);flex:1;padding:20px 30px 0}
+.section{margin-bottom:28px}
+.section-title{font-family:var(--font-display);font-size:20px;font-weight:600;color:var(--heading);margin-bottom:4px}
+
+/* Report turma (Figma: Relatório TURMA.fig) */
+.report-head{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.report-head-icon{flex-shrink:0}
+.report-head h1{flex:1;font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--page-title)}
+.report-head-ico{width:32px;height:32px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--icon-color)}
+.report-head-ico svg{width:24px;height:24px}
+
+.turma-context{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:600;color:var(--fg-secondary);cursor:pointer}
+.back-link svg{width:14px;height:14px}
+.back-link:hover{color:var(--accent)}
+.turma-tag{display:inline-flex;align-items:center;gap:7px;padding:4px 12px;border-radius:100px;background:var(--chip-bg);color:var(--fg);font-size:12.5px;font-weight:600;max-width:100%}
+.turma-tag svg{width:13px;height:13px;color:var(--accent);flex-shrink:0}
+.turma-tag b{font-weight:700}
+
+.report-card{background:var(--surface);border:2px solid var(--report-line);border-radius:18px;padding:15px 17px 20px;box-shadow:0 2px 8px rgba(16,42,67,.05)}
+.report-card-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.rc-filter{display:flex;align-items:center;gap:9px;min-height:36px}
+.rc-filter svg{width:22px;height:22px;flex-shrink:0}
+.rc-filtros{font-size:20px;font-weight:600;color:var(--heading)}
+.rc-chips{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.rc-chip{display:inline-flex;align-items:center;gap:7px;background:var(--chip-bg);color:var(--fg);border-radius:100px;padding:4px 12px;font-size:12.5px;font-weight:600;max-width:230px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rc-chip svg{width:13px;height:13px;flex-shrink:0}
+.rc-head-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.rc-year-wrap{position:relative;display:flex;align-items:center;gap:10px}
+.rc-year{display:flex;align-items:center;gap:7px;font-size:16px;font-weight:600;color:var(--fg);background:none;border:none;cursor:pointer;padding:4px 2px;font-family:var(--font-mono)}
+.rc-year svg{width:17px;height:17px}
+.rc-year-btn{width:36px;height:36px;border-radius:40px;border:none;background:var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s}
+.rc-year-btn:hover{background:var(--accent-dark)}
+.rc-year-btn svg{width:18px;height:18px;stroke:#fff;transition:transform .15s}
+.rc-year-btn.open svg{transform:rotate(180deg)}
+.rc-year-menu{position:absolute;top:calc(100% + 8px);right:0;width:118px;background:var(--surface);border:1px solid var(--border-color);border-radius:10px;box-shadow:0 10px 28px rgba(16,42,67,.14);padding:4px;z-index:200}
+.rc-year-menu[hidden]{display:none}
+.rc-year-opt{display:block;width:100%;text-align:left;padding:8px 10px;border:none;background:none;font-size:14px;font-family:var(--font-mono);color:var(--fg);border-radius:6px;cursor:pointer}
+.rc-year-opt:hover{background:var(--accent-light)}
+.rc-year-opt.active{background:var(--accent-light);color:var(--accent);font-weight:700}
+
+.rc-fields-row{margin-top:20px;display:flex;align-items:flex-end;gap:22px;flex-wrap:wrap}
+.rc-fields{display:flex;flex-direction:column;gap:7px;max-width:430px;flex:1 1 260px;min-width:0}
+.rc-label{font-size:13px;font-weight:600;color:var(--field-label)}
+.rc-date-wrap{position:relative}
+.rc-date-btn{
+  width:100%;height:34px;padding:0 34px 0 12px;
+  border:1px solid var(--input-border);border-radius:10px;
+  background:var(--surface);color:var(--select-text);font-size:14px;font-family:var(--font-mono);
+  display:flex;align-items:center;gap:8px;cursor:pointer;text-align:left;
+  transition:border-color .15s
+}
+.rc-date-btn:hover{border-color:var(--accent)}
+.rc-date-btn:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.rc-date-btn svg{width:15px;height:15px;color:var(--fg);flex-shrink:0}
+.rc-date-text{flex:1}
+.rc-calendar{
+  position:absolute;top:calc(100% + 6px);left:0;width:286px;max-width:calc(100vw - 32px);
+  background:var(--surface);border:1px solid var(--border-color);border-radius:12px;
+  box-shadow:0 12px 32px rgba(16,42,67,.16);padding:12px;z-index:200
+}
+.rc-calendar[hidden]{display:none}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.cal-title{font-size:13.5px;font-weight:700;color:var(--heading);text-transform:capitalize}
+.cal-nav{width:30px;height:30px;border:none;border-radius:8px;background:transparent;color:var(--fg-secondary);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.cal-nav:hover{background:var(--accent-light);color:var(--accent)}
+.cal-nav svg{width:16px;height:16px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-dow{font-size:11px;font-weight:700;color:var(--fg-secondary);text-align:center;padding:4px 0}
+.cal-day{height:34px;border:none;border-radius:8px;background:transparent;font-size:13px;font-family:var(--font-mono);color:var(--fg);cursor:pointer}
+.cal-day:hover{background:var(--accent-light)}
+.cal-day.blank{cursor:default;background:transparent}
+.cal-day.today{box-shadow:inset 0 0 0 1px var(--accent)}
+.cal-day.selected{background:var(--accent);color:#fff;font-weight:700}
+.cal-day.selected:hover{background:var(--accent-dark)}
+
+.section-sub{font-size:14px;color:var(--heading);margin-bottom:16px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.stat-card{background:#fff;border:1px solid #eef2f7;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:2px;box-shadow:0 2px 6px rgba(16,42,67,.06);cursor:pointer;font:inherit;text-align:left;width:100%;transition:box-shadow .15s,border-color .15s,transform .15s}
+.stat-card:hover{border-color:var(--accent);box-shadow:0 4px 12px rgba(16,42,67,.1);transform:translateY(-1px)}
+.stat-card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.stat-label{font-size:11px;font-weight:700;color:#606878;text-transform:uppercase;letter-spacing:.4px}
+.stat-value{font-size:26px;font-weight:700;color:#304869;line-height:1.15;font-family:var(--font-mono)}
+.empty-view{
+  padding:60px 24px;border:1.5px dashed var(--border-color);border-radius:12px;
+  background:var(--surface);text-align:center;color:var(--fg-secondary);font-size:14px
+}
+.empty-view[hidden]{display:none}
+.empty-view svg{width:38px;height:38px;color:var(--icon-color);margin:0 auto 12px;display:block}
+.empty-view b{display:block;color:var(--heading);font-size:16px;margin-bottom:6px}
+.rc-seg{display:inline-flex;background:#f3f7fb;border-radius:50px;padding:3px;gap:2px;margin-left:auto}
+.rc-fields .rc-seg{margin-left:0;align-self:flex-start}
+.rc-seg-btn{border:none;background:transparent;border-radius:50px;padding:7px 16px;font-size:13px;font-weight:600;color:#606878;cursor:pointer;transition:background .15s,color .15s}
+.rc-seg-btn.active{background:var(--accent);color:#fff}
+.rc-seg-btn:not(.active):hover{color:var(--fg)}
+.rc-date-input{
+  width:100%;height:34px;padding:0 12px;border:1px solid var(--input-border);border-radius:10px;
+  background:#fff;color:var(--select-text);font-size:14px;font-family:var(--font-mono);cursor:pointer
+}
+.rc-date-input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.rc-error{font-size:12px;color:var(--red);font-weight:600;display:none}
+.rc-fields.invalid .rc-error{display:block}
+.rc-fields.invalid .rc-date-input,.rc-fields.invalid .rc-select{border-color:var(--red)}
+.gestao-actions{display:flex;justify-content:flex-end;margin-top:16px}
+.btn-consultar{
+  height:34px;padding:0 22px;border:none;border-radius:10px;background:var(--accent);color:#fff;
+  font-size:13.5px;font-weight:700;display:inline-flex;align-items:center;gap:8px;cursor:pointer;transition:background .15s
+}
+.btn-consultar:hover{background:var(--accent-dark)}
+.btn-consultar svg{width:15px;height:15px}
+.gestao-panel{margin-top:16px;padding:24px;border:1.5px dashed var(--border-color);border-radius:12px;background:#fff;text-align:center;color:#55585d;font-size:13.5px}
+.gestao-panel[hidden]{display:none}
+.gestao-panel b{display:block;color:var(--heading);font-size:14px;margin-bottom:4px}
+.gestao-result-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:24px 0 12px}
+.gestao-result-head b{color:var(--heading);font-size:15px}
+.gestao-result-head span{font-size:12.5px;color:#55585d}
+.gestao-grid-wrap{background:#fff;border:1px solid var(--border-color);border-radius:8px;overflow-x:auto}
+.gestao-grid{width:100%;border-collapse:collapse;min-width:880px}
+.gestao-grid th{background:#f3f7fb;text-align:left;padding:10px 12px;font-size:11px;font-weight:700;color:#606878;text-transform:uppercase;letter-spacing:.3px;border-bottom:1px solid var(--border-color);white-space:nowrap}
+.gestao-grid td{padding:10px 12px;font-size:13px;color:var(--fg);border-bottom:1px solid #eef2f7;vertical-align:middle}
+.gestao-grid tbody tr:hover{background:#f8fafc}
+.gestao-grid .g-turma{font-weight:600;color:var(--heading)}
+.gestao-grid .g-disc{font-weight:600}
+.gestao-grid .g-time{font-family:var(--font-mono);color:#55585d;white-space:nowrap}
+.btn-detalhes{height:30px;padding:0 12px;border:1px solid var(--border-color);border-radius:8px;background:#fff;color:#183b56;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn-detalhes:hover{border-color:var(--accent);color:var(--accent)}
+.gestao-pager{display:flex;align-items:center;gap:14px;justify-content:flex-end;margin-top:12px}
+.gestao-pager .g-page-info{font-size:13px;color:#55585d}
+.g-page-btn{height:32px;padding:0 16px;border:1px solid var(--border-color);border-radius:8px;background:#fff;color:#183b56;font-size:12.5px;font-weight:600;cursor:pointer}
+.g-page-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.g-page-btn:disabled{opacity:.45;cursor:default}
+.schedule-wrap{background:#fff;border:1px solid var(--border-color);border-radius:8px;overflow-x:auto}
+.schedule-grid{display:grid;grid-template-columns:76px repeat(5,minmax(150px,1fr));gap:1px;background:var(--border-color);min-width:826px}
+.s-head{background:#fff;padding:7px 8px;font-size:11px;font-weight:700;color:#606878;text-transform:uppercase;display:flex;flex-direction:column;gap:1px;min-height:34px;justify-content:center}
+.s-head .s-date{font-size:10.5px;font-weight:600;color:#55585d;text-transform:none}
+.s-cell{background:#fff;min-height:64px;padding:4px}
+.s-cell.s-time{text-align:right;font-size:11px;color:#606878;font-weight:600;padding:8px}
+.s-head-time{text-align:left;font-size:10px;font-weight:700}
+.s-card{
+  display:flex;align-items:center;gap:8px;
+  height:48px;width:100%;padding:4px 8px;
+  border:1px solid var(--disc);border-left:3px solid var(--disc);
+  border-radius:8px;background:#fff;
+  box-shadow:0 1px 2px rgba(0,0,0,.04);
+  cursor:pointer;text-align:left;font:inherit;
+  transition:box-shadow .15s
+}
+.s-card:hover{box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.s-dot{width:8px;height:8px;border-radius:50%;background:var(--disc);flex-shrink:0}
+.s-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.s-disc{font-size:12px;font-weight:700;color:#304869;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s-turma{font-size:11px;color:#55585d;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s-badges{display:flex;align-items:center;gap:6px;margin-left:auto;flex-shrink:0}
+.s-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;white-space:nowrap}
+.s-badge .s-dot{width:6px;height:6px;background:currentColor}
+.s-badge.ok{background:rgba(17,143,40,.10);color:#118f28}
+.s-badge.pend{background:rgba(232,131,12,.12);color:#e8830c}
+.legend{
+  margin-top:16px;display:flex;align-items:center;flex-wrap:wrap;gap:6px 14px;
+  background:#fff;border:1px solid var(--accent-light);border-radius:8px;
+  padding:10px 14px;font-size:12px;color:#55585d
+}
+.legend b{color:#183b56;font-size:12px}
+.legend .s-badge{margin:0 2px}
+.modal-overlay{position:fixed;inset:0;background:rgba(16,42,67,.45);display:flex;align-items:center;justify-content:center;z-index:300;padding:20px}
+.modal-overlay[hidden]{display:none}
+.modal{width:480px;max-width:100%;background:#fff;border-radius:16px;box-shadow:0 20px 50px rgba(16,42,67,.28);overflow:hidden}
+.modal-head{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #eef2f7}
+.m-dot{width:10px;height:10px;border-radius:50%;background:var(--disc,#1565d8);flex-shrink:0}
+.m-title{flex:1;display:flex;flex-direction:column;gap:1px;min-width:0}
+.m-title b{font-size:15px;color:#304869}
+.m-title small{font-size:12px;color:#55585d;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.m-close{width:32px;height:32px;border:none;border-radius:8px;background:transparent;color:#8397a6;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.m-close:hover{background:var(--accent-light);color:var(--fg)}
+.m-close svg{width:16px;height:16px}
+.m-body{display:flex;flex-direction:column;gap:14px;padding:16px 18px}
+.m-item{border:1px solid #eef2f7;border-radius:10px;padding:12px 14px}
+.m-item-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.m-item-head b{font-size:13px;color:#304869}
+.m-late{font-size:11px;font-weight:700;color:#e8830c;background:rgba(232,131,12,.12);padding:2px 8px;border-radius:20px;margin-left:auto;white-space:nowrap}
+.m-rows{display:flex;flex-direction:column;gap:8px}
+.m-row{display:flex;align-items:center;gap:10px;font-size:13px}
+.m-row span{color:#606878;width:130px;flex-shrink:0}
+.m-row b{color:#183b56;font-weight:600}
+.m-notlaunched{font-size:13px;color:#55585d;display:flex;align-items:center;gap:8px}
+.m-row small{margin-left:auto;color:#606878;font-size:12px;font-family:var(--font-mono)}
+.m-empty{font-size:13px;color:#55585d;padding:4px 0}
+
+/* Footer */
+.footer{background:var(--surface);padding:20px 30px;display:grid;grid-template-columns:234px 1fr 1fr 1fr;gap:24px;align-items:start;margin-top:40px}
+.footer-logo img{height:40px;width:auto}
+.footer-col-title{font-size:14px;font-weight:700;color:var(--fg);margin-bottom:12px}
+.footer-col a{display:block;font-size:13px;color:var(--fg);margin-bottom:8px}
+.footer-col a:hover{color:var(--accent);text-decoration:underline}
+
+/* Responsive */
+@media(max-width:1200px){
+  .footer{grid-template-columns:1fr 1fr}
+}
+@media(max-width:920px){
+  .sidebar{width:60px}
+  .sidebar-logo{padding:15px 10px}
+  .sidebar-search{display:none}
+  .nav-item{padding:10px;justify-content:center}
+  .nav-item-label,.nav-item-arrow,.nav-item-subtitle,.nav-submenu{display:none}
+  .nav-item-icon{margin:0}
+  .nav-item.nav-tall .nav-item-icon{margin:0}
+  .topnav{left:60px}
+  .content-wrap{margin-left:60px}
+  .main{padding:16px}
+  .footer{grid-template-columns:1fr;gap:16px;padding:16px}
+  .topnav-user-info{display:none}
+  .pu-caret{display:none}
+  .report-card-head{gap:8px}
+  .rc-filtros{font-size:18px}
+  .rc-chip{max-width:170px}
+}
+@media(max-width:600px){
+  .topnav-btn-grey,.topnav-switch-text{display:none}
+  .topnav-switch{padding:4px 8px}
+  .topnav-user{padding:0 8px}
+  .report-head h1{font-size:19px}
+  .rc-fields-row{gap:10px}
+  .rc-fields{flex-basis:200px;max-width:none}
+  .rc-chips{order:3;width:100%}
+  .rc-head-right{margin-left:auto}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .schedule-grid{grid-template-columns:70px repeat(5,140px);min-width:770px}
+}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar" data-od-id="sidebar">
+  <div class="sidebar-logo" data-od-id="sidebar-logo">
+    <svg viewBox="0 0 28 28" width="32" height="32" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="7" fill="#1565d8"></rect><path d="M14 7.2l9 4.3-9 4.3-9-4.3 9-4.3z" fill="#ffffff"></path><path d="M9.6 13.2v3.9c0 1.2 2 2.1 4.4 2.1s4.4-.9 4.4-2.1v-3.9l-4.4 2.1-4.4-2.1z" fill="#ffffff" opacity=".9"></path></svg>
+  </div>
+
+  <div class="sidebar-search" data-od-id="sidebar-search">
+    <svg viewBox="0 0 20 20" width="16" height="16" fill="none">
+      <circle cx="8.5" cy="8.5" r="6" stroke="#8397a6" stroke-width="1.5"></circle>
+      <path d="M13 13l4 4" stroke="#8397a6" stroke-width="1.5" stroke-linecap="round"></path>
+    </svg>
+    <span>Buscar</span>
+  </div>
+
+  <nav class="sidebar-nav" data-od-id="sidebar-nav">
+    <a class="nav-item" href="diario-de-classe-home.html" data-od-id="nav-inicio">
+      <span class="nav-item-icon">
+        <svg viewBox="0 0 20 20" fill="#183b56"><path d="M10 2L2 9h2v9h5v-6h2v6h5V9h2L10 2z"></path></svg>
+      </span>
+      <span class="nav-item-label">Início</span>
+    </a>
+    <div class="nav-item disabled" data-od-id="nav-turmas">
+      <span class="nav-item-icon">
+        <svg viewBox="0 0 20 20" fill="#55585d"><path d="M7 3a3 3 0 100 6 3 3 0 000-6zM3 13c0-1.1.9-2 2-2h4a2 2 0 012 2v3H3v-3zm12-2a2 2 0 100-4 2 2 0 000 4zm-1 1h2a2 2 0 012 2v2h-4v-2c0-.7-.3-1.4-.8-1.8.6-.2 1.3-.2 1.9 0l-.1-.2z"></path></svg>
+      </span>
+      <span class="nav-item-label">Turmas</span>
+    </div>
+    <div class="nav-item disabled" data-od-id="nav-calendario">
+      <span class="nav-item-icon">
+        <svg viewBox="0 0 20 20" fill="#55585d"><path d="M6 2a1 1 0 012 0v1h4V2a1 1 0 112 0v1h1a2 2 0 012 2v11a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h1V2zm8 5H4v8h12V7h-2z"></path></svg>
+      </span>
+      <span class="nav-item-label">Calendário</span>
+    </div>
+
+    <div class="nav-group open" data-od-id="nav-diario">
+      <div class="nav-item nav-parent active" data-od-id="nav-diario-parent">
+        <span class="nav-item-icon">
+          <svg viewBox="0 0 20 20" fill="none"><path d="M4 3h10a1.5 1.5 0 011.5 1.5V16a1.5 1.5 0 01-1.5 1.5H5A1.5 1.5 0 013.5 16V4.5A1.5 1.5 0 015 3z" stroke="#55585d" stroke-width="1.5" stroke-linejoin="round"></path><path d="M7 6.5h6M7 9.5h6M7 12.5h4" stroke="#55585d" stroke-width="1.5" stroke-linecap="round"></path></svg>
+        </span>
+        <span class="nav-item-label">Diário de Classe</span>
+        <span class="nav-item-arrow nav-toggle" data-od-id="nav-diario-toggle">
+          <svg viewBox="0 0 20 20"><path d="M5 7.5l5 5 5-5"></path></svg>
+        </span>
+      </div>
+      <div class="nav-submenu" data-od-id="nav-diario-submenu">
+        <a class="nav-item nav-sub disabled" href="minhas-turmas-e-horarios.html" data-od-id="nav-diario-minhas-turmas" aria-disabled="true">Minhas Turmas e Horários</a>
+        <a class="nav-item nav-sub disabled" href="diario-de-classe-home.html" data-od-id="nav-diario-frequencia" aria-disabled="true">Frequência</a>
+        <a class="nav-item nav-sub" href="diario-de-classe-home.html" data-od-id="nav-diario-registro-aulas">Registro de Aulas</a>
+        <a class="nav-item nav-sub disabled" href="diario-de-classe-home.html" data-od-id="nav-diario-avaliacao" aria-disabled="true">Avaliação</a>
+        <a class="nav-item nav-sub disabled" href="diario-de-classe-home.html" data-od-id="nav-diario-fechamento" aria-disabled="true">Fechamento</a>
+        <a class="nav-item nav-sub active" href="relatorio-frequencia-registro-aulas.html" data-od-id="nav-diario-relatorios">Relatórios</a>
+        <a class="nav-item nav-sub disabled" href="diario-de-classe-home.html" data-od-id="nav-diario-registro-projetos" aria-disabled="true">Registro de Projetos</a>
+      </div>
+    </div>
+
+    <div class="nav-item nav-tall disabled" data-od-id="nav-ajuda">
+      <span class="nav-item-icon">
+        <svg viewBox="0 0 20 20" fill="#55585d"><circle cx="10" cy="10" r="8" fill="none" stroke="#55585d" stroke-width="1.5"></circle><path d="M8 8a2 2 0 114 0c0 1.5-2 2-2 3v1" stroke="#55585d" stroke-width="1.5" fill="none"></path><circle cx="10" cy="15" r=".8" fill="#55585d"></circle></svg>
+      </span>
+      <span class="nav-item-label">Ajuda</span>
+      <span class="nav-item-subtitle">Suporte e tutoriais</span>
+    </div>
+    <div class="nav-item disabled" data-od-id="nav-sair" style="margin-top:auto">
+      <span class="nav-item-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+<path d="M17.6952 10.7188L13.6932 14.7188C13.318 15.125 12.6615 15.125 12.2863 14.7188C11.8798 14.3438 11.8798 13.6875 12.2863 13.3125L14.5686 11H8.00293C7.44016 11 7.00244 10.5625 7.00244 10C7.00244 9.46875 7.44016 9 8.00293 9H14.5686L12.2863 6.71875C11.8798 6.34375 11.8798 5.6875 12.2863 5.3125C12.6615 4.90625 13.318 4.90625 13.6932 5.3125L17.6952 9.3125C18.1016 9.6875 18.1016 10.3438 17.6952 10.7188ZM7.00244 5H5.00147C4.43869 5 4.00098 5.46875 4.00098 6V14C4.00098 14.5625 4.43869 15 5.00147 15H7.00244C7.53395 15 8.00293 15.4688 8.00293 16C8.00293 16.5625 7.53395 17 7.00244 17H5.00147C3.34441 17 2 15.6562 2 14V6C2 4.34375 3.34441 3 5.00147 3H7.00244C7.53395 3 8.00293 3.46875 8.00293 4C8.00293 4.5625 7.53395 5 7.00244 5Z" fill="#8397A6"></path>
+</svg>
+      </span>
+      <span class="nav-item-label">Sair</span>
+    </div>
+  </nav>
+</aside>
+
+<!-- Top Nav -->
+<header class="topnav" data-od-id="topnav">
+  <div style="flex:1"></div>
+  <div class="topnav-switch" data-od-id="topnav-switch" style="box-shadow:0 1px 4px rgba(0,0,0,.15)">
+    <div class="topnav-switch-icon">
+      <svg viewBox="0 0 28 28" fill="none">
+        <rect x="2" y="5" width="24" height="18" rx="2" stroke="#304869" stroke-width="1.5" fill="none"></rect>
+        <rect x="6" y="8" width="16" height="4" fill="#304869"></rect>
+        <rect x="6" y="14" width="16" height="2" fill="#304869" opacity="0.5"></rect>
+        <rect x="6" y="18" width="10" height="2" fill="#304869" opacity="0.3"></rect>
+      </svg>
+    </div>
+    <div class="topnav-switch-text">
+      <span>Ir Para Visão</span>
+      <span>Pedagógica</span>
+    </div>
+  </div>
+  <div class="topnav-btn topnav-btn-red" data-od-id="topnav-notif">
+    <svg viewBox="0 0 20 20" fill="#fff" width="18" height="18"><path d="M10 2a6 6 0 00-6 6v3l-2 2v1h16v-1l-2-2V8a6 6 0 00-6-6zm2 14a2 2 0 11-4 0h4z"></path></svg>
+  </div>
+  <div class="topnav-user" data-od-id="topnav-user" id="profile-switcher">
+    <button class="topnav-user-chip" type="button" data-od-id="profile-chip" aria-haspopup="listbox" aria-expanded="false" aria-label="Alterar perfil de visualização">
+      <div class="topnav-user-avatar">AA</div>
+      <div class="topnav-user-info">
+        <span class="pu-name">Aline Amorim</span>
+        <span class="pu-role">Professor(a) · NORTE 1</span>
+        <span class="pu-school">E.E. Isis Castro de Melo Cesar</span>
+      </div>
+      <span class="pu-caret">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7.5l5 5 5-5"></path></svg>
+      </span>
+    </button>
+    <div class="profile-menu" data-od-id="profile-menu" role="listbox" aria-label="Perfil de visualização do relatório" hidden="">
+      <div class="profile-menu-head">Ver relatório como</div>
+      <button class="profile-option active" type="button" data-profile="professor" role="option" aria-selected="true">
+        <span class="po-icon">
+          <svg viewBox="0 0 20 20" fill="none" stroke="#1565d8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="7" r="3"></circle><path d="M4.5 16.5c.7-2.4 2.7-3.8 5.5-3.8s4.8 1.4 5.5 3.8"></path></svg>
+        </span>
+        <span class="po-text"><b>Professor</b><small>Visão por turma e disciplina</small></span>
+        <span class="po-check">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg>
+        </span>
+      </button>
+      <button class="profile-option" type="button" data-profile="diretor" role="option" aria-selected="false">
+        <span class="po-icon">
+          <svg viewBox="0 0 20 20" fill="none" stroke="#1565d8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2.5l6 2.5v5c0 3.5-2.5 6.2-6 7.5-3.5-1.3-6-4-6-7.5V5l6-2.5z"></path><path d="M7.5 10l1.8 1.8 3.2-3.6"></path></svg>
+        </span>
+        <span class="po-text"><b>Gestão da Escola</b><small>Diretor(a) · visão consolidada</small></span>
+        <span class="po-check">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg>
+        </span>
+      </button>
+    </div>
+  </div>
+  <div class="topnav-btn topnav-btn-grey" data-od-id="topnav-menu">
+    <svg viewBox="0 0 20 20" fill="#55585d" width="18" height="18"><rect x="3" y="4" width="14" height="2" rx="1"></rect><rect x="3" y="9" width="14" height="2" rx="1"></rect><rect x="3" y="14" width="14" height="2" rx="1"></rect></svg>
+  </div>
+</header>
+
+<!-- Main Content -->
+<div class="content-wrap">
+<main class="main" data-od-id="main">
+
+  <!-- Page head -->
+  <div class="report-head" data-od-id="page-head">
+    <svg class="report-head-icon" viewBox="0 0 24 24" width="32" height="32" fill="none">
+      <circle cx="9.5" cy="8" r="3.5" stroke="#162F67" stroke-width="2"></circle>
+      <path d="M3.5 20c.8-3.1 3-4.6 6-4.6s5.2 1.5 6 4.6" stroke="#162F67" stroke-width="2" stroke-linecap="round"></path>
+      <circle cx="17.5" cy="15" r="3.8" stroke="#E53239" stroke-width="2"></circle>
+      <path d="M17.5 13.2V15l1.5 1.2" stroke="#E53239" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+    <h1>Relatório de Frequência e Registro de Aulas</h1>
+    <span class="report-head-ico" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8l-5-5z"></path><path d="M14 3v5h5"></path><path d="M9 13h6M9 17h4"></path></svg>
+    </span>
+  </div>
+
+  <!-- Contexto da turma -->
+  <div id="report-view" data-od-id="report-view">
+  <div class="turma-context" data-od-id="turma-context">
+    <a class="back-link" href="relatorio-frequencia-registro-aulas.html" data-od-id="back-turmas">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 5l-5 5 5 5"></path></svg>
+      Voltar às turmas
+    </a>
+    <span class="turma-tag" data-od-id="turma-tag">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 4.5-3.2 7.8-8 9.5-4.8-1.7-8-5-8-9.5V7l8-4z"></path><path d="M9 12l2 2 4-4"></path></svg>
+      <span><b id="turma-name">6° Ano A Integral Anual</b> · <span id="turma-tipo">Ensino Fundamental 9 anos</span></span>
+    </span>
+  </div>
+
+  <!-- Filtros -->
+  <section class="section" data-od-id="section-filtros">
+    <div class="report-card" data-od-id="card-filtros">
+      <div class="report-card-head">
+        <div class="rc-filter">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#304869" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M7 12h10M10 18h4"></path></svg>
+          <span class="rc-filtros">Filtros</span>
+        </div>
+        <div class="rc-chips" data-od-id="chips-contexto">
+          <span class="rc-chip" data-od-id="chip-escola">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#1565d8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-4 7 4v13"></path><path d="M9 21v-5h6v5M9 10h.01M15 10h.01M9 13h.01M15 13h.01"></path></svg>
+            E.E. Isis Castro de Melo Cesar
+          </span>
+          <span class="rc-chip" data-od-id="chip-de">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#1565d8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M4 21V10l8-5 8 5v11"></path><path d="M9 21v-6h6v6"></path><path d="M12 6v2"></path></svg>
+            DE NORTE 1
+          </span>
+        </div>
+        <div class="rc-head-right">
+          <div class="rc-year-wrap" id="year-wrap">
+            <button class="rc-year" id="year-btn-text" type="button" aria-label="Selecionar ano letivo">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#183b56" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 9h18M8 3v4M16 3v4"></path></svg>
+              <span id="year-label">2026</span>
+            </button>
+            <button class="rc-year-btn" id="year-btn" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Selecionar ano">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7.5l5 5 5-5"></path></svg>
+            </button>
+            <div class="rc-year-menu" id="year-menu" role="listbox" aria-label="Ano letivo" hidden="">
+              <button class="rc-year-opt" type="button" data-year="2024" role="option">2024</button>
+              <button class="rc-year-opt" type="button" data-year="2025" role="option">2025</button>
+              <button class="rc-year-opt active" type="button" data-year="2026" role="option" aria-selected="true">2026</button>
+              <button class="rc-year-opt" type="button" data-year="2027" role="option">2027</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rc-fields-row" data-od-id="filtro-row">
+        <div class="rc-fields" data-od-id="filtro-data-base">
+          <label class="rc-label" for="date-input">Data Base</label>
+          <div class="rc-date-wrap" id="date-wrap">
+          <button class="rc-date-btn" type="button" id="date-input" data-od-id="data-base" aria-haspopup="dialog" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#183b56" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 9h18M8 3v4M16 3v4"></path></svg>
+            <span class="rc-date-text" id="date-text">31/08/2026</span>
+          </button>
+          <div class="rc-calendar" id="calendar" role="dialog" aria-label="Calendário" hidden="">
+            <div class="cal-head">
+              <button class="cal-nav" type="button" id="cal-prev" aria-label="Mês anterior"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 5l-5 5 5 5"></path></svg></button>
+              <div class="cal-title" id="cal-title">Agosto 2026</div>
+              <button class="cal-nav" type="button" id="cal-next" aria-label="Próximo mês"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 5l5 5-5 5"></path></svg></button>
+            </div>
+            <div class="cal-grid" id="cal-grid"></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lançamentos da semana -->
+  <section class="section" data-od-id="section-lancamentos">
+    <h2 class="section-title">Lançamentos da Semana</h2>
+    <p class="section-sub"><b id="turma-name-sub">6° Ano A Integral Anual</b> · <span id="week-range">Semana de 31/08/2026 a 06/09/2026</span></p>
+    <div class="stats-grid" data-od-id="stats-resumo">
+      <button class="stat-card" type="button" data-metric="disc" data-od-id="stat-disciplinas">
+        <span class="stat-label">Disciplinas</span>
+        <span class="stat-value" id="stat-disc">1</span>
+      </button>
+      <button class="stat-card" type="button" data-metric="aulas" data-od-id="stat-aulas">
+        <span class="stat-label">Aulas na semana</span>
+        <span class="stat-value" id="stat-aulas">8</span>
+      </button>
+      <button class="stat-card" type="button" data-metric="freq" data-od-id="stat-frequencias">
+        <span class="stat-label">Frequências lançadas</span>
+        <span class="stat-value" id="stat-freq">2</span>
+      </button>
+      <button class="stat-card" type="button" data-metric="reg" data-od-id="stat-registros">
+        <span class="stat-label">Registros lançados</span>
+        <span class="stat-value" id="stat-reg">1</span>
+      </button>
+    </div>
+    <div class="schedule-wrap" data-od-id="agenda-semanal">
+      <div class="schedule-grid" id="schedule-grid"></div>
+    </div>
+    <div class="legend" data-od-id="legenda-lancamentos">
+      <b>Lançamentos da semana:</b>
+      <span class="s-badge ok"><span class="s-dot"></span>R</span> Registro de aulas lançado
+      <span class="s-badge ok"><span class="s-dot"></span>F</span> Frequência lançada
+      <span class="s-badge pend"><span class="s-dot"></span>R</span> Registro de aulas pendente
+      <span class="s-badge pend"><span class="s-dot"></span>F</span> Frequência pendente
+    </div>
+  </section>
+
+  </div>
+
+  <div id="gestao-view" data-od-id="gestao-view" hidden="">
+    <div class="report-card" data-od-id="gestao-filtros" style="border-width: 0px 0px 4px;">
+      <div class="report-card-head">
+        <div class="rc-filter">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#304869" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M7 12h10M10 18h4"></path></svg>
+          <span class="rc-filtros">Filtros</span>
+        </div>
+      </div>
+
+      <div class="rc-fields-row">
+        <div class="rc-fields">
+          <label class="rc-label">Filtrar por</label>
+          <div class="rc-seg" data-od-id="filtrar-por">
+            <button class="rc-seg-btn active" type="button" data-periodo="diario" data-od-id="periodo-diario">Diário</button>
+            <button class="rc-seg-btn" type="button" data-periodo="semanal" data-od-id="periodo-semanal">Semanal</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="gestao-fields" id="gestao-diario" data-od-id="gestao-diario">
+        <div class="rc-fields-row" style="margin-top:0">
+          <div class="rc-fields">
+            <label class="rc-label" for="gestao-data">Data</label>
+            <input class="rc-date-input" type="date" id="gestao-data" data-od-id="gestao-data">
+            <span class="rc-error">Campo obrigatório</span>
+          </div>
+          <div class="rc-fields">
+            <label class="rc-label" for="gestao-ensino">Tipo de Ensino</label>
+            <div class="rc-select-wrap">
+              <select class="rc-select" id="gestao-ensino" data-od-id="gestao-ensino">
+                <option value="">SELECIONE</option>
+                <option>Ensino Fundamental 9 anos</option>
+                <option>Novo Ensino Médio</option>
+              </select>
+              <svg class="rc-select-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7.5l5 5 5-5"></path></svg>
+            </div>
+            <span class="rc-error">Campo obrigatório</span>
+          </div>
+        </div>
+        <div class="gestao-actions">
+          <button class="btn-consultar" type="button" id="btn-consultar" data-od-id="btn-consultar">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5L14 14"></path></svg>
+            Consultar
+          </button>
+        </div>
+      </div>
+
+      <div class="gestao-fields" id="gestao-semanal" data-od-id="gestao-semanal" hidden="">
+        <div class="rc-fields-row" style="margin-top:16px">
+          <div class="rc-fields">
+            <label class="rc-label" for="gestao-data-sem">Data Base</label>
+            <input class="rc-date-input" type="date" id="gestao-data-sem" data-od-id="gestao-data-sem">
+            <span class="rc-error">Campo obrigatório</span>
+          </div>
+          <div class="rc-fields">
+            <label class="rc-label" for="gestao-ensino-sem">Tipo de Ensino</label>
+            <div class="rc-select-wrap">
+              <select class="rc-select" id="gestao-ensino-sem" data-od-id="gestao-ensino-sem">
+                <option value="">SELECIONE</option>
+                <option>Ensino Fundamental 9 anos</option>
+                <option>Novo Ensino Médio</option>
+              </select>
+              <svg class="rc-select-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7.5l5 5 5-5"></path></svg>
+            </div>
+            <span class="rc-error">Campo obrigatório</span>
+          </div>
+        </div>
+        <div class="gestao-actions">
+          <button class="btn-consultar" type="button" id="btn-excel" data-od-id="btn-excel">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2H4.5A1.5 1.5 0 003 3.5v9A1.5 1.5 0 004.5 14h7a1.5 1.5 0 001.5-1.5V5L10 2z"></path><path d="M10 2v3h3"></path><path d="M8 7v4M6 9.5L8 11.5l2-2"></path></svg>
+            Baixar Excel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="gestao-result" data-od-id="gestao-resultado" hidden="">
+      <b>Resultado da consulta</b>
+      O resultado de frequência e registro de aulas aparecerá aqui.
+    </div>
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer" data-od-id="footer">
+  <div class="footer-logo" data-od-id="footer-logo">
+    <svg viewBox="0 0 28 28" width="40" height="40" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="7" fill="#1565d8"></rect><path d="M14 7.2l9 4.3-9 4.3-9-4.3 9-4.3z" fill="#ffffff"></path><path d="M9.6 13.2v3.9c0 1.2 2 2.1 4.4 2.1s4.4-.9 4.4-2.1v-3.9l-4.4 2.1-4.4-2.1z" fill="#ffffff" opacity=".9"></path></svg>
+  </div>
+  <div class="footer-col" data-od-id="footer-col1">
+    <div class="footer-col-title">Institucional</div>
+    <a href="#">Ouvidoria</a>
+    <a href="#">Transparência educação</a>
+  </div>
+  <div class="footer-col" data-od-id="footer-col2">
+    <div class="footer-col-title">Legal</div>
+    <a href="#">Política de privacidade</a>
+  </div>
+  <div class="footer-col" data-od-id="footer-col3">
+    <div class="footer-col-title">Atendimento</div>
+    <a href="#">Central de atendimento</a>
+    <a href="#">https://atendimento.educacao.sp.gov.br/</a>
+    <a href="#">0800-7700012</a>
+  </div>
+</footer>
+</div>
+
+<!-- Modal de detalhes do lançamento -->
+<div class="modal-overlay" id="launch-modal" data-od-id="modal-lancamento" hidden="">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="m-disc">
+    <div class="modal-head">
+      <span class="m-dot" id="m-dot"></span>
+      <div class="m-title">
+        <b id="m-disc">Língua Portuguesa</b>
+        <small id="m-sub">6° Ano A · Segunda 31/08 · 07:40</small>
+      </div>
+      <button class="m-close" type="button" id="m-close" aria-label="Fechar">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l10 10M15 5L5 15"></path></svg>
+      </button>
+    </div>
+    <div class="m-body" id="m-body"></div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.nav-parent').forEach(function(item){
+    item.addEventListener('click',function(){
+      var group=item.closest('.nav-group');
+      if(group){group.classList.toggle('open');}
+    });
+  });
+
+  var switcher=document.getElementById('profile-switcher');
+  if(switcher){
+    var chip=switcher.querySelector('.topnav-user-chip');
+    var menu=switcher.querySelector('.profile-menu');
+    var options=switcher.querySelectorAll('.profile-option');
+    var nameEl=switcher.querySelector('.pu-name');
+    var roleEl=switcher.querySelector('.pu-role');
+    var schoolEl=switcher.querySelector('.pu-school');
+    var PROFILES={
+      professor:{name:'Aline Amorim',role:'Professor(a) · NORTE 1',school:'E.E. Isis Castro de Melo Cesar'},
+      diretor:{name:'Aline Amorim',role:'Diretor(a) de Escola · NORTE 1',school:'E.E. Isis Castro de Melo Cesar'}
+    };
+    var currentProfile='professor';
+    var reportView=document.getElementById('report-view');
+    var gestaoView=document.getElementById('gestao-view');
+    function applyProfileView(){
+      var gestao=currentProfile==='diretor';
+      if(reportView){reportView.style.display=gestao?'none':'';}
+      if(gestaoView){gestaoView.hidden=!gestao;}
+    }
+    function applyProfile(p){
+      if(!PROFILES[p]){return;}
+      currentProfile=p;
+      nameEl.textContent=PROFILES[p].name;
+      roleEl.textContent=PROFILES[p].role;
+      schoolEl.textContent=PROFILES[p].school;
+      options.forEach(function(o){
+        var on=o.getAttribute('data-profile')===p;
+        o.classList.toggle('active',on);
+        o.setAttribute('aria-selected',on?'true':'false');
+      });
+      try{localStorage.setItem('od-report-profile',p);}catch(e){}
+      applyProfileView();
+    }
+    function openMenu(){menu.hidden=false;switcher.classList.add('open');chip.setAttribute('aria-expanded','true');}
+    function closeMenu(){menu.hidden=true;switcher.classList.remove('open');chip.setAttribute('aria-expanded','false');}
+    chip.addEventListener('click',function(e){e.stopPropagation();if(menu.hidden){openMenu();}else{closeMenu();}});
+    options.forEach(function(o){o.addEventListener('click',function(){applyProfile(o.getAttribute('data-profile'));closeMenu();});});
+    document.addEventListener('click',function(e){if(!switcher.contains(e.target)){closeMenu();}});
+    var saved=null;
+    try{saved=localStorage.getItem('od-report-profile');}catch(e){}
+    applyProfile(saved&&PROFILES[saved]?saved:'professor');
+  }
+
+  /* Filtros da Gestão da Escola */
+  var segBtns=document.querySelectorAll('.rc-seg-btn');
+  var gestaoDiario=document.getElementById('gestao-diario');
+  var gestaoSemanal=document.getElementById('gestao-semanal');
+  var gestaoData=document.getElementById('gestao-data');
+  var gestaoEnsino=document.getElementById('gestao-ensino');
+  var btnConsultar=document.getElementById('btn-consultar');
+  var gestaoResult=document.getElementById('gestao-result');
+
+  function setPeriodo(p){
+    segBtns.forEach(function(b){b.classList.toggle('active',b.getAttribute('data-periodo')===p);});
+    var diario=p==='diario';
+    if(gestaoDiario){gestaoDiario.hidden=!diario;}
+    if(gestaoSemanal){gestaoSemanal.hidden=diario;}
+    if(gestaoResult){gestaoResult.hidden=true;}
+  }
+  segBtns.forEach(function(b){
+    b.addEventListener('click',function(){setPeriodo(b.getAttribute('data-periodo'));});
+  });
+
+  /* Dados de exemplo da consulta diária (Gestão) */
+  var GESTAO_TIMES=[['07:40','08:20'],['08:30','09:10'],['09:20','10:00'],['10:30','11:10'],['11:20','12:00'],['13:30','14:10'],['14:20','15:00']];
+  var GESTAO_PROFS=['Aline Amorim','Carlos Nunes','Ana Paula','João Souza','Maria Lima','Pedro Alves','Fernanda Costa','Roberto Dias','Juliana Reis','Marcos Tavares'];
+  var GESTAO_DISC={
+    'Ensino Fundamental 9 anos':['Língua Portuguesa','Matemática','História','Geografia','Ciências','Arte','Educação Física','Língua Inglesa'],
+    'Novo Ensino Médio':['Língua Portuguesa','Matemática','Física','Química','Biologia','História','Geografia','Filosofia','Sociologia','Língua Inglesa']
+  };
+
+  function buildGestaoDados(){
+    var out=[];
+    function push(turma,tipo,opts){
+      var t=out.length;
+      var pool=GESTAO_DISC[tipo];
+      var prof=GESTAO_PROFS[t%GESTAO_PROFS.length];
+      var disc=(opts&&opts.disc)?opts.disc:pool[t%pool.length];
+      out.push({
+        turma:turma,tipo:tipo,tematica:!!(opts&&opts.tematica),disc:disc,
+        ini:GESTAO_TIMES[t%GESTAO_TIMES.length][0],fim:GESTAO_TIMES[t%GESTAO_TIMES.length][1],
+        prof:prof,
+        r:(t%3===0)?{st:'pend'}:{st:'ok',by:prof,perfil:'Professor(a)',data:'31/08/2026'},
+        f:(t%4===0)?{st:'pend'}:{st:'ok',by:prof,perfil:'Professor(a)',data:(t%5===0?'02/09/2026':'31/08/2026'),late:(t%5===0)}
+      });
+    }
+    var fp=['6° Ano','7° Ano','8° Ano','9° Ano'];
+    var fl=['A','B','C','D','E','F','G','H'];
+    for(var i=0;i<30;i++){push(fp[i%fp.length]+' '+fl[Math.floor(i/fp.length)%fl.length]+' Integral Anual','Ensino Fundamental 9 anos');}
+    var mp=['1ª Série','2ª Série','3ª Série'];
+    var ml=['A','B','C','D','E'];
+    for(var i=0;i<20;i++){push(mp[i%mp.length]+' '+ml[Math.floor(i/mp.length)%ml.length]+' Integral Anual','Novo Ensino Médio');}
+    var nemTem=['Palavra em Ação','Artistas Brasileiros','Oficina de Robótica','Clube de Leitura','Projeto de Vida','Educação Financeira','Cultura Digital','Esporte-Música-Arte','Dança','Teatro','Xadrez','Produção Audiovisual'];
+    for(var i=0;i<20;i++){push(nemTem[i%nemTem.length],'Novo Ensino Médio',{tematica:true,disc:nemTem[i%nemTem.length]});}
+    return out;
+  }
+  var GESTAO_DADOS=buildGestaoDados();
+  var lastGestaoRows=[];
+  var gestaoPage=1;
+  var gestaoPerPage=10;
+
+  function parseIso(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function gestaoStatus(st){
+    return '<span class="s-badge '+(st==='ok'?'ok':'pend')+'"><span class="s-dot"></span>'+(st==='ok'?'Lançado':'Pendente')+'</span>';
+  }
+
+  function buildGestaoResult(){
+    var tipo=gestaoEnsino.value;
+    var dataVal=gestaoData.value;
+    var qd=parseIso(dataVal);
+    var today=new Date();today.setHours(0,0,0,0);
+    var arrived=qd.getTime()<=today.getTime();
+    lastGestaoRows=GESTAO_DADOS.filter(function(r){return r.tipo===tipo&&!r.tematica;});
+    var dataFmt=dataVal.split('-').reverse().join('/');
+    var total=lastGestaoRows.length;
+    var pages=Math.max(1,Math.ceil(total/gestaoPerPage));
+    if(gestaoPage>pages){gestaoPage=pages;}
+    var start=(gestaoPage-1)*gestaoPerPage;
+    var end=Math.min(start+gestaoPerPage,total);
+    var html='<div class="gestao-result-head"><b>Resultado da consulta</b><span>Consulta Diária · '+dataFmt+' · '+tipo+' · '+total+' aulas</span></div>';
+    html+='<div class="gestao-grid-wrap"><table class="gestao-grid"><thead><tr>'
+      +'<th>Turma</th><th>Disciplina</th><th>Hora Início</th><th>Hora Fim</th><th>Frequência</th><th>Registro de Aulas</th><th>Professor</th><th></th>'
+      +'</tr></thead><tbody>';
+    if(!total){
+      html+='<tr><td colspan="8" style="text-align:center;color:#55585d;padding:24px">Nenhuma aula encontrada para o filtro selecionado.</td></tr>';
+    }else{
+      for(var i=start;i<end;i++){
+        var r=lastGestaoRows[i];
+        var rs=arrived?r.r.st:'pend';
+        var fs=arrived?r.f.st:'pend';
+        html+='<tr>'
+          +'<td class="g-turma">'+r.turma+'</td>'
+          +'<td class="g-disc">'+r.disc+'</td>'
+          +'<td class="g-time">'+r.ini+'</td>'
+          +'<td class="g-time">'+r.fim+'</td>'
+          +'<td>'+gestaoStatus(fs)+'</td>'
+          +'<td>'+gestaoStatus(rs)+'</td>'
+          +'<td>'+r.prof+'</td>'
+          +'<td><button class="btn-detalhes" type="button" data-gi="'+i+'">Detalhes</button></td>'
+          +'</tr>';
+      }
+    }
+    html+='</tbody></table></div>';
+    if(total>gestaoPerPage){
+      html+='<div class="gestao-pager">'
+        +'<button class="g-page-btn" type="button" data-page="prev"'+(gestaoPage<=1?' disabled':'')+'>Anterior</button>'
+        +'<span class="g-page-info">Página '+gestaoPage+' de '+pages+'</span>'
+        +'<button class="g-page-btn" type="button" data-page="next"'+(gestaoPage>=pages?' disabled':'')+'>Próxima</button>'
+        +'</div>';
+    }
+    gestaoResult.innerHTML=html;
+    gestaoResult.hidden=false;
+  }
+
+  function openGestaoDetail(idx){
+    var r=lastGestaoRows[idx];
+    if(!r||!launchModal){return;}
+    var qd=parseIso(gestaoData.value);
+    var today=new Date();today.setHours(0,0,0,0);
+    var arrived=qd.getTime()<=today.getTime();
+    var rs=arrived?r.r.st:'pend';
+    var fs=arrived?r.f.st:'pend';
+    if(mDot){mDot.style.setProperty('--disc',DISC_COLORS[r.disc]||'#1565d8');}
+    if(mDisc){mDisc.textContent=r.disc;}
+    if(mSub){mSub.textContent=r.turma+' · '+r.ini+'–'+r.fim+' · '+r.prof;}
+    if(mBody){mBody.innerHTML=launchBlock('R','Registro de Aulas',rs,r.r)+launchBlock('F','Frequência',fs,r.f);}
+    launchModal.hidden=false;
+    document.body.style.overflow='hidden';
+  }
+
+  if(btnConsultar){
+    btnConsultar.addEventListener('click',function(){
+      var dataVal=gestaoData?gestaoData.value:'';
+      var ensinoVal=gestaoEnsino?gestaoEnsino.value:'';
+      var dataOk=!!dataVal;
+      var ensinoOk=!!ensinoVal;
+      var fields=gestaoDiario?gestaoDiario.querySelectorAll('.rc-fields'):[];
+      if(fields[0]){fields[0].classList.toggle('invalid',!dataOk);}
+      if(fields[1]){fields[1].classList.toggle('invalid',!ensinoOk);}
+      if(!dataOk||!ensinoOk){return;}
+      gestaoPage=1;
+      buildGestaoResult();
+    });
+  }
+  if(gestaoResult){
+    gestaoResult.addEventListener('click',function(e){
+      var b=e.target.closest('.btn-detalhes');
+      if(b){openGestaoDetail(+b.getAttribute('data-gi'));return;}
+      var p=e.target.closest('.g-page-btn');
+      if(p){
+        var dir=p.getAttribute('data-page');
+        var pages=Math.max(1,Math.ceil(lastGestaoRows.length/gestaoPerPage));
+        if(dir==='prev'&&gestaoPage>1){gestaoPage--;buildGestaoResult();}
+        if(dir==='next'&&gestaoPage<pages){gestaoPage++;buildGestaoResult();}
+        return;
+      }
+    });
+  }
+
+  /* Consulta semanal — baixar Excel */
+  var gestaoDataSem=document.getElementById('gestao-data-sem');
+  var gestaoEnsinoSem=document.getElementById('gestao-ensino-sem');
+  var btnExcel=document.getElementById('btn-excel');
+
+  function downloadWeeklyExcel(dataVal,tipo){
+    var rows=GESTAO_DADOS.filter(function(r){return r.tipo===tipo;});
+    var qd=parseIso(dataVal);
+    var today=new Date();today.setHours(0,0,0,0);
+    var arrived=qd.getTime()<=today.getTime();
+    var html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"></head><body>'
+      +'<table border="1"><tr><th>Turma</th><th>Disciplina</th><th>Hora Início</th><th>Hora Fim</th><th>Frequência</th><th>Registro de Aulas</th><th>Professor</th></tr>';
+    rows.forEach(function(r){
+      var rs=arrived?r.r.st:'pend';
+      var fs=arrived?r.f.st:'pend';
+      html+='<tr><td>'+r.turma+'</td><td>'+r.disc+'</td><td>'+r.ini+'</td><td>'+r.fim+'</td>'
+        +'<td>'+(fs==='ok'?'Lançado':'Pendente')+'</td><td>'+(rs==='ok'?'Lançado':'Pendente')+'</td><td>'+r.prof+'</td></tr>';
+    });
+    html+='</table></body></html>';
+    var blob=new Blob(['\ufeff'+html],{type:'application/vnd.ms-excel;charset=utf-8'});
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='relatorio-semanal-'+dataVal+'.xls';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){URL.revokeObjectURL(a.href);},500);
+  }
+  if(btnExcel){
+    btnExcel.addEventListener('click',function(){
+      var dataVal=gestaoDataSem?gestaoDataSem.value:'';
+      var ensinoVal=gestaoEnsinoSem?gestaoEnsinoSem.value:'';
+      var dataOk=!!dataVal;
+      var ensinoOk=!!ensinoVal;
+      var fields=gestaoSemanal?gestaoSemanal.querySelectorAll('.rc-fields'):[];
+      if(fields[0]){fields[0].classList.toggle('invalid',!dataOk);}
+      if(fields[1]){fields[1].classList.toggle('invalid',!ensinoOk);}
+      if(!dataOk||!ensinoOk){return;}
+      downloadWeeklyExcel(dataVal,ensinoVal);
+    });
+  }
+
+  /* Turma selecionada via URL (?t=) */
+  var TURMAS={
+    '6a':{name:'6° Ano A Integral Anual',tipo:'Ensino Fundamental 9 anos'},
+    '6b':{name:'6° Ano B Integral Anual',tipo:'Ensino Fundamental 9 anos'},
+    '7a':{name:'7° Ano A Integral Anual',tipo:'Ensino Fundamental 9 anos'},
+    '8a':{name:'8° Ano A Integral Anual',tipo:'Ensino Fundamental 9 anos'},
+    '1a-medio':{name:'1° Ano A Médio Integral Anual',tipo:'Novo Ensino Médio'},
+    '2a-medio':{name:'2° Ano A Médio Integral Anual',tipo:'Novo Ensino Médio'},
+    'palavra-em-acao':{name:'Palavra em Ação',tipo:'Novo Ensino Médio',tag:'eletiva'}
+  };
+  var qs=new URLSearchParams(location.search);
+  var turmaId=qs.get('t')||'6a';
+  var turma=TURMAS[turmaId]||TURMAS['6a'];
+  document.getElementById('turma-name').textContent=turma.name;
+  document.getElementById('turma-tipo').textContent=turma.tipo;
+  document.getElementById('turma-name-sub').textContent=turma.name;
+
+  /* Data base */
+  function pad(n){return (n<10?'0':'')+n;}
+  function fmt(d){return pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear();}
+  function mondayOf(d){var m=new Date(d);m.setDate(d.getDate()-((d.getDay()+6)%7));return m;}
+  function parseDate(s){
+    if(!s||typeof s!=='string'){return null;}
+    var m=s.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    if(!m){return null;}
+    var d=new Date(+m[3],+m[2]-1,+m[1]);
+    return (d.getDate()===+m[1]&&d.getMonth()===+m[2]-1&&d.getFullYear()===+m[3])?d:null;
+  }
+
+  var savedDate=null;
+  try{savedDate=localStorage.getItem('od-report-date');}catch(e){}
+  var baseDate=parseDate(savedDate)||new Date(2026,7,31);
+
+  var dateWrap=document.getElementById('date-wrap');
+  var dateInput=document.getElementById('date-input');
+  var dateText=document.getElementById('date-text');
+  var calPopup=document.getElementById('calendar');
+  var calTitle=document.getElementById('cal-title');
+  var calGrid=document.getElementById('cal-grid');
+  var weekRange=document.getElementById('week-range');
+  var yearLabel=document.getElementById('year-label');
+  var yearOpts=document.querySelectorAll('.rc-year-opt');
+  var viewY=baseDate.getFullYear(), viewM=baseDate.getMonth();
+  var MONTHS=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  var DOWS=['D','S','T','Q','Q','S','S'];
+
+  /* Agenda semanal (resultado) */
+  var TIMES=['07:40','08:30','09:20','10:30','11:20','12:10'];
+  var DAYS=['Segunda','Terça','Quarta','Quinta','Sexta'];
+  var DISC_COLORS={
+    'Língua Portuguesa':'#1565d8',
+    'Matemática':'#7a4dd2',
+    'História':'#e8830c',
+    'Geografia':'#118f28',
+    'Filosofia':'#00b9d3',
+    'Sociologia':'#f34327',
+    'Palavra em Ação':'#7a4dd2',
+    'Artistas Brasileiros':'#e8830c'
+  };
+  function l(st,data,late){return {st:st,by:'Aline Amorim',perfil:'Professor(a)',data:data||'—',late:!!late};}
+  var SCHEDULES={
+    'default':[
+      [{d:'Língua Portuguesa',r:l('ok','31/08/2026'),f:l('ok','01/09/2026',true)},{d:'Língua Portuguesa',r:l('pend'),f:l('ok','31/08/2026')},null,null,null,null],
+      [null,{d:'Língua Portuguesa',r:l('ok','01/09/2026'),f:l('ok','02/09/2026',true)},null,null,null,null],
+      [{d:'Língua Portuguesa',r:l('ok','02/09/2026'),f:l('pend')},null,{d:'Língua Portuguesa',r:l('ok','02/09/2026'),f:l('ok','02/09/2026')},null,null,null],
+      [{d:'Língua Portuguesa',r:l('ok','03/09/2026'),f:l('ok','03/09/2026')},null,null,{d:'Língua Portuguesa',r:l('pend'),f:l('pend')},null,null],
+      [{d:'Língua Portuguesa',r:l('ok','04/09/2026'),f:l('ok','04/09/2026')},null,null,null,null,null]
+    ],
+    'palavra-em-acao':[
+      [null,null,null,null,null,null],
+      [null,null,null,null,null,null],
+      [null,null,null,null,null,null],
+      [{d:'Artistas Brasileiros',sub:'Esporte-Música-Arte',r:l('ok','03/09/2026'),f:l('ok','03/09/2026')},null,null,null,null,null],
+      [{d:'Palavra em Ação',r:l('ok','04/09/2026'),f:l('ok','04/09/2026')},{d:'Palavra em Ação',r:l('ok','04/09/2026'),f:l('pend')},null,null,null,null]
+    ]
+  };
+  var SCHEDULE=SCHEDULES[turmaId]||SCHEDULES['default'];
+  var scheduleGrid=document.getElementById('schedule-grid');
+  var statDisc=document.getElementById('stat-disc');
+  var statAulas=document.getElementById('stat-aulas');
+  var statFreq=document.getElementById('stat-freq');
+  var statReg=document.getElementById('stat-reg');
+
+  function shortDate(d){return pad(d.getDate())+'/'+pad(d.getMonth()+1);}
+
+  function renderSchedule(){
+    if(!scheduleGrid){return;}
+    var mon=mondayOf(baseDate);
+    var today=new Date();today.setHours(0,0,0,0);
+    var todayTime=today.getTime();
+    var dayDates=[];
+    for(var i=0;i<5;i++){var dd=new Date(mon);dd.setDate(mon.getDate()+i);dayDates.push(dd);}
+    var totalAulas=0,freqOk=0,regOk=0,discSet={};
+    for(var x=0;x<5;x++){
+      for(var y=0;y<TIMES.length;y++){
+        var aa=SCHEDULE[x][y];
+        if(aa){
+          totalAulas++;
+          discSet[aa.d]=true;
+          var arr2=dayDates[x].getTime()<=todayTime;
+          if((arr2?aa.f.st:'pend')==='ok'){freqOk++;}
+          if((arr2?aa.r.st:'pend')==='ok'){regOk++;}
+        }
+      }
+    }
+    if(statDisc){
+      statDisc.textContent=Object.keys(discSet).length;
+      statAulas.textContent=totalAulas;
+      statFreq.textContent=freqOk;
+      statReg.textContent=regOk;
+    }
+    var html='<div class="s-cell s-head s-head-time">Horário</div>';
+    for(var i=0;i<5;i++){
+      html+='<div class="s-head"><span>'+DAYS[i]+'</span><span class="s-date">'+shortDate(dayDates[i])+'</span></div>';
+    }
+    for(var t=0;t<TIMES.length;t++){
+      html+='<div class="s-cell s-time">'+TIMES[t]+'</div>';
+      for(var d=0;d<5;d++){
+        var a=SCHEDULE[d][t];
+        if(a){
+          var arrived=dayDates[d].getTime()<=todayTime;
+          var r=arrived?a.r.st:'pend';
+          var f=arrived?a.f.st:'pend';
+          var color=DISC_COLORS[a.d]||'#1565d8';
+          html+='<div class="s-cell"><div class="s-card" style="--disc:'+color+'" data-od-id="aula-'+turmaId+'-'+d+'-'+t+'" data-d="'+d+'" data-t="'+t+'">'
+            +'<span class="s-dot"></span>'
+            +'<span class="s-text"><span class="s-disc">'+a.d+'</span><span class="s-turma">'+(a.sub||turma.tag||turma.name)+'</span></span>'
+            +'<span class="s-badges">'
+            +'<span class="s-badge '+r+'"><span class="s-dot"></span>R</span>'
+            +'<span class="s-badge '+f+'"><span class="s-dot"></span>F</span>'
+            +'</span>'
+            +'</div></div>';
+        }else{
+          html+='<div class="s-cell"></div>';
+        }
+      }
+    }
+    scheduleGrid.innerHTML=html;
+  }
+
+  /* Modal de detalhes do lançamento */
+  var launchModal=document.getElementById('launch-modal');
+  var mDot=document.getElementById('m-dot');
+  var mDisc=document.getElementById('m-disc');
+  var mSub=document.getElementById('m-sub');
+  var mBody=document.getElementById('m-body');
+  var mClose=document.getElementById('m-close');
+
+  function launchBlock(letter,label,st,meta){
+    if(st!=='ok'){
+      return '<div class="m-item"><div class="m-item-head"><span class="s-badge pend"><span class="s-dot"></span>'+letter+'</span><b>'+label+'</b></div>'
+        +'<div class="m-notlaunched">Ainda não lançado para esta aula.</div></div>';
+    }
+    var late=(meta&&meta.late)?'<span class="m-late">Lançado com atraso</span>':'';
+    return '<div class="m-item"><div class="m-item-head"><span class="s-badge ok"><span class="s-dot"></span>'+letter+'</span><b>'+label+'</b>'+late+'</div>'
+      +'<div class="m-rows">'
+      +'<div class="m-row"><span>Quem lançou</span><b>'+(meta?meta.by:'—')+'</b></div>'
+      +'<div class="m-row"><span>Perfil</span><b>'+(meta?meta.perfil:'—')+'</b></div>'
+      +'<div class="m-row"><span>Data do lançamento</span><b>'+(meta?meta.data:'—')+'</b></div>'
+      +'</div></div>';
+  }
+
+  function openLaunchModal(card){
+    if(!launchModal){return;}
+    var dayIdx=+card.getAttribute('data-d');
+    var timeIdx=+card.getAttribute('data-t');
+    var a=SCHEDULE[dayIdx]&&SCHEDULE[dayIdx][timeIdx];
+    if(!a){return;}
+    var today=new Date();today.setHours(0,0,0,0);
+    var mon=mondayOf(baseDate);var lessonDate=new Date(mon);lessonDate.setDate(mon.getDate()+dayIdx);
+    var arrived=lessonDate.getTime()<=today.getTime();
+    var rSt=arrived?a.r.st:'pend';
+    var fSt=arrived?a.f.st:'pend';
+    if(mDot){mDot.style.setProperty('--disc',DISC_COLORS[a.d]||'#1565d8');}
+    if(mDisc){mDisc.textContent=a.d;}
+    if(mSub){mSub.textContent=turma.name+' · '+DAYS[dayIdx]+' '+shortDate(lessonDate)+' · '+TIMES[timeIdx];}
+    if(mBody){mBody.innerHTML=launchBlock('R','Registro de Aulas',rSt,a.r)+launchBlock('F','Frequência',fSt,a.f);}
+    launchModal.hidden=false;
+    document.body.style.overflow='hidden';
+  }
+  function closeLaunchModal(){
+    if(launchModal){launchModal.hidden=true;}
+    document.body.style.overflow='';
+  }
+  if(scheduleGrid){
+    scheduleGrid.addEventListener('click',function(e){
+      var card=e.target.closest('.s-card');
+      if(card){openLaunchModal(card);}
+    });
+  }
+  if(mClose){mClose.addEventListener('click',closeLaunchModal);}
+  if(launchModal){
+    launchModal.addEventListener('click',function(e){if(e.target===launchModal){closeLaunchModal();}});
+  }
+
+  /* Detalhes das métricas (cards de resumo) */
+  function effectiveLessons(){
+    var today=new Date();today.setHours(0,0,0,0);
+    var mon=mondayOf(baseDate);
+    var out=[];
+    for(var d=0;d<5;d++){
+      var ld=new Date(mon);ld.setDate(mon.getDate()+d);
+      var arrived=ld.getTime()<=today.getTime();
+      for(var t=0;t<TIMES.length;t++){
+        var a=SCHEDULE[d][t];
+        if(!a){continue;}
+        out.push({day:d,t:t,ld:ld,disc:a.d,r:arrived?a.r.st:'pend',f:arrived?a.f.st:'pend',rD:a.r.data,fD:a.f.data});
+      }
+    }
+    return out;
+  }
+
+  function openStatDetail(metric){
+    if(!launchModal){return;}
+    var items=effectiveLessons();
+    var title='', rows='';
+    if(metric==='disc'){
+      title='Disciplinas';
+      var set={};items.forEach(function(it){set[it.disc]=true;});
+      var names=Object.keys(set);
+      rows=names.length?names.map(function(n){return '<div class="m-row"><b>'+n+'</b></div>';}).join(''):'<div class="m-empty">Nenhuma disciplina nesta semana.</div>';
+    }else if(metric==='aulas'){
+      title='Aulas na semana';
+      rows=items.length?items.map(function(it){return '<div class="m-row"><span>'+DAYS[it.day]+' '+shortDate(it.ld)+' · '+TIMES[it.t]+'</span><b>'+it.disc+'</b></div>';}).join(''):'<div class="m-empty">Nenhuma aula nesta semana.</div>';
+    }else if(metric==='freq'){
+      title='Frequências lançadas';
+      var f=items.filter(function(it){return it.f==='ok';});
+      rows=f.length?f.map(function(it){return '<div class="m-row"><span>'+DAYS[it.day]+' '+shortDate(it.ld)+' · '+TIMES[it.t]+'</span><b>'+it.disc+'</b><small>'+it.fD+'</small></div>';}).join(''):'<div class="m-empty">Nenhuma frequência lançada ainda.</div>';
+    }else if(metric==='reg'){
+      title='Registros lançados';
+      var r=items.filter(function(it){return it.r==='ok';});
+      rows=r.length?r.map(function(it){return '<div class="m-row"><span>'+DAYS[it.day]+' '+shortDate(it.ld)+' · '+TIMES[it.t]+'</span><b>'+it.disc+'</b><small>'+it.rD+'</small></div>';}).join(''):'<div class="m-empty">Nenhum registro lançado ainda.</div>';
+    }
+    var mon=mondayOf(baseDate);var sun=new Date(mon);sun.setDate(mon.getDate()+6);
+    if(mDot){mDot.style.setProperty('--disc','#1565d8');}
+    if(mDisc){mDisc.textContent=title;}
+    if(mSub){mSub.textContent=turma.name+' · '+fmt(mon)+' a '+fmt(sun);}
+    if(mBody){mBody.innerHTML='<div class="m-item" style="border:none;padding:0"><div class="m-rows" style="gap:12px">'+rows+'</div></div>';}
+    launchModal.hidden=false;
+    document.body.style.overflow='hidden';
+  }
+  document.querySelectorAll('.stat-card').forEach(function(card){
+    card.addEventListener('click',function(){openStatDetail(card.getAttribute('data-metric'));});
+  });
+
+  function buildCalendar(){
+    calTitle.textContent=MONTHS[viewM]+' '+viewY;
+    var html='';
+    DOWS.forEach(function(d){html+='<div class="cal-dow">'+d+'</div>';});
+    var first=new Date(viewY,viewM,1);
+    var lead=(first.getDay()+6)%7;
+    var dim=new Date(viewY,viewM+1,0).getDate();
+    var now=new Date();
+    for(var i=0;i<lead;i++){html+='<button type="button" class="cal-day blank" tabindex="-1"></button>';}
+    for(var d=1;d<=dim;d++){
+      var dd=new Date(viewY,viewM,d);
+      var cls='cal-day';
+      if(dd.getFullYear()===baseDate.getFullYear()&&dd.getMonth()===baseDate.getMonth()&&dd.getDate()===baseDate.getDate()){cls+=' selected';}
+      if(dd.getFullYear()===now.getFullYear()&&dd.getMonth()===now.getMonth()&&dd.getDate()===now.getDate()){cls+=' today';}
+      html+='<button type="button" class="'+cls+'" data-day="'+d+'">'+d+'</button>';
+    }
+    calGrid.innerHTML=html;
+  }
+
+  function syncAll(){
+    dateText.textContent=fmt(baseDate);
+    var mon=mondayOf(baseDate);
+    var sun=new Date(mon);sun.setDate(mon.getDate()+6);
+    weekRange.textContent='Semana de '+fmt(mon)+' a '+fmt(sun);
+    yearLabel.textContent=baseDate.getFullYear();
+    yearOpts.forEach(function(o){
+      var on=(+o.getAttribute('data-year'))===baseDate.getFullYear();
+      o.classList.toggle('active',on);
+      o.setAttribute('aria-selected',on?'true':'false');
+    });
+    try{localStorage.setItem('od-report-date',fmt(baseDate));}catch(e){}
+    try{localStorage.setItem('od-report-year',''+baseDate.getFullYear());}catch(e){}
+    if(viewM!==baseDate.getMonth()||viewY!==baseDate.getFullYear()){viewM=baseDate.getMonth();viewY=baseDate.getFullYear();buildCalendar();}
+    renderSchedule();
+  }
+
+  function openCal(){calPopup.hidden=false;dateInput.setAttribute('aria-expanded','true');buildCalendar();}
+  function closeCal(){calPopup.hidden=true;dateInput.setAttribute('aria-expanded','false');}
+  dateInput.addEventListener('click',function(e){e.stopPropagation();if(calPopup.hidden){openCal();}else{closeCal();}});
+  document.getElementById('cal-prev').addEventListener('click',function(){viewM--;if(viewM<0){viewM=11;viewY--;}buildCalendar();});
+  document.getElementById('cal-next').addEventListener('click',function(){viewM++;if(viewM>11){viewM=0;viewY++;}buildCalendar();});
+  calGrid.addEventListener('click',function(e){
+    var btn=e.target.closest('.cal-day');
+    if(!btn||btn.classList.contains('blank')){return;}
+    baseDate=new Date(viewY,viewM,+btn.getAttribute('data-day'));
+    syncAll();
+    closeCal();
+  });
+  document.addEventListener('click',function(e){
+    if(dateWrap&&!dateWrap.contains(e.target)){closeCal();}
+  });
+
+  /* Seletor de ano */
+  function openYear(){yearMenu.hidden=false;document.getElementById('year-btn').classList.add('open');document.getElementById('year-btn').setAttribute('aria-expanded','true');}
+  function closeYear(){yearMenu.hidden=true;document.getElementById('year-btn').classList.remove('open');document.getElementById('year-btn').setAttribute('aria-expanded','false');}
+  var yearMenu=document.getElementById('year-menu');
+  [document.getElementById('year-btn'),document.getElementById('year-btn-text')].forEach(function(b){
+    if(!b){return;}
+    b.addEventListener('click',function(e){e.stopPropagation();if(yearMenu.hidden){openYear();}else{closeYear();}});
+  });
+  yearOpts.forEach(function(o){
+    o.addEventListener('click',function(){
+      var y=+o.getAttribute('data-year');
+      var last=new Date(y,baseDate.getMonth()+1,0).getDate();
+      baseDate=new Date(y,baseDate.getMonth(),Math.min(baseDate.getDate(),last));
+      syncAll();
+      closeYear();
+    });
+  });
+  document.addEventListener('click',function(e){
+    var yw=document.getElementById('year-wrap');
+    if(yw&&!yw.contains(e.target)){closeYear();}
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){closeCal();closeYear();closeLaunchModal();if(switcher){closeMenu();}}
+  });
+
+  syncAll();
+});
+</script>
+
+</body></html>
