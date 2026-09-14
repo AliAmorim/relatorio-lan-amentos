@@ -50,6 +50,7 @@ body{
 a{color:var(--accent);text-decoration:none}
 a:hover{text-decoration:underline}
 img{max-width:100%;display:block}
+.d-none{display:none!important}
 
 /* Sidebar */
 .sidebar{
@@ -230,9 +231,37 @@ a.nav-item:hover{text-decoration:none}
   background:#fff;color:var(--select-text);font-size:14px;font-family:var(--font-mono);cursor:pointer
 }
 .rc-date-input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.rc-date-wrap{position:relative}
+.rc-date-btn{
+  width:100%;height:34px;padding:0 12px;
+  border:1px solid var(--input-border);border-radius:10px;
+  background:var(--surface);color:var(--select-text);font-size:14px;font-family:var(--font-mono);
+  display:flex;align-items:center;gap:8px;cursor:pointer;text-align:left;
+  transition:border-color .15s
+}
+.rc-date-btn:hover{border-color:var(--accent)}
+.rc-date-btn:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.rc-date-btn svg{width:15px;height:15px;color:var(--fg);flex-shrink:0}
+.rc-date-text{flex:1}
+.rc-date-native{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:none;padding:0;background:transparent}
+.rc-date-native::-webkit-calendar-picker-indicator{opacity:0;cursor:pointer}
+.rc-calendar{position:absolute;top:calc(100% + 6px);left:0;width:286px;max-width:calc(100vw - 32px);background:var(--surface);border:1px solid var(--border-color);border-radius:12px;box-shadow:0 12px 32px rgba(16,42,67,.16);padding:12px;z-index:200}
+.rc-calendar[hidden]{display:none}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.cal-title{font-size:13.5px;font-weight:700;color:var(--heading);text-transform:capitalize}
+.cal-nav{width:30px;height:30px;border:none;border-radius:8px;background:transparent;color:var(--fg-secondary);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.cal-nav:hover{background:var(--accent-light);color:var(--accent)}
+.cal-nav svg{width:16px;height:16px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-dow{font-size:11px;font-weight:700;color:var(--fg-secondary);text-align:center;padding:4px 0}
+.cal-day{height:34px;border:none;border-radius:8px;background:transparent;font-size:13px;font-family:var(--font-mono);color:var(--fg);cursor:pointer}
+.cal-day:hover{background:var(--accent-light)}
+.cal-day.blank{cursor:default;background:transparent}
+.cal-day.selected{background:var(--accent);color:#fff;font-weight:700}
+.cal-day.selected:hover{background:var(--accent-dark)}
 .rc-error{font-size:12px;color:var(--red);font-weight:600;display:none}
 .rc-fields.invalid .rc-error{display:block}
-.rc-fields.invalid .rc-date-input,.rc-fields.invalid .rc-select{border-color:var(--red)}
+.rc-fields.invalid .rc-date-input,.rc-fields.invalid .rc-date-btn,.rc-fields.invalid .rc-select{border-color:var(--red)}
 .gestao-actions{display:flex;justify-content:flex-end;margin-top:16px}
 .btn-consultar{
   height:34px;padding:0 22px;border:none;border-radius:10px;background:var(--accent);color:#fff;
@@ -240,6 +269,18 @@ a.nav-item:hover{text-decoration:none}
 }
 .btn-consultar:hover{background:var(--accent-dark)}
 .btn-consultar svg{width:15px;height:15px}
+#gestao-view .rc-fields-row{display:flex;flex-direction:column;align-items:stretch;gap:16px}
+#gestao-view .rc-fields{flex:none;width:100%;max-width:420px;min-width:0}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.stat-card{background:#fff;border:1px solid #eef2f7;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:2px;box-shadow:0 2px 6px rgba(16,42,67,.06)}
+.stat-label{font-size:11px;font-weight:700;color:#606878;text-transform:uppercase;letter-spacing:.4px}
+.stat-value{font-size:26px;font-weight:700;color:#304869;line-height:1.15;font-family:var(--font-mono)}
+.ws-table-wrap{background:#fff;border:1px solid var(--border-color);border-radius:8px;overflow:hidden;margin-top:18px}
+.ws-table{width:100%;border-collapse:collapse}
+.ws-table td{padding:10px 14px;font-size:13px;color:#183b56;border-bottom:1px solid #eef2f7}
+.ws-table tr:last-child td{border-bottom:none}
+.ws-table td:first-child{font-weight:600;color:#304869}
+.ws-table td:last-child{font-family:var(--font-mono);font-weight:700;text-align:right;color:var(--accent)}
 .gestao-panel{margin-top:16px;padding:24px;border:1.5px dashed var(--border-color);border-radius:12px;background:#fff;text-align:center;color:#55585d;font-size:13.5px}
 .gestao-panel[hidden]{display:none}
 .gestao-panel b{display:block;color:var(--heading);font-size:14px;margin-bottom:4px}
@@ -297,7 +338,7 @@ a.nav-item:hover{text-decoration:none}
 .turmas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;margin-top:26px}
 .turma-card{
   position:relative;
-  background:var(--surface);border:1px solid #eef2f7;border-radius:12px;
+  background:var(--surface);border:1px solid var(--border-color);border-radius:12px;
   padding:16px 40px 16px 16px;
   display:flex;flex-direction:column;gap:9px;
   box-shadow:0 2px 6px rgba(16,42,67,.06);
@@ -667,7 +708,21 @@ a.turma-card:hover{text-decoration:none}
         <div class="rc-fields-row" style="margin-top:0">
           <div class="rc-fields">
             <label class="rc-label" for="gestao-data">Data</label>
-            <input class="rc-date-input" type="date" id="gestao-data" data-od-id="gestao-data">
+            <div class="rc-date-wrap" id="gestao-date-wrap">
+              <button class="rc-date-btn" type="button" id="gestao-data-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#183b56" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 9h18M8 3v4M16 3v4"></path></svg>
+                <span class="rc-date-text" id="gestao-data-text">Selecionar data</span>
+              </button>
+              <div class="rc-calendar" id="gestao-data-cal" hidden>
+                <div class="cal-head">
+                  <button class="cal-nav" type="button" id="gestao-data-prev" aria-label="Mês anterior"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 5l-5 5 5 5"></path></svg></button>
+                  <div class="cal-title" id="gestao-data-title">Agosto 2026</div>
+                  <button class="cal-nav" type="button" id="gestao-data-next" aria-label="Próximo mês"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 5l5 5-5 5"></path></svg></button>
+                </div>
+                <div class="cal-grid" id="gestao-data-grid"></div>
+              </div>
+              <input type="hidden" id="gestao-data" data-od-id="gestao-data">
+            </div>
             <span class="rc-error">Campo obrigatório</span>
           </div>
           <div class="rc-fields">
@@ -682,6 +737,22 @@ a.turma-card:hover{text-decoration:none}
             </div>
             <span class="rc-error">Campo obrigatório</span>
           </div>
+          <div class="rc-fields">
+            <label class="rc-label" for="gestao-aula">Aula</label>
+            <div class="rc-select-wrap">
+              <select class="rc-select" id="gestao-aula" data-od-id="gestao-aula">
+                <option value="">TODAS</option>
+                <option value="0">1ª Aula</option>
+                <option value="1">2ª Aula</option>
+                <option value="2">3ª Aula</option>
+                <option value="3">4ª Aula</option>
+                <option value="4">5ª Aula</option>
+                <option value="5">6ª Aula</option>
+                <option value="6">7ª Aula</option>
+              </select>
+              <svg class="rc-select-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7.5l5 5 5-5"></path></svg>
+            </div>
+          </div>
         </div>
         <div class="gestao-actions">
           <button class="btn-consultar" type="button" id="btn-consultar" data-od-id="btn-consultar">
@@ -695,7 +766,21 @@ a.turma-card:hover{text-decoration:none}
         <div class="rc-fields-row" style="margin-top:16px">
           <div class="rc-fields">
             <label class="rc-label" for="gestao-data-sem">Data Base</label>
-            <input class="rc-date-input" type="date" id="gestao-data-sem" data-od-id="gestao-data-sem">
+            <div class="rc-date-wrap" id="gestao-date-sem-wrap">
+              <button class="rc-date-btn" type="button" id="gestao-data-sem-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#183b56" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 9h18M8 3v4M16 3v4"></path></svg>
+                <span class="rc-date-text" id="gestao-data-sem-text">Selecionar data</span>
+              </button>
+              <div class="rc-calendar" id="gestao-data-sem-cal" hidden>
+                <div class="cal-head">
+                  <button class="cal-nav" type="button" id="gestao-data-sem-prev" aria-label="Mês anterior"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 5l-5 5 5 5"></path></svg></button>
+                  <div class="cal-title" id="gestao-data-sem-title">Agosto 2026</div>
+                  <button class="cal-nav" type="button" id="gestao-data-sem-next" aria-label="Próximo mês"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 5l5 5-5 5"></path></svg></button>
+                </div>
+                <div class="cal-grid" id="gestao-data-sem-grid"></div>
+              </div>
+              <input type="hidden" id="gestao-data-sem" data-od-id="gestao-data-sem">
+            </div>
             <span class="rc-error">Campo obrigatório</span>
           </div>
           <div class="rc-fields">
@@ -716,6 +801,23 @@ a.turma-card:hover{text-decoration:none}
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2H4.5A1.5 1.5 0 003 3.5v9A1.5 1.5 0 004.5 14h7a1.5 1.5 0 001.5-1.5V5L10 2z"></path><path d="M10 2v3h3"></path><path d="M8 7v4M6 9.5L8 11.5l2-2"></path></svg>
             Baixar Excel
           </button>
+        </div>
+      </div>
+
+      <div class="weekly-summary" id="weekly-summary" data-od-id="weekly-summary" hidden>
+        <div class="stats-grid" style="margin-bottom:0">
+          <div class="stat-card">
+            <span class="stat-label">Aulas na semana</span>
+            <span class="stat-value" id="ws-aulas">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Frequências lançadas</span>
+            <span class="stat-value" id="ws-freq">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Registros lançados</span>
+            <span class="stat-value" id="ws-reg">0</span>
+          </div>
         </div>
       </div>
     </div>
@@ -796,8 +898,9 @@ document.addEventListener('DOMContentLoaded',function(){
     var gestaoView=document.getElementById('gestao-view');
     function applyProfileView(){
       var gestao=currentProfile==='diretor';
-      if(reportView){reportView.style.display=gestao?'none':'';}
+      if(reportView){reportView.classList.toggle('d-none',gestao);reportView.style.display=gestao?'none':'';}
       if(gestaoView){gestaoView.hidden=!gestao;}
+      window.scrollTo(0,0);
     }
     function applyProfile(p){
       if(!PROFILES[p]){return;}
@@ -844,6 +947,7 @@ document.addEventListener('DOMContentLoaded',function(){
   var gestaoSemanal=document.getElementById('gestao-semanal');
   var gestaoData=document.getElementById('gestao-data');
   var gestaoEnsino=document.getElementById('gestao-ensino');
+  var gestaoAula=document.getElementById('gestao-aula');
   var btnConsultar=document.getElementById('btn-consultar');
   var gestaoResult=document.getElementById('gestao-result');
 
@@ -853,6 +957,10 @@ document.addEventListener('DOMContentLoaded',function(){
     if(gestaoDiario){gestaoDiario.hidden=!diario;}
     if(gestaoSemanal){gestaoSemanal.hidden=diario;}
     if(gestaoResult){gestaoResult.hidden=true;}
+    if(weeklySummary){
+      if(diario){weeklySummary.hidden=true;}
+      else if(typeof buildWeeklySummary==='function'){buildWeeklySummary();}
+    }
   }
   segBtns.forEach(function(b){
     b.addEventListener('click',function(){setPeriodo(b.getAttribute('data-periodo'));});
@@ -868,27 +976,29 @@ document.addEventListener('DOMContentLoaded',function(){
 
   function buildGestaoDados(){
     var out=[];
-    function push(turma,tipo,opts){
-      var t=out.length;
-      var pool=GESTAO_DISC[tipo];
-      var prof=GESTAO_PROFS[t%GESTAO_PROFS.length];
-      var disc=(opts&&opts.disc)?opts.disc:pool[t%pool.length];
-      out.push({
-        turma:turma,tipo:tipo,tematica:!!(opts&&opts.tematica),disc:disc,
-        ini:GESTAO_TIMES[t%GESTAO_TIMES.length][0],fim:GESTAO_TIMES[t%GESTAO_TIMES.length][1],
-        prof:prof,
-        r:(t%3===0)?{st:'pend'}:{st:'ok',by:prof,perfil:'Professor(a)',data:'31/08/2026'},
-        f:(t%4===0)?{st:'pend'}:{st:'ok',by:prof,perfil:'Professor(a)',data:(t%5===0?'02/09/2026':'31/08/2026'),late:(t%5===0)}
-      });
+    function push(turma,tipo){
+      for(var d=0;d<5;d++){
+        for(var t=0;t<7;t++){
+          var idx=out.length;
+          var pool=GESTAO_DISC[tipo];
+          var prof=GESTAO_PROFS[idx%GESTAO_PROFS.length];
+          out.push({
+            turma:turma,tipo:tipo,tematica:false,dia:d,
+            disc:pool[(idx+t)%pool.length],
+            ini:GESTAO_TIMES[t][0],fim:GESTAO_TIMES[t][1],
+            prof:prof,
+            r:(idx%3===0)?{st:'pend'}:{st:'ok',by:prof,perfil:'Professor(a)',data:'31/08/2026'},
+            f:(idx%4===0)?{st:'pend'}:{st:'ok',by:prof,perfil:'Professor(a)',data:(idx%5===0?'02/09/2026':'31/08/2026'),late:(idx%5===0)}
+          });
+        }
+      }
     }
     var fp=['6° Ano','7° Ano','8° Ano','9° Ano'];
-    var fl=['A','B','C','D','E','F','G','H'];
-    for(var i=0;i<30;i++){push(fp[i%fp.length]+' '+fl[Math.floor(i/fp.length)%fl.length]+' Integral Anual','Ensino Fundamental 9 anos');}
+    var fl=['A','B','C','D','E'];
+    for(var i=0;i<20;i++){push(fp[i%fp.length]+' '+fl[Math.floor(i/fp.length)%fl.length]+' Integral Anual','Ensino Fundamental 9 anos');}
     var mp=['1ª Série','2ª Série','3ª Série'];
-    var ml=['A','B','C','D','E'];
+    var ml=['A','B','C','D','E','F','G'];
     for(var i=0;i<20;i++){push(mp[i%mp.length]+' '+ml[Math.floor(i/mp.length)%ml.length]+' Integral Anual','Novo Ensino Médio');}
-    var nemTem=['Palavra em Ação','Artistas Brasileiros','Oficina de Robótica','Clube de Leitura','Projeto de Vida','Educação Financeira','Cultura Digital','Esporte-Música-Arte','Dança','Teatro','Xadrez','Produção Audiovisual'];
-    for(var i=0;i<20;i++){push(nemTem[i%nemTem.length],'Novo Ensino Médio',{tematica:true,disc:nemTem[i%nemTem.length]});}
     return out;
   }
   var GESTAO_DADOS=buildGestaoDados();
@@ -903,6 +1013,7 @@ document.addEventListener('DOMContentLoaded',function(){
   var mClose=document.getElementById('m-close');
 
   function parseIso(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function weekMonday(d){var m=new Date(d);m.setDate(d.getDate()-((d.getDay()+6)%7));return m;}
   function gestaoStatus(st){
     return '<span class="s-badge '+(st==='ok'?'ok':'pend')+'"><span class="s-dot"></span>'+(st==='ok'?'Lançado':'Pendente')+'</span>';
   }
@@ -923,17 +1034,23 @@ document.addEventListener('DOMContentLoaded',function(){
   function buildGestaoResult(){
     var tipo=gestaoEnsino.value;
     var dataVal=gestaoData.value;
+    var aulaVal=gestaoAula?gestaoAula.value:'';
     var qd=parseIso(dataVal);
     var today=new Date();today.setHours(0,0,0,0);
     var arrived=qd.getTime()<=today.getTime();
-    lastGestaoRows=GESTAO_DADOS.filter(function(r){return r.tipo===tipo&&!r.tematica;});
+    var wd=(qd.getDay()+6)%7;
+    lastGestaoRows=GESTAO_DADOS.filter(function(r){
+      return r.tipo===tipo&&!r.tematica&&r.dia===wd
+        &&(!aulaVal||r.ini===GESTAO_TIMES[+aulaVal][0]);
+    });
     var dataFmt=dataVal.split('-').reverse().join('/');
+    var aulaFmt=aulaVal?(' · '+(+aulaVal+1)+'ª Aula'):'';
     var total=lastGestaoRows.length;
     var pages=Math.max(1,Math.ceil(total/gestaoPerPage));
     if(gestaoPage>pages){gestaoPage=pages;}
     var start=(gestaoPage-1)*gestaoPerPage;
     var end=Math.min(start+gestaoPerPage,total);
-    var html='<div class="gestao-result-head"><b>Resultado da consulta</b><span>Consulta Diária · '+dataFmt+' · '+tipo+' · '+total+' aulas</span></div>';
+    var html='<div class="gestao-result-head"><b>Resultado da consulta</b><span>Consulta Diária · '+dataFmt+' · '+tipo+aulaFmt+' · '+total+' aulas</span></div>';
     html+='<div class="gestao-grid-wrap"><table class="gestao-grid"><thead><tr>'
       +'<th>Turma</th><th>Disciplina</th><th>Hora Início</th><th>Hora Fim</th><th>Frequência</th><th>Registro de Aulas</th><th>Professor</th><th></th>'
       +'</tr></thead><tbody>';
@@ -1026,11 +1143,13 @@ document.addEventListener('DOMContentLoaded',function(){
   function downloadWeeklyExcel(dataVal,tipo){
     var rows=GESTAO_DADOS.filter(function(r){return r.tipo===tipo;});
     var qd=parseIso(dataVal);
+    var mon=weekMonday(qd);
     var today=new Date();today.setHours(0,0,0,0);
-    var arrived=qd.getTime()<=today.getTime();
     var html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"></head><body>'
       +'<table border="1"><tr><th>Turma</th><th>Disciplina</th><th>Hora Início</th><th>Hora Fim</th><th>Frequência</th><th>Registro de Aulas</th><th>Professor</th></tr>';
     rows.forEach(function(r){
+      var dayDate=new Date(mon);dayDate.setDate(mon.getDate()+r.dia);
+      var arrived=dayDate.getTime()<=today.getTime();
       var rs=arrived?r.r.st:'pend';
       var fs=arrived?r.f.st:'pend';
       html+='<tr><td>'+r.turma+'</td><td>'+r.disc+'</td><td>'+r.ini+'</td><td>'+r.fim+'</td>'
@@ -1056,9 +1175,92 @@ document.addEventListener('DOMContentLoaded',function(){
       if(fields[0]){fields[0].classList.toggle('invalid',!dataOk);}
       if(fields[1]){fields[1].classList.toggle('invalid',!ensinoOk);}
       if(!dataOk||!ensinoOk){return;}
+      buildWeeklySummary();
       downloadWeeklyExcel(dataVal,ensinoVal);
     });
   }
+
+  /* Resumo semanal em cards */
+  var weeklySummary=document.getElementById('weekly-summary');
+  var wsAulas=document.getElementById('ws-aulas');
+  var wsFreq=document.getElementById('ws-freq');
+  var wsReg=document.getElementById('ws-reg');
+
+  function buildWeeklySummary(){
+    var dataVal=gestaoDataSem?gestaoDataSem.value:'';
+    var tipo=gestaoEnsinoSem?gestaoEnsinoSem.value:'';
+    if(!dataVal||!tipo){if(weeklySummary){weeklySummary.hidden=true;}return;}
+    var qd=parseIso(dataVal);
+    var mon=weekMonday(qd);
+    var today=new Date();today.setHours(0,0,0,0);
+    var rows=GESTAO_DADOS.filter(function(r){return r.tipo===tipo;});
+    var aulas=rows.length,freqOk=0,regOk=0;
+    rows.forEach(function(r){
+      var dayDate=new Date(mon);dayDate.setDate(mon.getDate()+r.dia);
+      if(dayDate.getTime()>today.getTime()){return;}
+      if(r.f.st==='ok'){freqOk++;}
+      if(r.r.st==='ok'){regOk++;}
+    });
+    if(wsAulas){wsAulas.textContent=aulas;}
+    if(wsFreq){wsFreq.textContent=freqOk;}
+    if(wsReg){wsReg.textContent=regOk;}
+    if(weeklySummary){weeklySummary.hidden=false;}
+  }
+  if(gestaoDataSem){gestaoDataSem.addEventListener('change',buildWeeklySummary);}
+  if(gestaoEnsinoSem){gestaoEnsinoSem.addEventListener('change',buildWeeklySummary);}
+
+  function makeDatePicker(btnId,wrapId,calId,titleId,gridId,prevId,nextId,textId,onSelect){
+    var btn=document.getElementById(btnId);
+    var wrap=document.getElementById(wrapId);
+    var cal=document.getElementById(calId);
+    var title=document.getElementById(titleId);
+    var grid=document.getElementById(gridId);
+    var prev=document.getElementById(prevId);
+    var next=document.getElementById(nextId);
+    var text=document.getElementById(textId);
+    if(!btn||!cal){return;}
+    var mNames=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+    var dows=['D','S','T','Q','Q','S','S'];
+    var viewY=new Date().getFullYear(),viewM=new Date().getMonth();
+    function p2(n){return (n<10?'0':'')+n;}
+    function fmt(d){return p2(d.getDate())+'/'+p2(d.getMonth()+1)+'/'+d.getFullYear();}
+    function render(){
+      title.textContent=mNames[viewM]+' '+viewY;
+      var html='';
+      dows.forEach(function(d){html+='<div class="cal-dow">'+d+'</div>';});
+      var first=new Date(viewY,viewM,1);
+      var lead=(first.getDay()+6)%7;
+      var dim=new Date(viewY,viewM+1,0).getDate();
+      for(var i=0;i<lead;i++){html+='<button type="button" class="cal-day blank" tabindex="-1"></button>';}
+      for(var d=1;d<=dim;d++){html+='<button type="button" class="cal-day" data-day="'+d+'">'+d+'</button>';}
+      grid.innerHTML=html;
+    }
+    function open(){cal.hidden=false;render();}
+    function close(){cal.hidden=true;}
+    btn.addEventListener('click',function(e){e.stopPropagation();if(cal.hidden){open();}else{close();}});
+    prev.addEventListener('click',function(){viewM--;if(viewM<0){viewM=11;viewY--;}render();});
+    next.addEventListener('click',function(){viewM++;if(viewM>11){viewM=0;viewY++;}render();});
+    grid.addEventListener('click',function(e){
+      var b=e.target.closest('.cal-day');
+      if(!b||b.classList.contains('blank')){return;}
+      var d=new Date(viewY,viewM,+b.getAttribute('data-day'));
+      close();
+      if(text){text.textContent=fmt(d);}
+      if(onSelect){onSelect(d);}
+    });
+    document.addEventListener('click',function(e){
+      if(wrap&&!wrap.contains(e.target)){close();}
+    });
+  }
+  makeDatePicker('gestao-data-btn','gestao-date-wrap','gestao-data-cal','gestao-data-title','gestao-data-grid','gestao-data-prev','gestao-data-next','gestao-data-text',function(d){
+    var iso=d.getFullYear()+'-'+((d.getMonth()+1<10)?'0':'')+(d.getMonth()+1)+'-'+((d.getDate()<10)?'0':'')+d.getDate();
+    document.getElementById('gestao-data').value=iso;
+  });
+  makeDatePicker('gestao-data-sem-btn','gestao-date-sem-wrap','gestao-data-sem-cal','gestao-data-sem-title','gestao-data-sem-grid','gestao-data-sem-prev','gestao-data-sem-next','gestao-data-sem-text',function(d){
+    var iso=d.getFullYear()+'-'+((d.getMonth()+1<10)?'0':'')+(d.getMonth()+1)+'-'+((d.getDate()<10)?'0':'')+d.getDate();
+    document.getElementById('gestao-data-sem').value=iso;
+    buildWeeklySummary();
+  });
 
   var yearWrap=document.getElementById('year-wrap');
   var yearBtns=[document.getElementById('year-btn'),document.getElementById('year-btn-text')];

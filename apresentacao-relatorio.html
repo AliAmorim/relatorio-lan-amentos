@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Relatório de Frequência e Registro de Aulas — Apresentação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Open+Sans:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+*,::before,::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0e1d36;--slide:#f9f9f9;--surface:#fff;
+  --fg:#183b56;--muted:#55585d;--heading:#162f67;
+  --accent:#1565d8;--accent-light:#e8f0fb;--teal:#20c7a3;
+  --green:#118f28;--green-bg:rgba(17,143,40,.10);
+  --orange:#e8830c;--orange-bg:rgba(232,131,12,.12);
+  --border:#c1c9d8;--line:#e6ecf3;
+  --font-d:'Open Sans',sans-serif;--font-m:'Inter',monospace
+}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);font-family:var(--font-d);color:var(--fg)}
+
+/* Stage 1920x1080 scaled to fit */
+.stage{position:fixed;top:50%;left:50%;width:1920px;height:1080px;transform:translate(-50%,-50%) scale(var(--s,1));transform-origin:center}
+.slide{position:absolute;inset:0;background:var(--slide);padding:64px 90px;display:none;flex-direction:column}
+.slide.on{display:flex}
+
+/* Slide chrome */
+.s-head{display:flex;align-items:center;gap:18px;margin-bottom:14px}
+.s-logo{width:46px;height:46px;border-radius:12px;background:var(--accent);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.s-logo svg{width:30px;height:30px}
+.s-eyebrow{font-size:20px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:2px}
+.s-title{font-size:58px;line-height:1.12;font-weight:800;color:var(--heading);margin:6px 0 26px}
+.s-sub{font-size:27px;color:var(--muted);line-height:1.45;max-width:1200px}
+.s-body{flex:1;display:flex;gap:44px;min-height:0}
+
+/* Buttons/nav */
+.nav{position:fixed;z-index:50;display:flex;align-items:center;gap:18px}
+.nav-btn{width:58px;height:58px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.08);color:#fff;font-size:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s}
+.nav-btn:hover{background:rgba(255,255,255,.2)}
+.nav-prev{left:26px;bottom:26px}
+.nav-next{right:26px;bottom:26px}
+.nav-count{left:50%;bottom:34px;transform:translateX(-50%);color:#fff;font-family:var(--font-m);font-size:19px;letter-spacing:2px;background:rgba(255,255,255,.12);padding:10px 22px;border-radius:30px}
+.nav-progress{position:fixed;left:0;bottom:0;height:6px;background:var(--accent);z-index:60;transition:width .2s}
+.nav-hint{position:fixed;right:26px;top:22px;color:rgba(255,255,255,.55);font-size:15px;z-index:50}
+
+/* Panels */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px 30px;box-shadow:0 8px 30px rgba(16,42,67,.08)}
+.p-title{font-size:30px;font-weight:700;color:var(--heading);margin-bottom:10px}
+.p-sub{font-size:20px;color:var(--muted);line-height:1.45}
+
+/* Generic mock primitives */
+.mock-scroll{overflow:hidden}
+.badge{display:inline-flex;align-items:center;gap:7px;font-size:15px;font-weight:700;padding:5px 12px;border-radius:30px;white-space:nowrap}
+.badge .dot{width:9px;height:9px;border-radius:50%;background:currentColor}
+.badge.ok{background:var(--green-bg);color:var(--green)}
+.badge.pend{background:var(--orange-bg);color:var(--orange)}
+.chip{display:inline-flex;align-items:center;gap:8px;background:rgba(21,101,216,.08);color:var(--fg);border-radius:100px;padding:7px 16px;font-size:16px;font-weight:600}
+.btn{display:inline-flex;align-items:center;gap:10px;border:none;border-radius:12px;font-family:var(--font-d);font-weight:700;cursor:pointer}
+.btn-blue{background:var(--accent);color:#fff;padding:13px 26px;font-size:18px}
+.btn-ghost{background:#f3f7fb;color:var(--fg);padding:13px 26px;font-size:18px}
+
+/* Capsule highlight */
+.tag{display:inline-flex;align-items:center;gap:8px;background:var(--accent-light);color:var(--accent);font-weight:700;font-size:16px;border-radius:30px;padding:6px 14px}
+.note{display:flex;align-items:center;gap:10px;background:#eef7f5;color:#0e7a66;font-size:18px;font-weight:600;border:1px solid #d3efe7;border-radius:12px;padding:12px 18px;margin-top:22px}
+.note svg{width:20px;height:20px;flex:0 0 auto}
+
+/* Kicker column */
+.k{display:flex;gap:26px;align-items:flex-start}
+.k-ico{width:74px;height:74px;border-radius:18px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.k-ico svg{width:40px;height:40px}
+.k-b h3{font-size:28px;font-weight:700;color:var(--heading);margin-bottom:8px}
+.k-b p{font-size:20px;color:var(--muted);line-height:1.5}
+
+/* Foot strip */
+.s-foot{margin-top:auto;padding-top:16px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.s-foot .brand{font-size:17px;color:var(--muted);font-weight:600}
+.s-foot .page{font-family:var(--font-m);font-size:17px;color:#8a95a5}
+
+/* ===== Slide 1 capa ===== */
+.capa{background:linear-gradient(135deg,#122a52 0%,#1c3664 55%,#1565d8 130%);justify-content:center}
+.capa .s-title{color:#fff;font-size:84px;max-width:1500px}
+.capa .c-sub{color:#c9d8ef;font-size:30px;margin-top:18px;font-weight:600}
+.capa .c-meta{margin-top:48px;display:flex;gap:18px;flex-wrap:wrap}
+.capa .c-chip{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.12);color:#fff;border-radius:30px;padding:12px 22px;font-size:20px;font-weight:600;border:1px solid rgba(255,255,255,.25)}
+.capa .c-chip svg{width:22px;height:22px}
+
+/* ===== Turma card ===== */
+.tcard{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 20px;display:flex;flex-direction:column;gap:8px}
+.tcard b{font-size:17px;color:var(--heading)}
+.tcard small{font-size:14px;color:var(--muted)}
+
+/* ===== Agenda ===== */
+.agenda{display:grid;grid-template-columns:90px repeat(5,1fr);gap:2px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.ag-c{background:#fff;padding:6px}
+.ag-h{background:#f3f7fb;font-size:14px;font-weight:700;color:#606878;text-transform:uppercase;padding:9px;text-align:center}
+.ag-t{background:#fff;font-size:13px;color:#606878;text-align:right;padding:9px}
+.ag-cell{background:#fff;min-height:74px;padding:4px}
+.ag-card{background:#fff;border:1px solid #7fb7ec;border-left:3px solid var(--accent);border-radius:8px;padding:7px 9px;display:flex;align-items:center;gap:6px;height:56px}
+.ag-card small{font-size:13px;font-weight:700;color:#304869;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ===== Stat card ===== */
+.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 22px;display:flex;flex-direction:column;gap:4px}
+.stat span{font-size:15px;font-weight:700;color:#606878;text-transform:uppercase;letter-spacing:.5px}
+.stat b{font-size:44px;font-weight:800;color:var(--heading);font-family:var(--font-m)}
+
+/* ===== Modal mock ===== */
+.modal{background:#fff;border:1px solid var(--border);border-radius:18px;box-shadow:0 24px 60px rgba(16,42,67,.18);overflow:hidden;width:640px}
+.modal-h{display:flex;align-items:center;gap:12px;padding:18px 22px;border-bottom:1px solid var(--line)}
+.modal-h .dot{width:12px;height:12px;border-radius:50%;background:var(--accent)}
+.modal-h b{font-size:19px;color:#304869}
+.modal-h small{font-size:14px;color:var(--muted);display:block}
+.modal-b{padding:18px 22px}
+.mrow{display:flex;justify-content:space-between;font-size:16px;padding:9px 0;border-bottom:1px dashed var(--line)}
+.mrow span{color:#606878}
+.mrow b{color:#183b56}
+
+/* ===== Table ===== */
+.tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.tbl th{background:#f3f7fb;text-align:left;padding:12px 14px;font-size:14px;font-weight:700;color:#606878;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--border)}
+.tbl td{padding:12px 14px;font-size:16px;border-bottom:1px solid var(--line);color:var(--fg)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl .mono{font-family:var(--font-m)}
+
+/* ===== Pager ===== */
+.pager{display:flex;align-items:center;gap:14px;justify-content:flex-end;margin-top:14px}
+.pager span{font-size:16px;color:var(--muted);font-family:var(--font-m)}
+.pager b{display:inline-block;border:1px solid var(--border);border-radius:10px;padding:9px 18px;font-size:15px;color:#183b56;background:#fff}
+
+/* ===== Seg ===== */
+.seg{display:inline-flex;background:#f3f7fb;border-radius:50px;padding:4px}
+.seg b{padding:10px 22px;border-radius:50px;font-size:17px;font-weight:700;color:#606878}
+.seg b.on{background:var(--accent);color:#fff}
+
+/* ===== Checklist ===== */
+.cl{display:flex;gap:16px;align-items:flex-start;margin:18px 0}
+.cl-ic{width:34px;height:34px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.cl-ic svg{width:18px;height:18px}
+.cl b{display:block;font-size:23px;color:var(--heading)}
+.cl p{font-size:19px;color:var(--muted);line-height:1.45}
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+  <!-- 01 Capa -->
+  <section class="slide capa on" data-od-id="slide-capa">
+    <div class="s-logo" style="background:rgba(255,255,255,.14)">
+      <svg viewBox="0 0 28 28" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="7" fill="#20c7a3"></rect><path d="M14 7.2l9 4.3-9 4.3-9-4.3 9-4.3z" fill="#fff"></path><path d="M9.6 13.2v3.9c0 1.2 2 2.1 4.4 2.1s4.4-.9 4.4-2.1v-3.9l-4.4 2.1-4.4-2.1z" fill="#fff" opacity=".9"></path></svg>
+    </div>
+    <div class="c-sub" style="margin-top:26px">Diário de Classe · Sala do Futuro</div>
+    <div class="s-title" style="margin:14px 0 0">Relatório de Frequência<br>e Registro de Aulas</div>
+    <div class="c-sub">Funcionalidades por perfil — Professor e Gestão da Escola</div>
+    <div class="c-meta">
+      <span class="c-chip"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="7" r="3"></circle><path d="M4.5 16.5c.7-2.4 2.7-3.8 5.5-3.8s4.8 1.4 5.5 3.8"></path></svg> Perfil Professor</span>
+      <span class="c-chip"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2.5l6 2.5v5c0 3.5-2.5 6.2-6 7.5-3.5-1.3-6-4-6-7.5V5l6-2.5z"></path></svg> Perfil Gestão da Escola</span>
+      <span class="c-chip"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h14v9H3z"></path><path d="M7 15h6M10 12v3"></path></svg> Consultas e Exportação</span>
+    </div>
+  </section>
+
+  <!-- 02 O que é -->
+  <section class="slide" data-od-id="slide-oque">
+    <div class="s-head">
+      <span class="s-logo"><svg viewBox="0 0 28 28" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="7" fill="#20c7a3"></rect><path d="M14 7.2l9 4.3-9 4.3-9-4.3 9-4.3z" fill="#fff"></path></svg></span>
+      <span class="s-eyebrow">Contexto</span>
+    </div>
+    <div class="s-title">O que é o relatório</div>
+    <div class="s-body">
+      <div style="flex:1">
+        <div class="cl"><span class="cl-ic"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg></span><div><b>Uma única consulta</b><p>Reúne frequência e registro de aulas num só lugar, por turma ou por data.</p></div></div>
+        <div class="cl"><span class="cl-ic"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg></span><div><b>Somente leitura</b><p>Nada é digitado aqui — o professor acompanha o que já lançou; a gestão consulta a escola.</p></div></div>
+        <div class="cl"><span class="cl-ic"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg></span><div><b>Dois públicos</b><p><b>Professor</b>: suas turmas e a agenda da semana. <b>Gestão da Escola</b>: consulta por data e tipo de ensino.</p></div></div>
+      </div>
+      <div style="flex:0 0 620px">
+        <div class="panel">
+          <div class="p-title">Fluxo em resumo</div>
+          <div style="display:flex;flex-direction:column;gap:14px;margin-top:10px">
+            <div class="k"><span class="k-ico" style="background:var(--accent-light)"><svg viewBox="0 0 20 20" fill="none" stroke="#1565d8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="7" r="3"></circle><path d="M4.5 16.5c.7-2.4 2.7-3.8 5.5-3.8s4.8 1.4 5.5 3.8"></path></svg></span><div class="k-b"><h3>Professor</h3><p>Lista de turmas → agenda semanal → resumos e detalhes</p></div></div>
+            <div class="k"><span class="k-ico" style="background:#e6f7f3"><svg viewBox="0 0 20 20" fill="none" stroke="#20c7a3" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2.5l6 2.5v5c0 3.5-2.5 6.2-6 7.5-3.5-1.3-6-4-6-7.5V5l6-2.5z"></path></svg></span><div class="k-b"><h3>Gestão</h3><p>Diário (tabela) ou Semanal (Excel + resumo)</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="s-foot"><span class="brand">Diário de Classe · Sala do Futuro</span><span class="page">02 / 12</span></div>
+  </section>
+
+  <!-- 03 Dois perfis -->
+  <section class="slide" data-od-id="slide-perfis">
+    <div class="s-head"><span class="s-logo"><svg viewBox="0 0 28 28" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="7" fill="#20c7a3"></rect><path d="M14 7.2l9 4.3-9 4.3-9-4.3 9-4.3z" fill="#fff"></path></svg></span><span class="s-eyebrow">Visão geral</span></div>
+    <div class="s-title">Dois perfis, duas visões</div>
+    <div class="s-body">
+      <div class="panel" style="flex:1">
+        <div class="k" style="margin-bottom:20px"><span class="k-ico" style="background:var(--accent-light)"><svg viewBox="0 0 20 20" fill="none" stroke="#1565d8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="7" r="3"></circle><path d="M4.5 16.5c.7-2.4 2.7-3.8 5.5-3.8s4.8 1.4 5.5 3.8"></path></svg></span><div class="k-b"><h3>Professor</h3><p>Foco no que é dele: turmas atribuídas e o lançamento de cada aula na semana.</p></div></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="tcard"><b>1 · Lista de turmas</b><small>Com filtro de tipo de ensino opcional</small></div>
+          <div class="tcard"><b>2 · Agenda semanal</b><small>Grade por dia e horário, com selos de lançamento</small></div>
+          <div class="tcard"><b>3 · Resumos e detalhes</b><small>Cards clicáveis + detalhe de quem/perfil/data</small></div>
+        </div>
+      </div>
+      <div class="panel" style="flex:1">
+        <div class="k" style="margin-bottom:20px"><span class="k-ico" style="background:#e6f7f3"><svg viewBox="0 0 20 20" fill="none" stroke="#20c7a3" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2.5l6 2.5v5c0 3.5-2.5 6.2-6 7.5-3.5-1.3-6-4-6-7.5V5l6-2.5z"></path></svg></span><div class="k-b"><h3>Gestão da Escola</h3><p>Visão da escola inteira, sem a parte de turmas: consulta por data e tipo de ensino.</p></div></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="tcard"><b>1 · Filtros</b><small>"Filtrar por": Diário ou Semanal</small></div>
+          <div class="tcard"><b>2 · Consulta diária</b><small>Tabela com turmas, disciplinas e status</small></div>
+          <div class="tcard"><b>3 · Consulta semanal</b><small>Baixar Excel + cards de resumo</small></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:18px;display:flex;justify-content:center">
+      <span class="tag" style="font-size:19px;padding:10px 26px">Troca de perfil direto no topo da plataforma</span>
+    </div>
+    <div class="s-foot"><span class="brand">Diário de Classe · Sala do Futuro</span><span class="page">03 / 12</span></div>
+  </section>
+
+  <!-- 04 Professor entrada -->
+  <section class="slide" data-od-id="slide-prof-lista">
+    <div class="s-head"><span class="s-logo"><svg viewBox="0 0 28 28" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="7" fill="#20c7a3"></rect><path d="M14 7.2l9 4.3-9 4.3-9-4.3 9-4.3z" fill="#fff"></path></svg></span><span class="s-eyebrow" style="color:var(--teal)">Perfil Professor</span></div>
+    <div class="s-title">Entrada: as turmas do professor</div>
+    <div class="s-body" style="gap:40px">
+      <div style="flex:1.3">
+        <div class="panel" style="margin-bottom:16px">
+          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+            <span class="chip"><svg viewBox="0 0 20 20" fill="none" stroke="#1565d8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M7 12h10M10 18h4"></path></svg> Filtros</span>
+            <span class="chip" style="background:#eef7f5;color:#0e7a66">Tipo de Ensino — opcional</span>
+            <span class="chip" style="margin-left:auto"><svg viewBox="0 0 20 20" fill="none" stroke="#183b56" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="14" height="12" rx="2"></rect><path d="M3 8.5h14"></path></svg> Data Base 31/08/2026</span>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+          <div class="tcard"><b>6° Ano A · Integral Anual</b><small>Ensino Fundamental 9 anos</small></div>
+          <div class="tcard"><b>6° Ano B · Integral Anual</b><small>Ensino Fundamental 9 anos</small></div>
+          <div class="tcard"><b>7° Ano A · Integral Anual</b><small>Ensino Fundamental 9 anos</small></div>
+          <div class="tcard"><b>8° Ano A · Integral Anual</b><small>Ensino Fundamental 9 anos</small></div>
+          <div class="tcard"><b>1ª Série A · Integral Anual</b><small>Novo Ensino Médio</small></div>
+          <div class="tcard"><b>2ª Série A · Integral Anual</b><small>Novo Ensino Médio</small></div>
+          <div class="tcard" style="border-color:#20c7a3;border-left:4px solid #20c7a3"><b>AULAS TEMÁTICAS</b><small>Novo Ensino Médio</small></div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <div class="panel">
+          <div class="p-title">Como funciona</div>
+          <div class="cl" style="margin-top:8px"><span class="cl-ic"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg></span><div><b>Turmas atribuídas</b><p>O sistema mostra só as turmas que o professor tem na grade.</p></div></div>
+          <div class="cl"><span class="cl-ic"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg></span><div><b>Filtro opcional</b><p>Seletor de tipo de ensino filtra a lista na hora, sem botão.</p></div></div>
+          <div class="cl"><span class="cl-ic"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg></span><div><b>Turmas temáticas</b><p>Enturmações especiais aparecem junto (ex.: AULAS TEMÁTICAS).</p></div></div>
+        </div>
+        <div class="note" style="margin-top:16px">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="8"></circle><path d="M10 9v4M10 6.5h.01"></path></svg>
+          Ao clicar numa turma, abre a agenda semanal dela.
+        </div>
+      </div>
+    </div>
+    <div class="s-foot"><span class="brand">Diário de Classe · Sala do Futuro</span><span class="page">04 / 12</span></div>
+  </section>
+
+  <!-- 05 Professor agenda -->
+  <section class="slide" data-od-id="slide-prof-agenda">
+    <div class="s-head"><span class="s-logo"><svg viewBox="0 0 28 28" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="7" fill="#20c7a3"></rect><path d="M14 7.2l9 4.3-9 4.3-9-4.3 9-4.3z" fill="#fff"></path></svg></span><span class="s-eyebrow" style="color:var(--teal)">Perfil Professor</span></div>
+    <div class="s-title">Agenda semanal da turma</div>
+    <div class="s-body" style="flex-direction:column;gap:22px">
+      <div class="agenda">
+        <div class="ag-h" style="text-align:left">Horário</div><div class="ag-h">Seg 31/08</div><div class="ag-h">Ter 01/09</div><div class="ag-h">Qua 02/09</div><div class="ag-h">Qui 03/09</div><div class="ag-h">Sex 04/09</div>
+        <div class="ag-t">07:40</div>
+        <div class="ag-cell"><div class="ag-card"><small>Língua Portuguesa</small><span class="badge ok"><span class="dot"></span>R</span><span class="badge ok"><span class="dot"></span>F</span></div></div>
+        <div class="ag-cell"><div class="ag-card" style="border-color:#e8c58a;border-left-color:var(--orange)"><small>Língua Portuguesa</small><span class="badge pend"><span class="dot"></span>R</span><span class="badge ok"><span class="dot"></span>F</span></div></div>
+        <div class="ag-cell"></div><div class="ag-cell"></div><div class="ag-cell"></div>
+        <div class="ag-t">08:30</div>
+        <div class="ag-cell"></div>
+        <div class="ag-cell"><div class="ag-card"><small>Língua Portuguesa</small><span class="badge ok"><span class="dot"></span>R</span><span class="badge pend"><span class="dot"></span>F</span></div></div>
+        <div class="ag-cell"><div class="ag-card"><small>Língua Portuguesa</small><span class="badge ok"><span class="dot"></span>R</span><span class="badge ok"><span class="dot"></span>F</span></div></div>
+        <div class="ag-cell"></div><div class="ag-cell"></div>
+        <div class="ag-t">09:20</div>
+        <div class="ag-cell"><div class="ag-card"><small>Língua Portuguesa</small><span class="badge ok"><span class="dot"></span>R</span><span class="badge ok"><span class="dot"></span>F</span></div></div>
+        <div class="ag-cell"></div>
+        <div class="ag-cell"><div class="ag-card"><small>Língua Portuguesa</small><span class="badge ok"><span class="dot"></span>R</span><span class="badge ok"><span class="dot"></span>F</span></div></div>
+        <div class="ag-cell"></div><div class="ag-cell"></div>
+        <div class="ag-t">10:30</div>
+        <div class="ag-cell"><div class="ag-card"><small>Língua Portuguesa</small><span class="badge pend"><span class="dot"></span>R</span><span class="badge ok"><span class="dot"></span>F</span></div></div>
+        <div class="ag-cell"></div><div class="ag-cell"></div><div class="ag-cell"></div>
+        <div class="ag-cell"><div class="ag-card" style="border-color:#8fe0cd;border-left-color:#20c7a3"><small>Artistas Brasileiros</small><span class="badge ok"><span class="dot"></span>R</span><span class="badge ok"><span class="dot"></span>F</span></div></div>
+      </div>
+      <div class="panel" style="display:flex;align-items:center;gap:26px;padding:18px 26px">
+        <b style="font-size:19px;color:#183b56">Lançamentos da semana:</b>
+        <span class="badge ok"><span class="dot"></span>R</span> Registro lançado
+        <span class="badge ok"><span class="dot"></span>F</span> Frequência lançada
+        <span class="badge pend"><span class="dot"></span>R</span> Registro pendente
+        <span class="badge pend"><span class="dot"></span>F</span> Frequência pendente
+        <span style="margin-left:auto;font-size:16px;color:var(--muted)">Dias futuros nunca aparecem como lançados</span>
+      </div>
+    </div>
+    <div class="s-foot"><span class="brand">Diário de Classe · Sala do Futuro</span><span class="page">05 / 12</span></div>
+  </section>
+
+  <!-- 06 Professor resumo/detalhes -->
+  <section class="slide" data-od-id="slide-prof-resumo">
+    <div class="s-head"><span class="s-logo"><svg viewBox="0 0 28 28" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="7" fill="#20c7a3"></rect><path d="M14 7.2l9 4.3-9 4.3-9-4.3 9-4.3z" fill="#fff"></path></svg></span><span class="s-eyebrow" style="color:var(--teal)">Perfil Professor</span></div>
+    <div class="s-title">Resumos e detalhes</div>
+    <div class="s-body" style="gap:40px">
+      <div style="flex:1">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div class="stat"><span>Disciplinas</span><b>1</b></div>
+          <div class="stat"><span>Aulas na semana</span><b>8</b></div>
+          <div class="stat"><span>Frequências lançadas</span><b>5</b></div>
+          <div class="stat"><span>Registros lançados</span><b>6</b></div>
+        </div>
+        <div class="note" style="margin-top:18px">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="8"></circle><path d="M10 9v4M10 6.5h.01"></path></svg>
+          Os cards são clicáveis e abrem o detalhe em tabela.
+        </div>
+      </div>
+      <div style="flex:1.2;display:flex;gap:20px;align-items:flex-start">
+        <div class="modal">
+          <div class="modal-h"><span class="dot"></span><div><b>Frequências lançadas</b><small>6° Ano A · 31/08 a 06/09</small></div></div>
+          <div class="modal-b">
+            <table class="tbl">
+              <tr><th>Dia</th><th>Horário</th><th>Disciplina</th><th>Data</th></tr>
+              <tr><td>Seg 31/08</td><td class="mono">07:40</td><td>Língua Portuguesa</td><td class="mono">31/08</td></tr>
+              <tr><td>Seg 31/08</td><td class="mono">08:30</td><td>Língua Portuguesa</td><td class="mono">31/08</td></tr>
+              <tr><td>Ter 01/09</td><td class="mono">07:40</td><td>Língua Portuguesa</td><td class="mono">02/09</td></tr>
+              <tr><td>Qua 02/09</td><td class="mono">09:20</td><td>Língua Portuguesa</td><td class="mono">02/09</td></tr>
+            </table>
+          </div>
+        </div>
+        <div class="modal">
+          <div class="modal-h"><span class="dot" style="background:var(--orange)"></span><div><b>Detalhe do lançamento</b><small>Frequência · Língua Portuguesa</small></div></div>
+          <div class="modal-b">
+            <div style="margin-bottom:12px"><span class="badge ok"><span class="dot"></span>F</span><span class="badge pend" style="margin-left:8px"><span class="dot"></span>R</span><span class="badge pend" style="margin-left:8px">Lançado com atraso</span></div>
+            <div class="mrow"><span>Quem lançou</span><b>Aline Amorim</b></div>
+            <div class="mrow"><span>Perfil</span><b>Professor(a)</b></div>
+            <div class="mrow"><span>Data do lançamento</span><b>02/09/2026</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="s-foot"><span class="brand">Diário de Classe · Sala do Futuro</span><span class="page">06 / 12</span></div>
+  </section>
+
+  <!-- 07 Professor regras -->
+  <section class="slide" data-od-id="slide-prof-regras">
+    <div class="s-head"><span class="s-logo"><svg viewBox="0 0 28 28" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="7" fill="#20c7a3"></rect><path d="M14 7.2l9 4.3-9 4.3-9-4.3 9-4.3z" fill="#fff"></path></svg></span><span class="s-eyebrow" style="color:var(--teal)">Perfil Professor</span></div>
+    <div class="s-title">Regras de comportamento</div>
+    <div class="s-body" style="flex-direction:column;gap:24px">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:26px">
+        <div class="panel"><span class="tag" style="margin-bottom:14px">Data Base</span><div class="p-title" style="margin:4px 0 10px">A semana começa na data</div><p class="p-sub">O usuário escolhe uma data no calendário e o relatório mostra a semana inteira daquele dia.</p></div>
+        <div class="panel"><span class="tag" style="margin-bottom:14px">Datas futuras</span><div class="p-title" style="margin:4px 0 10px">Nunca "lançado" no futuro</div><p class="p-sub">Aulas em dias que ainda não chegaram aparecem sempre como pendentes — não há lançamento antes do tempo.</p></div>
+        <div class="panel"><span class="tag" style="margin-bottom:14px">Atraso</span><div class="p-title" style="margin:4px 0 10px">Lançamento com atraso</div><p class="p-sub">Quando o lançamento é feito depois da aula, o sistema marca "Lançado com atraso" no detalhe.</p></div>
+      </div>
+      <div class="panel">
+        <div class="p-title">Aulas temáticas</div>
+        <div style="display:flex;gap:16px;margin-top:10px">
+          <div class="tcard"><b>Palavra em Ação</b><small>NEM · sexta · 2 aulas</small></div>
+          <div class="tcard"><b>Artistas Brasileiros</b><small>Esporte-Música-Arte · quinta</small></div>
+        </div>
+        <p class="p-sub" style="margin-top:14px">Enturmações temáticas têm agenda própria, como turmas normais.</p>
+      </div>
+    </div>
+    <div class="s-foot"><span class="brand">Diário de Classe · Sala do Futuro</span><span class="page">07 / 12</span></div>
+  </section>
+
+  <!-- 08 Gestão filtros -->
+  <section class="slide" data-od-id="slide-gestao-filtros">
+    <div class="s-head"><span class="s-logo"><svg viewBox="0 0 28 28" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="7" fill="#20c7a3"></rect><path d="M14 7.2l9 4.3-9 4.3-9-4.3 9-4.3z" fill="#fff"></path></svg></span><span class="s-eyebrow" style="color:#20c7a3">Perfil Gestão da Escola</span></div>
+    <div class="s-title">Filtros da gestão</div>
+    <div class="s-body" style="gap:44px">
+      <div style="flex:1.2">
+        <div class="panel" style="border:2px solid var(--teal)">
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:8px">
+            <span class="chip"><svg viewBox="0 0 20 20" fill="none" stroke="#1565d8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M7 12h10M10 18h4"></path></svg> Filtros</span>
+            <span class="seg"><b class="on">Diário</b><b>Semanal</b></span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px;margin-top:14px">
+            <div><b style="font-size:17px;color:#3f4756">Filtrar por</b><br><span class="seg" style="margin-top:6px"><b class="on">Diário</b><b>Semanal</b></span></div>
+            <div><b style="font-size:16px;color:#3f4756">Data</b><br><span class="chip" style="margin-top:6px;background:#f3f7fb;border:1px solid var(--border)"><svg viewBox="0 0 20 20" fill="none" stroke="#183b56" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="14" height="12" rx="2"></rect><path d="M3 8.5h14"></path></svg> 31/08/2026</span></div>
+            <div><b style="font-size:16px;color:#3f4756">Tipo de Ensino</b><br><span class="chip" style="margin-top:6px;background:#f3f7fb;border:1px solid var(--border)">SELECIONE ▾</span></div>
+            <div style="display:flex;justify-content:flex-end"><button class="btn btn-blue">Consultar</button></div>
+          </div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <div class="panel">
+          <div class="p-title">Pontos-chave</div>
+          <div class="cl" style="margin-top:8px"><span class="cl-ic"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg></span><div><b>Sem a parte de turmas</b><p>A gestão não lista turmas — parte direto para a consulta.</p></div></div>
+          <div class="cl"><span class="cl-ic"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg></span><div><b>Campos obrigatórios</b><p>Diário pede Data e Tipo de Ensino; sem eles, não consulta.</p></div></div>
+          <div class="cl"><span class="cl-ic"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg></span><div><b>Diário vs Semanal</b><p>Diário = tabela na tela; Semanal = download Excel + resumo.</p></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="s-foot"><span class="brand">Diário de Classe · Sala do Futuro</span><span class="page">08 / 12</span></div>
+  </section>
+
+  <!-- 09 Gestão diária -->
+  <section class="slide" data-od-id="slide-gestao-diaria">
+    <div class="s-head"><span class="s-logo"><svg viewBox="0 0 28 28" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="7" fill="#20c7a3"></rect><path d="M14 7.2l9 4.3-9 4.3-9-4.3 9-4.3z" fill="#fff"></path></svg></span><span class="s-eyebrow" style="color:#20c7a3">Perfil Gestão da Escola</span></div>
+    <div class="s-title">Consulta diária</div>
+    <div class="s-body" style="flex-direction:column;gap:18px">
+      <div class="panel" style="padding:0;overflow:hidden">
+        <table class="tbl">
+          <tr><th>Turma</th><th>Disciplina</th><th>Hora Início</th><th>Hora Fim</th><th>Frequência</th><th>Registro</th><th>Professor</th><th></th></tr>
+          <tr><td>6° Ano A</td><td>Língua Portuguesa</td><td class="mono">07:40</td><td class="mono">08:20</td><td><span class="badge ok"><span class="dot"></span>Lançado</span></td><td><span class="badge ok"><span class="dot"></span>Lançado</span></td><td>Aline Amorim</td><td>Detalhes</td></tr>
+          <tr><td>6° Ano A</td><td>Matemática</td><td class="mono">08:30</td><td class="mono">09:10</td><td><span class="badge pend"><span class="dot"></span>Pendente</span></td><td><span class="badge ok"><span class="dot"></span>Lançado</span></td><td>Carlos Nunes</td><td>Detalhes</td></tr>
+          <tr><td>7° Ano A</td><td>História</td><td class="mono">07:40</td><td class="mono">08:20</td><td><span class="badge ok"><span class="dot"></span>Lançado</span></td><td><span class="badge pend"><span class="dot"></span>Pendente</span></td><td>Maria Lima</td><td>Detalhes</td></tr>
+          <tr><td>8° Ano A</td><td>Ciências</td><td class="mono">10:30</td><td class="mono">11:10</td><td><span class="badge ok"><span class="dot"></span>Lançado</span></td><td><span class="badge ok"><span class="dot"></span>Lançado</span></td><td>Fernanda Costa</td><td>Detalhes</td></tr>
+        </table>
+      </div>
+      <div class="pager"><b>Anterior</b><span>Página 1 de 14</span><b>Próxima</b></div>
+      <div style="display:flex;gap:18px;align-items:center">
+        <span class="note" style="margin:0"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="8"></circle><path d="M10 9v4M10 6.5h.01"></path></svg> Mostra as aulas do dia da data escolhida · 10 por página · coluna Detalhes abre o lançamento</span>
+      </div>
+    </div>
+    <div class="s-foot"><span class="brand">Diário de Classe · Sala do Futuro</span><span class="page">09 / 12</span></div>
+  </section>
+
+  <!-- 10 Gestão semanal -->
+  <section class="slide" data-od-id="slide-gestao-semanal">
+    <div class="s-head"><span class="s-logo"><svg viewBox="0 0 28 28" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="7" fill="#20c7a3"></rect><path d="M14 7.2l9 4.3-9 4.3-9-4.3 9-4.3z" fill="#fff"></path></svg></span><span class="s-eyebrow" style="color:#20c7a3">Perfil Gestão da Escola</span></div>
+    <div class="s-title">Consulta semanal</div>
+    <div class="s-body" style="gap:40px">
+      <div style="flex:1">
+        <div style="display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:18px">
+          <div><b style="font-size:16px;color:#3f4756">Data Base</b><br><span class="chip" style="margin-top:6px;background:#f3f7fb;border:1px solid var(--border)"><svg viewBox="0 0 20 20" fill="none" stroke="#183b56" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="14" height="12" rx="2"></rect><path d="M3 8.5h14"></path></svg> 31/08/2026</span></div>
+          <div><b style="font-size:16px;color:#3f4756">Tipo de Ensino</b><br><span class="chip" style="margin-top:6px;background:#f3f7fb;border:1px solid var(--border)">Ensino Fundamental 9 anos ▾</span></div>
+        </div>
+        <div style="display:flex;justify-content:flex-end"><button class="btn btn-blue"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13V5M6.5 8.5L10 5l3.5 3.5"></path><path d="M4 15h12"></path></svg> Baixar Excel</button></div>
+      </div>
+      <div style="flex:1.2">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+          <div class="stat"><span>Aulas na semana</span><b>700</b></div>
+          <div class="stat"><span>Frequências lançadas</span><b>525</b></div>
+          <div class="stat"><span>Registros lançados</span><b>466</b></div>
+        </div>
+        <div class="note" style="margin-top:16px">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="8"></circle><path d="M10 9v4M10 6.5h.01"></path></svg>
+          O Excel traz a semana inteira do tipo escolhido; os cards resumem a semana (20 turmas × 7 aulas/dia × 5 dias).
+        </div>
+      </div>
+    </div>
+    <div class="s-foot"><span class="brand">Diário de Classe · Sala do Futuro</span><span class="page">10 / 12</span></div>
+  </section>
+
+  <!-- 11 Regras transversais -->
+  <section class="slide" data-od-id="slide-regras">
+    <div class="s-head"><span class="s-logo"><svg viewBox="0 0 28 28" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="7" fill="#20c7a3"></rect><path d="M14 7.2l9 4.3-9 4.3-9-4.3 9-4.3z" fill="#fff"></path></svg></span><span class="s-eyebrow">Regras transversais</span></div>
+    <div class="s-title">Garantias dos dois perfis</div>
+    <div class="s-body" style="flex-direction:column;gap:22px">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:26px">
+        <div class="panel"><div class="p-title">Datas futuras</div><p class="p-sub">Nenhum lançamento (verde) em dia que ainda não chegou — em qualquer perfil.</p></div>
+        <div class="panel"><div class="p-title">Perfil persistido</div><p class="p-sub">A escolha Professor × Gestão fica salva; a visão muda por completo ao trocar.</p></div>
+        <div class="panel"><div class="p-title">Visual consistente</div><p class="p-sub">Mesmo design system, badges de status e calendário em toda a plataforma.</p></div>
+      </div>
+      <div class="panel" style="display:flex;align-items:center;gap:30px">
+        <div>
+          <div class="p-title" style="margin-bottom:6px">Dados de exemplo (gestão)</div>
+          <p class="p-sub">20 turmas · 7 aulas/dia · 5 dias = <b style="color:var(--accent)">700 aulas na semana</b> — números consistentes no resumo e no Excel.</p>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:12px">
+          <span class="badge ok"><span class="dot"></span>Lançado</span>
+          <span class="badge pend"><span class="dot"></span>Pendente</span>
+        </div>
+      </div>
+    </div>
+    <div class="s-foot"><span class="brand">Diário de Classe · Sala do Futuro</span><span class="page">11 / 12</span></div>
+  </section>
+
+  <!-- 12 Próximos passos -->
+  <section class="slide" data-od-id="slide-proximos">
+    <div class="s-head"><span class="s-logo"><svg viewBox="0 0 28 28" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="7" fill="#20c7a3"></rect><path d="M14 7.2l9 4.3-9 4.3-9-4.3 9-4.3z" fill="#fff"></path></svg></span><span class="s-eyebrow">Encerramento</span></div>
+    <div class="s-title">Próximos passos e dúvidas</div>
+    <div class="s-body">
+      <div style="flex:1">
+        <div class="cl"><span class="cl-ic"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg></span><div><b>Consulta semanal completa</b><p>Definir o layout do resultado semanal dentro da tela (hoje exporta Excel).</p></div></div>
+        <div class="cl"><span class="cl-ic"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg></span><div><b>Separação das aulas temáticas</b><p>Organizar a agenda das enturmações temáticas de forma dedicada.</p></div></div>
+        <div class="cl"><span class="cl-ic"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg></span><div><b>Dados reais</b><p>Substituir os dados de exemplo pela base da escola e integrar com a grade horária.</p></div></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center">
+        <div class="s-logo" style="width:96px;height:96px;border-radius:24px;margin-bottom:22px"><svg viewBox="0 0 28 28" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="7" fill="#20c7a3"></rect><path d="M14 7.2l9 4.3-9 4.3-9-4.3 9-4.3z" fill="#fff"></path></svg></div>
+        <div style="font-size:44px;font-weight:800;color:var(--heading)">Obrigado!</div>
+        <div style="font-size:24px;color:var(--muted);margin-top:10px">Diário de Classe · Sala do Futuro</div>
+      </div>
+    </div>
+    <div class="s-foot"><span class="brand">Diário de Classe · Sala do Futuro</span><span class="page">12 / 12</span></div>
+  </section>
+</div>
+
+<button class="nav nav-prev" id="prev" data-od-id="nav-prev" aria-label="Slide anterior"><svg viewBox="0 0 20 20" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 5l-5 5 5 5"></path></svg></button>
+<button class="nav nav-next" id="next" data-od-id="nav-next" aria-label="Próximo slide"><svg viewBox="0 0 20 20" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 5l5 5-5 5"></path></svg></button>
+<div class="nav-count" id="count" data-od-id="nav-count">01 / 12</div>
+<div class="nav-progress" id="progress"></div>
+<div class="nav-hint">← → para navegar · Esc para tela cheia</div>
+
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var slides=Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var stage=document.getElementById('stage');
+  var countEl=document.getElementById('count');
+  var progress=document.getElementById('progress');
+  var current=0;
+
+  try{var saved=parseInt(localStorage.getItem('od-deck-pos'),10);if(!isNaN(saved)&&saved>=0&&saved<slides.length){current=saved;}}catch(e){}
+
+  function layout(){
+    var s=Math.min(window.innerWidth/1920,window.innerHeight/1080);
+    stage.style.setProperty('--s',s);
+    progress.style.width=((current+1)/slides.length*100)+'%';
+  }
+  function show(i){
+    if(i<0||i>=slides.length){return;}
+    slides[current].classList.remove('on');
+    current=i;
+    slides[current].classList.add('on');
+    countEl.textContent=(current+1<10?'0':'')+(current+1)+' / '+slides.length;
+    progress.style.width=((current+1)/slides.length*100)+'%';
+    try{localStorage.setItem('od-deck-pos',current);}catch(e){}
+  }
+  function next(){show(current+1);}
+  function prev(){show(current-1);}
+
+  document.getElementById('next').addEventListener('click',next);
+  document.getElementById('prev').addEventListener('click',prev);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();next();}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();prev();}
+    else if(e.key==='Home'){show(0);}
+    else if(e.key==='End'){show(slides.length-1);}
+  });
+  var t0=0;
+  document.addEventListener('click',function(e){
+    if(e.target.closest('.nav')){return;}
+    var now=Date.now();
+    if(now-t0<450){return;}
+    t0=now;
+    var x=e.clientX, w=window.innerWidth;
+    if(x>w*0.62){next();}else if(x<w*0.38){prev();}
+  });
+  window.addEventListener('resize',layout);
+
+  layout();
+  show(current);
+});
+</script>
+</body></html>

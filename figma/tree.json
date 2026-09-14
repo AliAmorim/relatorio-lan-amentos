@@ -1,0 +1,544 @@
+[
+  {
+    "id": "0:0",
+    "name": "Document",
+    "type": "DOCUMENT",
+    "children": [
+      "0:1"
+    ]
+  },
+  {
+    "id": "0:1",
+    "name": "Page 1",
+    "type": "CANVAS",
+    "parent": "0:0",
+    "children": [
+      "39:1113"
+    ]
+  },
+  {
+    "id": "39:1113",
+    "name": "Lançamento de Frequência - Perfil Gestor",
+    "type": "FRAME",
+    "parent": "0:1",
+    "box": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 1132
+    },
+    "fill": "#f9f9f9",
+    "children": [
+      "39:1133",
+      "39:1166",
+      "10471:42"
+    ]
+  },
+  {
+    "id": "39:1133",
+    "name": "Frame 427319276",
+    "type": "FRAME",
+    "parent": "39:1113",
+    "box": {
+      "x": 235,
+      "y": 85,
+      "w": 1179,
+      "h": 199
+    },
+    "children": [
+      "39:1134",
+      "39:1140"
+    ]
+  },
+  {
+    "id": "39:1134",
+    "name": "tituloTarefas",
+    "type": "FRAME",
+    "parent": "39:1133",
+    "box": {
+      "x": 235,
+      "y": 85,
+      "w": 1179,
+      "h": 32
+    },
+    "children": [
+      "10458:69",
+      "39:1139",
+      "39:1138"
+    ]
+  },
+  {
+    "id": "10458:69",
+    "name": "basil:user-clock-solid",
+    "type": "COMPONENT",
+    "parent": "39:1134",
+    "box": {
+      "x": 235,
+      "y": 85,
+      "w": 32,
+      "h": 32
+    },
+    "children": [
+      "10458:67",
+      "10458:68"
+    ]
+  },
+  {
+    "id": "10458:67",
+    "name": "Vector",
+    "type": "VECTOR",
+    "parent": "10458:69",
+    "box": {
+      "x": 238,
+      "y": 90,
+      "w": 21.33,
+      "h": 21.97
+    },
+    "fill": "#000000"
+  },
+  {
+    "id": "10458:68",
+    "name": "Vector",
+    "type": "VECTOR",
+    "parent": "10458:69",
+    "box": {
+      "x": 249.67,
+      "y": 99.67,
+      "w": 14.67,
+      "h": 14.67
+    },
+    "fill": "#000000"
+  },
+  {
+    "id": "39:1139",
+    "name": "Hi Ibnu,",
+    "type": "TEXT",
+    "parent": "39:1134",
+    "box": {
+      "x": 277,
+      "y": 88,
+      "w": 1095,
+      "h": 26
+    },
+    "fill": "#162f67",
+    "text": "Relatório de Frequência e Registro de Aulas"
+  },
+  {
+    "id": "39:1138",
+    "name": "Icones Diário de Classe",
+    "type": "INSTANCE",
+    "parent": "39:1134",
+    "box": {
+      "x": 1382,
+      "y": 85,
+      "w": 32,
+      "h": 32
+    }
+  },
+  {
+    "id": "39:1140",
+    "name": "Frame 427319381",
+    "type": "FRAME",
+    "parent": "39:1133",
+    "box": {
+      "x": 235,
+      "y": 137,
+      "w": 1179,
+      "h": 147
+    },
+    "fill": "#ffffff",
+    "stroke": "#20c7a3",
+    "cornerRadius": 18,
+    "children": [
+      "39:1141",
+      "10471:27",
+      "10471:30"
+    ]
+  },
+  {
+    "id": "39:1141",
+    "name": "Frame 427319271",
+    "type": "FRAME",
+    "parent": "39:1140",
+    "box": {
+      "x": 252,
+      "y": 152,
+      "w": 1145,
+      "h": 36
+    },
+    "children": [
+      "39:1142",
+      "39:1151",
+      "39:1156"
+    ]
+  },
+  {
+    "id": "39:1142",
+    "name": "Frame 427319263",
+    "type": "FRAME",
+    "parent": "39:1141",
+    "box": {
+      "x": 252,
+      "y": 154,
+      "w": 1022,
+      "h": 32
+    },
+    "children": [
+      "39:1143"
+    ]
+  },
+  {
+    "id": "39:1143",
+    "name": "Frame 427319262",
+    "type": "FRAME",
+    "parent": "39:1142",
+    "box": {
+      "x": 252,
+      "y": 154,
+      "w": 119,
+      "h": 32
+    },
+    "children": [
+      "39:1144",
+      "39:1146",
+      "39:1148"
+    ]
+  },
+  {
+    "id": "39:1144",
+    "name": "solar:filter-linear",
+    "type": "FRAME",
+    "parent": "39:1143",
+    "box": {
+      "x": 252,
+      "y": 158,
+      "w": 24,
+      "h": 24
+    },
+    "children": [
+      "39:1145"
+    ]
+  },
+  {
+    "id": "39:1145",
+    "name": "Vector",
+    "type": "VECTOR",
+    "parent": "39:1144",
+    "box": {
+      "x": 254,
+      "y": 161,
+      "w": 20,
+      "h": 18
+    },
+    "stroke": "#304869"
+  },
+  {
+    "id": "39:1146",
+    "name": "titulo-page",
+    "type": "FRAME",
+    "parent": "39:1143",
+    "box": {
+      "x": 285,
+      "y": 154,
+      "w": 91,
+      "h": 32
+    },
+    "children": [
+      "39:1147"
+    ]
+  },
+  {
+    "id": "39:1147",
+    "name": "Filtros",
+    "type": "TEXT",
+    "parent": "39:1146",
+    "box": {
+      "x": 285,
+      "y": 158,
+      "w": 84,
+      "h": 24
+    },
+    "fill": "#304869",
+    "text": "Filtros"
+  },
+  {
+    "id": "39:1148",
+    "name": "Frame 427319378",
+    "type": "FRAME",
+    "parent": "39:1143",
+    "box": {
+      "x": 385,
+      "y": 156,
+      "w": 297,
+      "h": 28
+    },
+    "children": [
+      "39:1149",
+      "39:1150"
+    ]
+  },
+  {
+    "id": "39:1149",
+    "name": "escola",
+    "type": "INSTANCE",
+    "parent": "39:1148",
+    "box": {
+      "x": 385,
+      "y": 156,
+      "w": 97,
+      "h": 28
+    },
+    "fill": "#1565d814",
+    "cornerRadius": 100
+  },
+  {
+    "id": "39:1150",
+    "name": "DE",
+    "type": "INSTANCE",
+    "parent": "39:1148",
+    "box": {
+      "x": 490,
+      "y": 156,
+      "w": 192,
+      "h": 28
+    },
+    "fill": "#1565d814",
+    "cornerRadius": 100
+  },
+  {
+    "id": "39:1151",
+    "name": "Frame 427319236",
+    "type": "FRAME",
+    "parent": "39:1141",
+    "box": {
+      "x": 1283,
+      "y": 157.5,
+      "w": 69,
+      "h": 25
+    },
+    "children": [
+      "39:1152",
+      "39:1154"
+    ]
+  },
+  {
+    "id": "39:1152",
+    "name": "input-date",
+    "type": "FRAME",
+    "parent": "39:1151",
+    "box": {
+      "x": 1283,
+      "y": 157.5,
+      "w": 42,
+      "h": 25
+    },
+    "children": [
+      "39:1153"
+    ]
+  },
+  {
+    "id": "39:1153",
+    "name": "2026",
+    "type": "TEXT",
+    "parent": "39:1152",
+    "box": {
+      "x": 1283,
+      "y": 157.5,
+      "w": 42,
+      "h": 25
+    },
+    "fill": "#183b56",
+    "text": "2026"
+  },
+  {
+    "id": "39:1154",
+    "name": "proicons:calendar",
+    "type": "FRAME",
+    "parent": "39:1151",
+    "box": {
+      "x": 1328,
+      "y": 158,
+      "w": 24,
+      "h": 24
+    },
+    "children": [
+      "39:1155"
+    ]
+  },
+  {
+    "id": "39:1155",
+    "name": "Vector",
+    "type": "VECTOR",
+    "parent": "39:1154",
+    "box": {
+      "x": 1331.25,
+      "y": 160.75,
+      "w": 17.5,
+      "h": 18.5
+    },
+    "stroke": "#183b56"
+  },
+  {
+    "id": "39:1156",
+    "name": "Frame 427319264",
+    "type": "FRAME",
+    "parent": "39:1141",
+    "box": {
+      "x": 1361,
+      "y": 152,
+      "w": 36,
+      "h": 36
+    },
+    "fill": "#1565d8",
+    "cornerRadius": 40,
+    "children": [
+      "39:1157"
+    ]
+  },
+  {
+    "id": "39:1157",
+    "name": "bi:chevron-contract",
+    "type": "FRAME",
+    "parent": "39:1156",
+    "box": {
+      "x": 1370.87,
+      "y": 155.92,
+      "w": 23,
+      "h": 23
+    },
+    "children": [
+      "39:1158"
+    ]
+  },
+  {
+    "id": "39:1158",
+    "name": "icon",
+    "type": "TEXT",
+    "parent": "39:1157",
+    "box": {
+      "x": 1388.03,
+      "y": 177.74,
+      "w": 20,
+      "h": 16
+    },
+    "fill": "#ffffff",
+    "text": "chevron-down"
+  },
+  {
+    "id": "10471:27",
+    "name": "Label",
+    "type": "FRAME",
+    "parent": "39:1140",
+    "box": {
+      "x": 252,
+      "y": 203,
+      "w": 119,
+      "h": 20
+    },
+    "children": [
+      "10471:28"
+    ]
+  },
+  {
+    "id": "10471:28",
+    "name": "Data Base",
+    "type": "TEXT",
+    "parent": "10471:27",
+    "box": {
+      "x": 252,
+      "y": 203,
+      "w": 96.95,
+      "h": 19.5
+    },
+    "fill": "#3f4756",
+    "text": "Data Base"
+  },
+  {
+    "id": "10471:30",
+    "name": "Input",
+    "type": "FRAME",
+    "parent": "39:1140",
+    "box": {
+      "x": 252,
+      "y": 238,
+      "w": 402.33,
+      "h": 32.98
+    },
+    "fill": "#ffffff",
+    "stroke": "#ced4da",
+    "cornerRadius": 10,
+    "children": [
+      "10471:31"
+    ]
+  },
+  {
+    "id": "10471:31",
+    "name": "Container",
+    "type": "FRAME",
+    "parent": "10471:30",
+    "box": {
+      "x": 264,
+      "y": 244,
+      "w": 362.34,
+      "h": 20.98
+    },
+    "children": [
+      "10471:32"
+    ]
+  },
+  {
+    "id": "10471:32",
+    "name": "31/08/2026",
+    "type": "TEXT",
+    "parent": "10471:31",
+    "box": {
+      "x": 264,
+      "y": 244,
+      "w": 231.87,
+      "h": 19.5
+    },
+    "fill": "#212529",
+    "text": "31/08/2026"
+  },
+  {
+    "id": "39:1166",
+    "name": "Frame 427319380",
+    "type": "FRAME",
+    "parent": "39:1113",
+    "box": {
+      "x": 235,
+      "y": 298,
+      "w": 1179,
+      "h": 44
+    },
+    "children": [
+      "39:1167"
+    ]
+  },
+  {
+    "id": "39:1167",
+    "name": "Botão",
+    "type": "INSTANCE",
+    "parent": "39:1166",
+    "box": {
+      "x": 235,
+      "y": 298,
+      "w": 112,
+      "h": 44
+    },
+    "fill": "#f3f7fb",
+    "cornerRadius": 50
+  },
+  {
+    "id": "10471:42",
+    "name": "boxicons:file-report",
+    "type": "COMPONENT",
+    "parent": "39:1113",
+    "box": {
+      "x": 1215,
+      "y": 910,
+      "w": 24,
+      "h": 24
+    }
+  }
+]

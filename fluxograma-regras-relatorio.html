@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fluxograma de Regras — Relatório de Frequência e Registro de Aulas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f9f9f9;--surface:#fff;--fg:#183b56;--muted:#55585d;
+  --heading:#304869;--accent:#1565d8;--teal:#20c7a3;
+  --border:#c1c9d8;--line:#e6ecf3;--blue-bg:#e8f0fb;--teal-bg:#e6f7f3;
+  --green:#118f28;--green-bg:rgba(17,143,40,.10);--orange:#e8830c;--orange-bg:rgba(232,131,12,.12);
+  --field:#3f4756;--btn-bg:#f3f7fb;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);font-family:'Open Sans',sans-serif;color:var(--fg);padding:40px 32px 80px}
+.wrap{max-width:1280px;margin:0 auto}
+
+/* Header */
+.doc-head{display:flex;align-items:flex-start;gap:18px;margin-bottom:8px}
+.doc-logo{width:52px;height:52px;border-radius:14px;background:var(--accent);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.doc-eyebrow{font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:2px}
+.doc-title{font-size:34px;font-weight:800;color:#162f67;margin:4px 0 6px;line-height:1.15}
+.doc-sub{font-size:16px;color:var(--muted);max-width:900px;line-height:1.5}
+.doc-meta{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 6px}
+.doc-chip{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border);border-radius:30px;padding:7px 16px;font-size:13px;font-weight:600;color:var(--field)}
+.doc-chip svg{width:16px;height:16px}
+
+/* Legend */
+.legend{display:flex;gap:14px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:20px 0 30px}
+.lg{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600;color:var(--field)}
+.lg i{width:16px;height:16px;border-radius:4px;display:inline-block}
+
+/* Flow columns */
+.flow-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.flow-col{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:24px 22px 26px;box-shadow:0 6px 24px rgba(16,42,67,.06)}
+.flow-head{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.flow-head .fh-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.flow-head .fh-ico svg{width:24px;height:24px}
+.flow-head h2{font-size:22px;font-weight:800;color:#162f67}
+.flow-head p{font-size:13px;color:var(--muted);margin-top:2px}
+
+/* Node styles */
+.node{position:relative;border-radius:12px;padding:13px 18px;font-size:14px;line-height:1.45;border:1.5px solid;display:flex;gap:10px;align-items:flex-start;background:#fff}
+.node .n-ico{flex:0 0 auto;width:18px;height:18px;margin-top:1px}
+.node b{display:block;font-size:14.5px;font-weight:700;color:#183b56}
+.node small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+.node-action{border-color:#7fb7ec;background:#fbfdff}
+.node-action .n-ico{color:var(--accent)}
+.node-decision{border-color:#e8c58a;background:#fffaf3;border-radius:8px;transform:skewX(-6deg)}
+.node-decision>div{transform:skewX(6deg)}
+.node-decision b{color:#8a5a00}
+.node-data{border-color:#8fe0cd;background:#f4fcfb}
+.node-data .n-ico{color:#0e7a66}
+.node-end{border-color:var(--teal);background:#eefaf7;text-align:center;justify-content:center}
+.node-end b{color:#0e7a66}
+.node-tag{display:inline-block;background:var(--blue-bg);color:var(--accent);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-radius:20px;padding:3px 10px;margin-bottom:7px}
+.node-col--teal .node-tag{background:var(--teal-bg);color:#0e7a66}
+.node-col--teal .node-action{border-color:#7fd3c0}
+
+/* Connector */
+.conn{display:flex;flex-direction:column;align-items:center;height:34px;justify-content:center;color:#b9c2d1}
+.conn svg{width:20px;height:20px}
+.conn-line{width:2px;height:18px;background:#b9c2d1}
+
+/* Branch labels */
+.branch{display:flex;align-items:center;gap:10px;margin:6px 0;font-size:13px;font-weight:700;color:var(--field)}
+.branch::before,.branch::after{content:'';flex:1;height:1px;background:var(--line)}
+.branch b{color:var(--accent)}
+.branch b.t{color:#0e7a66}
+
+/* Transversal section */
+.xv{margin-top:32px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px 26px 6px;box-shadow:0 6px 24px rgba(16,42,67,.06)}
+.xv-title{display:flex;align-items:center;gap:12px;font-size:22px;font-weight:800;color:#162f67;margin-bottom:18px}
+.xv-title svg{width:24px;height:24px;color:var(--accent)}
+.xv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding-bottom:20px}
+.xv-card{border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:#fbfcfe}
+.xv-card h4{font-size:15px;font-weight:700;color:#183b56;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.xv-card h4 svg{width:16px;height:16px;color:var(--teal)}
+.xv-card p{font-size:13.5px;color:var(--muted);line-height:1.5}
+
+/* Footer */
+.doc-foot{margin-top:34px;display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+
+@media(max-width:960px){
+  .flow-grid{grid-template-columns:1fr}
+  .xv-grid{grid-template-columns:1fr}
+  .doc-title{font-size:26px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="doc-head" data-od-id="fluxograma-cabecalho">
+    <div class="doc-logo"><svg viewBox="0 0 28 28" width="30" height="30" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="7" fill="#ffffff"></rect><path d="M14 7.2l9 4.3-9 4.3-9-4.3 9-4.3z" fill="#20c7a3"></path><path d="M9.6 13.2v3.9c0 1.2 2 2.1 4.4 2.1s4.4-.9 4.4-2.1v-3.9l-4.4 2.1-4.4-2.1z" fill="#20c7a3" opacity=".9"></path></svg></div>
+    <div>
+      <div class="doc-eyebrow">Fluxograma de Regras</div>
+      <h1 class="doc-title">Relatório de Frequência e Registro de Aulas</h1>
+      <p class="doc-sub">Como o relatório funciona para cada perfil — Professor e Gestão da Escola. Fluxo de navegação, regras de consulta e comportamentos de lançamento.</p>
+    </div>
+  </div>
+
+  <div class="doc-meta">
+    <span class="doc-chip"><svg viewBox="0 0 20 20" fill="none" stroke="#1565d8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="7" r="3"></circle><path d="M4.5 16.5c.7-2.4 2.7-3.8 5.5-3.8s4.8 1.4 5.5 3.8"></path></svg> Perfil Professor</span>
+    <span class="doc-chip"><svg viewBox="0 0 20 20" fill="none" stroke="#20c7a3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2.5l6 2.5v5c0 3.5-2.5 6.2-6 7.5-3.5-1.3-6-4-6-7.5V5l6-2.5z"></path></svg> Perfil Gestão da Escola</span>
+    <span class="doc-chip"><svg viewBox="0 0 20 20" fill="none" stroke="#118f28" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg> Somente leitura — sem edição</span>
+    <span class="doc-chip"><svg viewBox="0 0 20 20" fill="none" stroke="#e8830c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="8"></circle><path d="M10 9v4M10 6.5h.01"></path></svg> Datas futuras nunca lançadas</span>
+  </div>
+
+  <div class="legend" data-od-id="fluxograma-legenda">
+    <span class="lg"><i style="background:#fff;border:1.5px solid #7fb7ec;border-radius:6px"></i> Ação / tela</span>
+    <span class="lg"><i style="background:#fffaf3;border:1.5px solid #e8c58a;border-radius:4px"></i> Decisão / regra</span>
+    <span class="lg"><i style="background:#f4fcfb;border:1.5px solid #8fe0cd;border-radius:6px"></i> Dado exibido</span>
+    <span class="lg"><i style="background:#eefaf7;border:1.5px solid #20c7a3;border-radius:20px"></i> Fim do fluxo</span>
+  </div>
+
+  <div class="flow-grid">
+
+    <!-- ===== PROFESSOR ===== -->
+    <div class="flow-col" data-od-id="fluxo-professor">
+      <div class="flow-head">
+        <span class="fh-ico" style="background:var(--blue-bg)"><svg viewBox="0 0 24 24" fill="none" stroke="#1565d8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"></circle><path d="M5.5 19.5c.8-3 3.3-4.7 6.5-4.7s5.7 1.7 6.5 4.7"></path></svg></span>
+        <div><h2>Professor(a)</h2><p>Suas turmas e a agenda da semana</p></div>
+      </div>
+
+      <div class="node node-action"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12v12H4z"></path><path d="M8 7h4M8 10h4M8 13h4"></path></svg></span><div><b>Acessa Relatórios</b><small>Menu lateral → Relatórios de Frequência e Registro de Aulas</small></div></div>
+      <div class="conn"><div class="conn-line"></div></div>
+
+      <div class="node node-action"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h14M7 12h6M10 16h0"></path></svg></span><div><b>Vê a lista das turmas atribuídas</b><small>Apenas as turmas do professor · filtro de Tipo de Ensino é opcional</small></div></div>
+      <div class="conn"><div class="conn-line"></div></div>
+
+      <div class="node node-data"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="14" height="12" rx="2"></rect><path d="M3 8.5h14M8 3v3M12 3v3"></path></svg></span><div><b>Escolhe a Data Base no calendário</b><small>Define a semana que será exibida</small></div></div>
+      <div class="conn"><div class="conn-line"></div></div>
+
+      <div class="node node-action"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h14M3 9h14M3 14h14"></path></svg></span><div><b>Abre a agenda semanal da turma</b><small>Grade de Horário × Seg–Sex · cada horário mostra o número da aula</small></div></div>
+      <div class="conn"><div class="conn-line"></div></div>
+
+      <div class="node node-decision"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="#e8830c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="8"></circle><path d="M10 9v4M10 6.5h.01"></path></svg></span><div><b>Dia da aula já passou?</b></div></div>
+
+      <div class="branch"><b>Não — dia futuro</b></div>
+      <div class="node node-data"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="#e8830c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3l7 3v4.5c0 3.2-3 5.5-7 6.5-4-1-7-3.3-7-6.5V6l7-3z"></path></svg></span><div><b>Card aparece sempre como PENDENTE</b><small>Selos R e F em laranja — não há lançamento antes do tempo</small></div></div>
+      <div class="conn"><div class="conn-line"></div></div>
+
+      <div class="branch"><b class="t">Sim — dia já ocorreu</b></div>
+      <div class="node node-data"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="#118f28" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg></span><div><b>Mostra o status real do lançamento</b><small>Verde = lançado · laranja = pendente, nos selos R (Registro) e F (Frequência)</small></div></div>
+      <div class="conn"><div class="conn-line"></div></div>
+
+      <div class="node node-decision"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="#e8830c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="8"></circle><path d="M10 9v4M10 6.5h.01"></path></svg></span><div><b>Clicou numa aula?</b></div></div>
+
+      <div class="branch"><b>Sim</b></div>
+      <div class="node node-data"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="12" height="12" rx="2"></rect><path d="M8 8h4M8 11h4M8 14h2"></path></svg></span><div><b>Abre o detalhe do lançamento</b><small>Quem lançou · perfil · data do lançamento · badge "Lançado com atraso" se for o caso</small></div></div>
+      <div class="conn"><div class="conn-line"></div></div>
+
+      <div class="node node-decision"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="#e8830c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="8"></circle><path d="M10 9v4M10 6.5h.01"></path></svg></span><div><b>Usa os cards de resumo da semana?</b></div></div>
+
+      <div class="branch"><b>Sim</b></div>
+      <div class="node node-data"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h14M3 10h14M3 15h14M7 5v10M13 5v10"></path></svg></span><div><b>Cards clicáveis abrem o detalhe em tabela</b><small>Disciplinas · Aulas na semana · Frequências lançadas · Registros lançados</small></div></div>
+      <div class="conn"><div class="conn-line"></div></div>
+
+      <div class="node node-end"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="#0e7a66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg></span><div><b>Fim — acompanhamento feito</b></div></div>
+    </div>
+
+    <!-- ===== GESTÃO ===== -->
+    <div class="flow-col node-col--teal" data-od-id="fluxo-gestao">
+      <div class="flow-head">
+        <span class="fh-ico" style="background:var(--teal-bg)"><svg viewBox="0 0 24 24" fill="none" stroke="#20c7a3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 2.8V12c0 3.8-2.8 6.8-7 8.2-4.2-1.4-7-4.4-7-8.2V5.8L12 3z"></path><path d="M12 8v4M12 14.5h.01"></path></svg></span>
+        <div><h2>Gestão da Escola</h2><p>Consulta da escola inteira — sem turmas</p></div>
+      </div>
+
+      <div class="node node-action"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M7 12h10M10 18h4"></path></svg></span><div><b>Escolhe o perfil Gestão da Escola</b><small>Troca no topo da plataforma — visão muda por completo</small></div></div>
+      <div class="conn"><div class="conn-line"></div></div>
+
+      <div class="node node-action"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h14M7 12h6M10 16h0"></path></svg></span><div><b>Define o filtro</b><small>"Filtrar por": Diário ou Semanal</small></div></div>
+      <div class="conn"><div class="conn-line"></div></div>
+
+      <div class="node node-decision"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="#e8830c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="8"></circle><path d="M10 9v4M10 6.5h.01"></path></svg></span><div><b>Diário ou Semanal?</b></div></div>
+
+      <div class="branch"><b>Diário</b></div>
+      <div class="node node-action"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h14M3 9h14M3 14h14"></path></svg></span><div><b>Preenche Data + Tipo de Ensino</b><small>Obrigatórios · Aula (por número) é opcional</small></div></div>
+      <div class="conn"><div class="conn-line"></div></div>
+
+      <div class="node node-decision"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="#e8830c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="8"></circle><path d="M10 9v4M10 6.5h.01"></path></svg></span><div><b>Campos preenchidos?</b></div></div>
+
+      <div class="branch"><b>Não</b></div>
+      <div class="node node-data"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="#e8830c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="8"></circle><path d="M10 9v4M10 6.5h.01"></path></svg></span><div><b>Marca "Campo obrigatório"</b><small>Bloqueia a consulta até preencher</small></div></div>
+      <div class="conn"><div class="conn-line"></div></div>
+
+      <div class="branch"><b class="t">Sim</b></div>
+      <div class="node node-action"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="4.5"></circle><path d="M10.5 10.5L14 14"></path></svg></span><div><b>Consultar</b><small>Exibe a tabela do dia escolhido</small></div></div>
+      <div class="conn"><div class="conn-line"></div></div>
+
+      <div class="node node-data"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h14M3 10h14M3 15h14M7 5v10M13 5v10"></path></svg></span><div><b>Tabela com as aulas do dia</b><small>Turma · Disciplina · Hora início/fim · Frequência · Registro · Professor · Detalhes · com paginação</small></div></div>
+      <div class="conn"><div class="conn-line"></div></div>
+
+      <div class="node node-data"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="12" height="12" rx="2"></rect><path d="M8 8h4M8 11h4M8 14h2"></path></svg></span><div><b>"Detalhes" abre o lançamento</b><small>Mesmo detalhe do professor: quem lançou, perfil, data, atraso</small></div></div>
+      <div class="conn"><div class="conn-line"></div></div>
+
+      <div class="node node-end"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="#0e7a66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg></span><div><b>Fim — consulta diária feita</b></div></div>
+      <div class="conn"><div class="conn-line"></div></div>
+
+      <div class="branch"><b class="t">Semanal</b></div>
+      <div class="node node-action"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h14M3 9h14M3 14h14"></path></svg></span><div><b>Preenche Data Base + Tipo de Ensino</b><small>Obrigatórios</small></div></div>
+      <div class="conn"><div class="conn-line"></div></div>
+
+      <div class="node node-action"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2H4.5A1.5 1.5 0 003 3.5v9A1.5 1.5 0 004.5 14h7a1.5 1.5 0 001.5-1.5V5L10 2z"></path><path d="M10 2v3h3"></path><path d="M8 7v4M6 9.5L8 11.5l2-2"></path></svg></span><div><b>Baixar Excel (.xls)</b><small>Gera a planilha com a semana inteira do tipo escolhido</small></div></div>
+      <div class="conn"><div class="conn-line"></div></div>
+
+      <div class="node node-data"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h14M3 10h14M3 15h14"></path></svg></span><div><b>Cards de resumo da semana</b><small>Aulas na semana · Frequências lançadas · Registros lançados</small></div></div>
+      <div class="conn"><div class="conn-line"></div></div>
+
+      <div class="node node-end"><span class="n-ico"><svg viewBox="0 0 20 20" fill="none" stroke="#0e7a66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"></path></svg></span><div><b>Fim — semana exportada</b></div></div>
+    </div>
+  </div>
+
+  <!-- Regras transversais -->
+  <div class="xv" data-od-id="regras-transversais">
+    <div class="xv-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.2 4.5 5 .7-3.6 3.5.9 5-4.5-2.4L7.5 16.7l.9-5L4.8 8.2l5-.7L12 3z"></path></svg> Regras transversais (valem para os dois perfis)</div>
+    <div class="xv-grid">
+      <div class="xv-card"><h4><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="8"></circle><path d="M10 9v4M10 6.5h.01"></path></svg> Datas futuras</h4><p>Nenhum lançamento (verde) em dia que ainda não chegou — vale para a agenda do professor, para a tabela diária e o Excel da gestão e para os cards de resumo.</p></div>
+      <div class="xv-card"><h4><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h9v9H3zM12 8h5v9h-9v-5"></path></svg> Somente leitura</h4><p>O relatório não edita nada: ele exibe e consulta lançamentos feitos em outros módulos do Diário de Classe.</p></div>
+      <div class="xv-card"><h4><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12v12H4z"></path><path d="M7 7h6M7 10h6M7 13h3"></path></svg> Perfil persistido</h4><p>A escolha Professor × Gestão fica salva; ao trocar, toda a visão muda conforme o perfil.</p></div>
+      <div class="xv-card"><h4><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7"></circle><path d="M10 7v3l2 2"></path></svg> Lançamento com atraso</h4><p>Quando o lançamento é feito depois da aula, o detalhe exibe o badge "Lançado com atraso".</p></div>
+      <div class="xv-card"><h4><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h14M7 12h6M10 16h0"></path></svg> Filtros consistentes</h4><p>Mesmos critérios de consulta nos dois perfis: Data/Tipo de Ensino obrigatórios, Aula opcional, e a quantidade de aulas por dia segue a grade de cada turma.</p></div>
+      <div class="xv-card"><h4><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="14" height="12" rx="2"></rect><path d="M3 8.5h14M8 3v3M12 3v3"></path></svg> Visual consistente</h4><p>Mesmo design system, badges de status (R/F, Lançado/Pendente) e calendário em toda a plataforma.</p></div>
+    </div>
+  </div>
+
+  <div class="doc-foot">
+    <span>Relatório de Frequência e Registro de Aulas · Diário de Classe · Sala do Futuro</span>
+    <span>Fluxograma de regras · v1</span>
+  </div>
+</div>
+</body></html>

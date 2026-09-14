@@ -1,0 +1,51 @@
+{
+  "source": "offline-fig",
+  "label": "Relatório TURMA.fig",
+  "decoded": true,
+  "container": "zip",
+  "nodeCount": 37,
+  "assetCount": 0,
+  "hasThumbnail": true,
+  "fonts": [
+    {
+      "family": "Open Sans",
+      "styles": [
+        "SemiBold",
+        "Bold",
+        "Regular"
+      ]
+    },
+    {
+      "family": "Font Awesome 6 Free",
+      "styles": [
+        "Solid"
+      ]
+    }
+  ],
+  "unsupportedNodes": [],
+  "warnings": [],
+  "figMeta": {
+    "client_meta": {
+      "background_color": {
+        "r": 0.9607843160629272,
+        "g": 0.9607843160629272,
+        "b": 0.9607843160629272,
+        "a": 1
+      },
+      "thumbnail_size": {
+        "width": 400,
+        "height": 314
+      },
+      "render_coordinates": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 1132
+      }
+    },
+    "file_name": "Relatório",
+    "developer_related_links": [],
+    "exported_at": "2026-08-31T14:41:46.989Z"
+  },
+  "exportedAt": "2026-08-31T14:43:42.666Z"
+}
